@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Chosen Palette: Earthy Harmony -->
     <!-- Application Structure Plan: SPA ini menggunakan struktur navigasi berbasis tab yang dikendalikan oleh JavaScript. Setiap item menu (Beranda, Wawasan, Aksi, Tentang) akan menampilkan/menyembunyikan bagian konten yang sesuai tanpa memuat ulang halaman. Pendekatan ini dipilih untuk menciptakan prototipe yang cepat dan mulus, memungkinkan pengguna untuk merasakan alur aplikasi multi-halaman dalam satu file. Struktur ini berpusat pada pengguna, memprioritaskan kemudahan eksplorasi konten dari Laporan Konsep dengan meniru navigasi situs web yang sebenarnya. Gemini API diintegrasikan untuk fitur dinamis. -->
     <!-- Visualization & Content Choices: 
@@ -75,8 +76,12 @@
                 <a href="#wawasan" class="nav-link">Wawasan</a>
                 <a href="#aksi" class="nav-link">Aksi</a>
                 <a href="#tentang" class="nav-link">Tentang Kami</a>
+                <!-- ===== PINTU MASUK KE FORUM (DESKTOP) ===== -->
+                <a href="/forum-nafasbumi/src/" class="text-[#2E5339] font-semibold bg-green-100 px-4 py-2 rounded-lg hover:bg-green-200 transition-colors">
+                    <i class="fas fa-comments mr-2"></i>Forum Diskusi
+                </a>
             </div>
-            <a href="#" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
+            
             <button id="mobile-menu-button" class="md:hidden text-2xl">☰</button>
         </nav>
         <div id="mobile-menu" class="hidden md:hidden bg-white p-4">
@@ -84,7 +89,8 @@
              <a href="#wawasan" class="block py-2 px-4 text-sm nav-link">Wawasan</a>
              <a href="#aksi" class="block py-2 px-4 text-sm nav-link">Aksi</a>
              <a href="#tentang" class="block py-2 px-4 text-sm nav-link">Tentang Kami</a>
-             <a href="#" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
+             <!-- ===== PINTU MASUK KE FORUM (MOBILE) ===== -->
+             <a href="/forum/" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Forum Diskusi</a>
         </div>
     </header>
 
@@ -349,7 +355,7 @@
                     targetLink = event.target.closest('a[href^="#"]');
                 }
 
-                if (targetLink) {
+                if (targetLink && targetLink.getAttribute('href').startsWith('#')) {
                     event.preventDefault();
                     const targetId = targetLink.getAttribute('href').substring(1);
                     if(document.getElementById(targetId)) {
@@ -379,8 +385,8 @@
             });
 
             async function callGeminiAPI(prompt, isJson = false) {
-                const apiKey = "AIzaSyDyIlvgZMqeou1D_w9a_iAsOIQaFdd4NQw";
-                const model = 'gemini-2.0-flash';
+                const apiKey = "AIzaSyDyIlvgZMqeou1D_w9a_iAsOIQaFdd4NQw"; // Ganti dengan API Key Anda yang sebenarnya jika perlu
+                const model = 'gemini-1.5-flash';
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
                 const payload = {
