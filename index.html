@@ -108,7 +108,7 @@
     <!-- Landing Page Header -->
     <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-[#2E5339]">NafasBumi</a>
+            <a href="#beranda" class="text-2xl font-bold text-[#2E5339]">NafasBumi</a>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#beranda" class="nav-link active">Beranda</a>
                 <a href="#wawasan" class="nav-link">Wawasan</a>
@@ -616,7 +616,21 @@
             const handleDeleteMessage = async (messageId) => { if (!activeChannel || !window.confirm("Hapus pesan ini?")) return; try { await deleteDoc(doc(db, "channels", activeChannel, "messages", messageId)); } catch (error) { console.error("Error deleting message: ", error); } };
             return (<div className="flex flex-col flex-grow bg-gray-50 overflow-hidden"><div className="flex-shrink-0 flex items-center justify-between h-16 px-6 bg-white border-b border-gray-200 shadow-sm"><div className="flex items-center"><i className="fas fa-hashtag fa-lg text-gray-400 mr-3"></i><h2 className="text-xl font-semibold text-gray-700">{activeChannel}</h2></div></div><div className="flex-grow p-6 overflow-y-auto min-h-0">{messages.map(msg => <Message key={msg.id} message={msg} isSent={msg.uid === user.uid} onViewProfile={onViewProfile} onDelete={() => handleDeleteMessage(msg.id)} onReply={() => setReplyingTo(msg)} />)}<div ref={messagesEndRef} /></div><div className="flex-shrink-0 px-6 pb-2 h-6">{typingUsers.length > 0 && <div className="text-sm text-gray-500 animate-pulse">{typingUsers.map(u => u.displayName).join(', ')} sedang mengetik...</div>}</div><div className="flex-shrink-0"><MessageInput user={user} activeChannel={activeChannel} isUserAdmin={isUserAdmin} replyingTo={replyingTo} setReplyingTo={setReplyingTo} allUsers={allUsers}/></div></div>);
         };
-        const RenderFormattedText = ({ text }) => { const escapeHtml = (unsafe) => unsafe ? unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : ''; const formattedText = escapeHtml(text).replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/_(.*?)_/g, '<em>$1</em>').replace(/~(.*?)~/g, '<del>$1</del>').replace(/(@everyone)/g, '<strong class="bg-amber-300 text-amber-800 px-2 py-0.5 rounded-lg">$1</strong>').replace(/(@[\w\s]+)/g, `<strong class="bg-green-100 px-1 py-0.5 rounded" style={{color: THEME_COLOR.primary}}>$1</strong>`); return <span dangerouslySetInnerHTML={{ __html: formattedText }} />; };
+        const RenderFormattedText = ({ text }) => { 
+    const escapeHtml = (unsafe) => unsafe ? unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : '';
+    
+    const formattedText = escapeHtml(text)
+        .replace(/\*(.*?)\*/g, '<strong>$1</strong>') // Bold
+        .replace(/_(.*?)_/g, '<em>$1</em>') // Italic
+        .replace(/~(.*?)~/g, '<del>$1</del>') // Strikethrough
+        .replace(/(@everyone)/g, '<strong class="bg-amber-300 text-amber-800 px-2 py-0.5 rounded-lg">$1</strong>') // @everyone tag
+        
+        // --- PERUBAHAN DI SINI ---
+        // Mengganti style dengan kelas Tailwind `text-green-900` untuk memastikan teks berwarna gelap.
+        .replace(/(@[\w\s]+)/g, `<strong class="bg-green-200 text-green-900 font-semibold px-1 py-0.5 rounded">$1</strong>`); 
+
+    return <span dangerouslySetInnerHTML={{ __html: formattedText }} />; 
+};
         const Message = ({ message, isSent, onViewProfile, onDelete, onReply }) => { const { text, displayName, photoURL, timestamp, uid, isAdmin, replyTo } = message; return (<div className={`group flex items-start mb-2 ${isSent ? 'justify-end' : 'justify-start'}`}>{!isSent && <img onClick={() => onViewProfile(message)} className="h-10 w-10 rounded-full object-cover mr-3 cursor-pointer self-start transition-transform hover:scale-110" src={photoURL} alt={displayName} />}<div className={`flex items-center gap-2 ${isSent ? 'flex-row-reverse' : 'flex-row'}`}><div className="flex-shrink-0 order-1 opacity-0 group-hover:opacity-100 transition-all"><button onClick={onReply} className="p-1 text-gray-400" style={{"&:hover": {color: THEME_COLOR.primary}}} title="Balas"><i className="fas fa-reply"></i></button>{isSent && <button onClick={onDelete} className="p-1 text-gray-400 hover:text-red-500" title="Hapus"><i className="fas fa-trash"></i></button>}</div><div className={`flex flex-col ${isSent ? 'items-end' : 'items-start'} order-0 min-w-0`}><div className="flex items-center mb-1">{!isSent && <span className="font-semibold mr-2 text-sm text-gray-800">{displayName}</span>}{isAdmin && <span className="text-xs font-bold text-yellow-800 bg-yellow-300 px-1.5 py-0.5 rounded-full mr-2">ADMIN</span>}<span className="text-xs text-gray-400">{timestamp?.toDate().toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'})}</span></div>{replyTo && (<div className="text-xs bg-gray-100 p-2 rounded-md mb-1 w-full opacity-80" style={{borderLeft: `2px solid ${THEME_COLOR.primary}`}}><strong className="text-gray-600">Membalas {replyTo.displayName}</strong>: <span className="text-gray-500 italic">"{replyTo.text.substring(0, 50)}..."</span></div>)}<div className={`p-3 rounded-lg shadow-sm max-w-md ${isSent ? 'text-white' : 'bg-white'}`} style={{backgroundColor: isSent ? THEME_COLOR.primary : '#FFFFFF' }}>{text && <p className="break-words"><RenderFormattedText text={text} /></p>}</div></div></div>{isSent && <img onClick={() => onViewProfile(message)} className="h-10 w-10 rounded-full object-cover ml-3 cursor-pointer self-start transition-transform hover:scale-110" src={photoURL} alt={displayName} />}</div>); };
         const MessageInput = ({ user, activeChannel, isUserAdmin, replyingTo, setReplyingTo, allUsers }) => { 
             const [text, setText] = useState(''); const [isGenerating, setIsGenerating] = useState(false); const [tagSuggestions, setTagSuggestions] = useState([]); const inputRef = useRef(null); const typingTimeoutRef = useRef(null);
