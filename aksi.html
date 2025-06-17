@@ -292,6 +292,39 @@
 
     <script>
 
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.getElementById('main-content');
+            const mainHeader = document.getElementById('main-header');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const enableScroll = () => { document.body.style.overflow = 'auto'; };
+            
+    
+            // Preloader logic
+            if (preloader && mainContent) { 
+                document.body.style.overflow = 'hidden'; 
+                setTimeout(() => { 
+                    preloader.classList.add('slide-up'); 
+                    mainContent.style.transition = 'opacity 0.5s ease-in'; 
+                    mainContent.style.opacity = '1'; 
+                    setTimeout(() => { 
+                        preloader.style.display = 'none'; 
+                        enableScroll(); 
+                    }, 1000); 
+                }, 2000); 
+            } else { 
+                enableScroll(); 
+            }
+    
+            // Mobile menu toggle
+            if (mobileMenuButton && mobileMenu) { 
+                mobileMenuButton.addEventListener('click', () => { 
+                    mobileMenu.classList.toggle('hidden'); 
+                }); 
+            }
+        });
+
  document.addEventListener('DOMContentLoaded', function () {
             const navLinks = document.querySelectorAll('.nav-link');
             const contentSections = document.querySelectorAll('.content-section');
