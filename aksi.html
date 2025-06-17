@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aksi - NafasBumi</title> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="icon" type="image/x-icon" href="/eekend (1).svg">
-
+    <link rel="icon" type="image/x-icon" href="/logo-nafas-bumi.svg">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
@@ -186,8 +185,8 @@
             </div>
         </section>
 
-        <section id="aksi" class="min-h-auto py-16">
-            <div class="container mx-auto px-6">
+        <section id="aksi" class="content-section min-h-auto">
+             <div class="container mx-auto px-6">
                 <h2 class="text-4xl font-bold text-center mb-4">Zona Aksi</h2>
                 <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Perubahan dimulai dari tindakan nyata. Dapatkan rencana aksi personal dari AI, dukung kampanye, dan terapkan gaya hidup hijau.</p>
                 
@@ -195,13 +194,11 @@
                     <h3 class="text-2xl font-bold mb-2 text-center">✨ Perencana Aksi Hijau</h3>
                     <p class="text-center text-gray-500 mb-8">Bingung mulai dari mana? Tulis topik yang Anda pedulikan, dan biarkan AI menyusun rencana langkah demi langkah untuk Anda.</p>
                     <div class="max-w-2xl mx-auto">
-                        <input type="text" id="action-plan-input" class="w-full p-3 border rounded mb-4 focus:ring-2 focus:ring-[#2E5339] focus:border-transparent outline-none transition" placeholder="Contoh: Mengurangi sampah plastik di rumah">
-                        <button id="generate-plan-btn" class="w-full bg-[#4A7859] text-white p-3 rounded-lg font-bold hover:bg-[#2E5339] transition-colors flex items-center justify-center disabled:bg-gray-400">
-                            Buatkan Rencana Aksi
+                        <input type="text" id="action-plan-input" class="w-full p-3 border rounded mb-4" placeholder="Contoh: Mengurangi sampah plastik di rumah">
+                        <button id="generate-plan-btn" class="w-full bg-[#4A7859] text-white p-3 rounded-lg font-bold hover:bg-[#2E5339] transition-colors flex items-center justify-center">
+                           Buatkan Rencana Aksi
                         </button>
-                        <div id="plan-loader" class="hidden justify-center mt-4">
-                            <div class="loader"></div>
-                        </div>
+                        <div id="plan-loader" class="hidden justify-center mt-4"><div class="loader"></div></div>
                         <div id="plan-result" class="mt-6 hidden"></div>
                     </div>
                 </div>
@@ -290,6 +287,15 @@
         </div>
     </footer>
 
+
+        <div id="error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full text-center">
+            <h3 class="text-xl font-bold text-red-600 mb-4">Oops, Terjadi Kesalahan!</h3>
+            <p id="error-message" class="text-gray-700 mb-6">Maaf, kami tidak dapat memproses permintaan Anda saat ini.</p>
+            <button id="close-modal-btn" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">Tutup</button>
+        </div>
+    </div>
+
     <script>
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -325,14 +331,11 @@
             }
         });
 
- document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function () {
             const navLinks = document.querySelectorAll('.nav-link');
             const contentSections = document.querySelectorAll('.content-section');
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
-
-            const preloader = document.getElementById('preloader');
-
             
             const generatePlanBtn = document.getElementById('generate-plan-btn');
             const actionPlanInput = document.getElementById('action-plan-input');
@@ -405,7 +408,7 @@
             });
 
             async function callGeminiAPI(prompt, isJson = false) {
-                const apiKey = "";
+                const apiKey = "AIzaSyDyIlvgZMqeou1D_w9a_iAsOIQaFdd4NQw";
                 const model = 'gemini-2.0-flash';
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
@@ -565,7 +568,7 @@
             
             showSection('beranda');
         });
-    </script>
+ </script>
 
 </body>
 </html>
