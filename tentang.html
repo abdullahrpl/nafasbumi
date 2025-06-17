@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="main.js"></script>
     
     <style>
         body {
@@ -68,7 +69,7 @@
                 </a>
                 
                 <a href="wawasan.html" 
-                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-ful">
+                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
                    Wawasan
                 </a>
                 
@@ -186,123 +187,5 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const preloader = document.getElementById('preloader');
-            const mainContent = document.getElementById('main-content');
-            const mainHeader = document.getElementById('main-header');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const enableScroll = () => { document.body.style.overflow = 'auto'; };
-    
-            // Preloader logic
-            if (preloader && mainContent) { 
-                document.body.style.overflow = 'hidden'; 
-                setTimeout(() => { 
-                    preloader.classList.add('slide-up'); 
-                    mainContent.style.transition = 'opacity 0.5s ease-in'; 
-                    mainContent.style.opacity = '1'; 
-                    setTimeout(() => { 
-                        preloader.style.display = 'none'; 
-                        enableScroll(); 
-                    }, 1000); 
-                }, 2000); 
-            } else { 
-                enableScroll(); 
-            }
-    
-            // Mobile menu toggle
-            if (mobileMenuButton && mobileMenu) { 
-                mobileMenuButton.addEventListener('click', () => { 
-                    mobileMenu.classList.toggle('hidden'); 
-                }); 
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-        // Logika untuk menu mobile
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        if (mobileMenuButton && mobileMenu) {
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-        }
-
-        // =======================================================
-        // == DATA BERITA DENGAN VARIASI SUDUT PANDANG          ==
-        // =======================================================
-        const beritaData = [
-            {
-                kategori: 'News Nasional',
-                judul: 'Keindahan Alam Raja Ampat Terancam Tambang Nikel, Kemenpar Buka Suara',
-                deskripsi: 'Rencana ekspansi tambang nikel ke Raja Ampat memicu kekhawatiran berbagai pihak. Surga wisata dunia itu kini terancam rusak oleh aktivitas industri ekstraktif.',
-                link: 'https://www.inews.id/multimedia/video/headline-inewsid-keindahan-alam-raja-ampat-terancam-tambang-nikel-kemenpar-buka-suara',
-                gambarUrl: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrFeLy4RXaCjppqthds7azNjW5hlEvfiBYivRZ3OEKIt-W3DGa1VGpphuzxeOVSrS7nNQwR3uWNJI2wdZMHB8pfrLwPbDITCCXF2pdpp_iFnwWnCMTwEFiFfYeQ42ohWuLYnGgnUA=w810-h468-n-k-no'
-            },
-            {
-                kategori: 'Regional',
-                judul: 'Ekowisata Malagufuk, Hutan Papua yang Melindungi Berbagai Macam Hewan Termasuk Ular Berbisa',
-                deskripsi: 'Ekowisata Malagufuk di Distrik Makbon, Kabupaten Sorong, Provinsi Papua Barat Daya, menawarkan keindahan alam serta kesempatan untuk memantau..',
-                link: 'https://regional.kompas.com/read/2025/05/16/074629878/ekowisata-malagufuk-hutan-papua-yang-melindungi-berbagai-macam-hewan',
-                gambarUrl: 'https://asset.kompas.com/crops/W-yOiwi5ZcwOV_BTNoI4smT_LVc=/0x0:0x0/1200x800/data/photo/2025/05/15/6825bb663437c.jpg'
-            },
-            {
-                kategori: 'News Nasional',
-                judul: 'Dukung Penutupan Tambang Nikel di Raja Ampat, Lamhot Sinaga: Keindahan Alam dan Kekayaan Hayati Harus Dilestarikan',
-                deskripsi: 'Wakil Ketua Komisi VII Dewan Perwakilan Rakyat (DPR) RI, Lamhot Sinaga, mendukung penuh keputusan Menteri Energi dan Sumber Daya Mineral (ESDM) Bahlil Lahadalia..',
-                link: 'https://nasional.kompas.com/read/2025/06/08/20044061/dukung-penutupan-tambang-nikel-di-raja-ampat-lamhot-sinaga-keindahan-alam',
-                gambarUrl: 'https://asset.kompas.com/crops/E-dqX3EfKL5oXJ1qRIKN75sdW7c=/321x0:321x0/1200x800/data/photo/2025/06/08/684589355870d.jpeg'
-            },
-            {
-                kategori: 'Kisah Komunitas',
-                judul: 'Kisah Petani Kopi di Lereng Gunung yang Beralih ke Pertanian Organik',
-                deskripsi: 'Berangkat dari keprihatinan akan kerusakan tanah, sekelompok petani berhasil meningkatkan hasil panen sekaligus memulihkan ekosistem.',
-                link: 'https://www.google.com/search?q=berita+kisah+petani+organik+indonesia&tbm=nws',
-                gambarUrl: 'https://images.unsplash.com/photo-1509785307050-d4a529320981?q=80&w=2070&auto=format&fit=crop'
-            },
-            {
-                kategori: 'Satwa Liar',
-                judul: 'Konflik Manusia dan Gajah Kembali Terjadi di Perkebunan Sawit Aceh',
-                deskripsi: 'Menyusutnya habitat alami memicu gajah memasuki area perkebunan, menimbulkan kerugian dan menuntut solusi jangka panjang dari semua pihak.',
-                link: 'https://www.google.com/search?q=berita+konflik+gajah+manusia+aceh&tbm=nws',
-                gambarUrl: 'https://images.unsplash.com/photo-1551106399-450a31818314?q=80&w=1974&auto=format&fit=crop'
-            },
-            {
-                kategori: 'Kesehatan Lingkungan',
-                judul: 'Studi Terbaru Kaitkan Polusi Udara di Perkotaan dengan Peningkatan Kasus Asma',
-                deskripsi: 'Penelitian yang dipublikasikan di jurnal kesehatan internasional menunjukkan korelasi kuat antara partikel PM2.5 dengan gangguan pernapasan.',
-                link: 'https://www.google.com/search?q=berita+studi+polusi+udara+penyakit+pernapasan&tbm=nws',
-                gambarUrl: 'https://images.unsplash.com/photo-1611270418597-a6c7e334b6ce?q=80&w=1964&auto=format&fit=crop'
-            },
-        ];
-
-        const beritaContainer = document.getElementById('berita-container');
-        if (beritaContainer) {
-            const createBeritaCard = (berita) => {
-                return `
-                    <a href="${berita.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
-                        <div class="relative h-48 w-full">
-                            <img src="${berita.gambarUrl}" alt="Thumbnail ${berita.judul}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 p-4"><h2 class="text-2xl font-bold text-white">${berita.kategori}</h2></div>
-                        </div>
-                        <div class="p-6 flex flex-col h-full">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">${berita.judul}</h3>
-                            <p class="text-gray-600 text-base mb-6 leading-relaxed flex-grow">${berita.deskripsi}</p>
-                            <span class="font-semibold text-[#2E5339] inline-flex items-center mt-auto">
-                                Jelajahi Topik Ini
-                                <svg class="w-4 h-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                            </span>
-                        </div>
-                    </a>
-                `;
-            };
-            beritaData.forEach(berita => {
-                beritaContainer.innerHTML += createBeritaCard(berita);
-            });
-        }
-    });
-    </script>
 </body>
 </html>
