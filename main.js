@@ -267,3 +267,242 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
             });
         });
+
+
+         document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            const generatePlanBtn = document.getElementById('generate-plan-btn');
+            const actionPlanInput = document.getElementById('action-plan-input');
+            const planLoader = document.getElementById('plan-loader');
+            const planResult = document.getElementById('plan-result');
+            
+            const exploreTopicBtn = document.getElementById('explore-topic-btn');
+            const topicInput = document.getElementById('topic-input');
+            const topicLoader = document.getElementById('topic-loader');
+            const topicResult = document.getElementById('topic-result');
+            
+            const errorModal = document.getElementById('error-modal');
+            const errorMessage = document.getElementById('error-message');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            function updateActiveLink(targetId) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+                });
+                
+                const mobileNavLinks = mobileMenu.querySelectorAll('.nav-link');
+                mobileNavLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+                });
+            }
+
+            function showSection(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.toggle('hidden', section.id !== targetId);
+                });
+                updateActiveLink(targetId);
+                window.scrollTo(0, 0);
+            }
+            
+            function handleNavClick(event) {
+                let targetLink = null;
+                if (event.target.matches('a[href^="#"]')) {
+                    targetLink = event.target;
+                } else if (event.target.closest('a[href^="#"]')) {
+                    targetLink = event.target.closest('a[href^="#"]');
+                }
+
+                if (targetLink) {
+                    event.preventDefault();
+                    const targetId = targetLink.getAttribute('href').substring(1);
+                    if(document.getElementById(targetId)) {
+                        showSection(targetId);
+                        if (!mobileMenu.classList.contains('hidden')) {
+                           mobileMenu.classList.add('hidden');
+                        }
+                    } else {
+                         showSection('beranda');
+                    }
+                }
+            }
+            
+            document.body.addEventListener('click', handleNavClick);
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            function showErrorModal(message = 'Maaf, terjadi kesalahan tak terduga. Silakan coba lagi nanti.') {
+                errorMessage.textContent = message;
+                errorModal.classList.remove('hidden');
+            }
+            
+            closeModalBtn.addEventListener('click', () => {
+                errorModal.classList.add('hidden');
+            });
+
+            async function callGeminiAPI(prompt, isJson = false) {
+                const apiKey = "";
+                const model = 'gemini-2.0-flash';
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ role: "user", parts: [{ text: prompt }] }]
+                };
+                
+                if (isJson) {
+                    payload.generationConfig = {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                          type: "OBJECT",
+                          properties: {
+                            planTitle: { type: "STRING" },
+                            steps: {
+                              type: "ARRAY",
+                              items: {
+                                type: "OBJECT",
+                                properties: {
+                                  title: { type: "STRING" },
+                                  description: { type: "STRING" }
+                                },
+                                required: ["title", "description"]
+                              }
+                            }
+                          },
+                          required: ["planTitle", "steps"]
+                        }
+                    };
+                }
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                       throw new Error(`API request failed with status ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        throw new Error("Respons dari API tidak valid atau kosong.");
+                    }
+                } catch (error) {
+                    console.error("Gemini API Error:", error);
+                    showErrorModal(error.message);
+                    return null;
+                }
+            }
+            
+            generatePlanBtn.addEventListener('click', async () => {
+                const topic = actionPlanInput.value.trim();
+                if (!topic) {
+                    showErrorModal('Silakan masukkan topik untuk rencana aksi Anda.');
+                    return;
+                }
+                
+                planLoader.style.display = 'flex';
+                planResult.classList.add('hidden');
+                generatePlanBtn.disabled = true;
+
+                const prompt = `Buatkan saya rencana aksi ramah lingkungan yang praktis dan dapat ditindaklanjuti untuk topik ini: "${topic}". Fokus pada langkah-langkah yang dapat dilakukan oleh individu di Indonesia. Berikan jawaban dalam format JSON yang valid sesuai skema.`;
+                
+                const resultText = await callGeminiAPI(prompt, true);
+                
+                if (resultText) {
+                    try {
+                        const planData = JSON.parse(resultText);
+                        planResult.innerHTML = '';
+                        const titleEl = document.createElement('h4');
+                        titleEl.className = 'text-xl font-bold mb-4 text-[#2E5339]';
+                        titleEl.textContent = planData.planTitle;
+                        planResult.appendChild(titleEl);
+                        
+                        const listEl = document.createElement('ol');
+                        listEl.className = 'space-y-4 list-decimal list-inside';
+                        planData.steps.forEach(step => {
+                            const itemEl = document.createElement('li');
+                            itemEl.className = 'bg-stone-50 p-4 rounded-lg';
+                            const stepTitle = document.createElement('strong');
+                            stepTitle.textContent = step.title;
+                            const stepDesc = document.createElement('p');
+                            stepDesc.className = 'text-gray-600 text-sm mt-1';
+                            stepDesc.textContent = step.description;
+                            itemEl.appendChild(stepTitle);
+                            itemEl.appendChild(stepDesc);
+                            listEl.appendChild(itemEl);
+                        });
+                        planResult.appendChild(listEl);
+                        planResult.classList.remove('hidden');
+                    } catch (e) {
+                         showErrorModal('Gagal mem-parsing respons dari AI. Silakan coba lagi.');
+                    }
+                }
+                
+                planLoader.style.display = 'none';
+                generatePlanBtn.disabled = false;
+            });
+
+            exploreTopicBtn.addEventListener('click', async () => {
+                const topic = topicInput.value.trim();
+                if (!topic) {
+                    showErrorModal('Silakan masukkan pertanyaan atau topik untuk dijelajahi.');
+                    return;
+                }
+                
+                topicLoader.style.display = 'flex';
+                topicResult.classList.add('hidden');
+                exploreTopicBtn.disabled = true;
+
+                const prompt = `Jelaskan topik lingkungan berikut dengan bahasa yang sederhana, ringkas, dan mudah dipahami untuk audiens umum di Indonesia: "${topic}". Berikan jawaban dalam 2-3 paragraf singkat.`;
+                
+                const resultText = await callGeminiAPI(prompt);
+                
+                if (resultText) {
+                    topicResult.textContent = resultText;
+                    topicResult.classList.remove('hidden');
+                }
+                
+                topicLoader.style.display = 'none';
+                exploreTopicBtn.disabled = false;
+            });
+            
+            const ctx = document.getElementById('wasteChart').getContext('2d');
+            const wasteChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Plastik', 'Logam', 'Kaca', 'Kain', 'Karet', 'Lainnya'],
+                    datasets: [{
+                        label: '% Komposisi Sampah Laut',
+                        data: [59, 5, 4, 4, 3, 25],
+                        backgroundColor: [
+                            'rgba(46, 83, 57, 0.7)', 'rgba(119, 136, 153, 0.7)', 'rgba(176, 196, 222, 0.7)',
+                            'rgba(244, 164, 96, 0.7)', 'rgba(128, 128, 128, 0.7)', 'rgba(211, 211, 211, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(46, 83, 57, 1)', 'rgba(119, 136, 153, 1)', 'rgba(176, 196, 222, 1)',
+                             'rgba(244, 164, 96, 1)', 'rgba(128, 128, 128, 1)', 'rgba(211, 211, 211, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw}%` } } },
+                    scales: { x: { beginAtZero: true, title: { display: true, text: 'Persentase (%)' } }, y: { ticks: { autoSkip: false, callback: function(v) { const l = this.getLabelForValue(v); return l.length > 16 ? l.match(/.{1,16}/g) : l; } } } }
+                }
+            });
+            
+            showSection('beranda');
+        });
