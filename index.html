@@ -164,17 +164,16 @@
                     <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">Ikuti perkembangan terbaru mengenai isu lingkungan, kisah inspiratif, dan analisis mendalam dari para ahli.</p>
                 </div>
                 <div id="berita-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="text-center md:col-span-3">Memuat berita terkini...</div>
                 </div>
-                
                 <div class="text-center mt-16">
                     <a href="wawasan.html" class="bg-[#2E5339] text-white px-8 py-3 rounded-full hover:bg-[#4A7859] transition-colors duration-300 font-semibold text-lg">
                         Lihat Berita Lainnya
                     </a>
                 </div>
-
             </div>
         </section>
-        
+
              <section class="py-16">
                 <div class="container mx-auto px-6">
                     <div class="bg-[#2E5339] text-white rounded-lg p-10 md:p-16 text-center">
@@ -247,7 +246,7 @@
             </section>
     </main>
 
-        <footer class="bg-[#1c3323] text-white mt-16">
+    <footer class="bg-[#1c3323] text-white mt-16">
         <div class="container mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
@@ -310,59 +309,69 @@
         // == SCRIPT BERITA DINAMIS (DATA DIAMBIL DARI iNews)          ==
         // ==============================================================
         // DIUBAH: Data berita ini disimulasikan seolah-olah diambil dari iNews.id per 16 Juni 2025
-        const beritaData = [
-            {
-                kategori: 'News Nasional',
-                judul: 'Keindahan Alam Raja Ampat Terancam Tambang Nikel, Kemenpar Buka Suara',
-                deskripsi: 'Rencana ekspansi tambang nikel ke Raja Ampat memicu kekhawatiran berbagai pihak. Surga wisata dunia itu kini terancam rusak oleh aktivitas industri ekstraktif.',
-                link: 'https://www.inews.id/multimedia/video/headline-inewsid-keindahan-alam-raja-ampat-terancam-tambang-nikel-kemenpar-buka-suara',
-                gambarUrl: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrFeLy4RXaCjppqthds7azNjW5hlEvfiBYivRZ3OEKIt-W3DGa1VGpphuzxeOVSrS7nNQwR3uWNJI2wdZMHB8pfrLwPbDITCCXF2pdpp_iFnwWnCMTwEFiFfYeQ42ohWuLYnGgnUA=w810-h468-n-k-no' 
-            },
-            {
-                kategori: 'Regional',
-                judul: 'Ekowisata Malagufuk, Hutan Papua yang Melindungi Berbagai Macam Hewan Termasuk Ular Berbisa',
-                deskripsi: 'Ekowisata Malagufuk di Distrik Makbon, Kabupaten Sorong, Provinsi Papua Barat Daya, menawarkan keindahan alam serta kesempatan untuk memantau..',
-                link: 'https://regional.kompas.com/read/2025/05/16/074629878/ekowisata-malagufuk-hutan-papua-yang-melindungi-berbagai-macam-hewan',
-                gambarUrl: 'https://asset.kompas.com/crops/W-yOiwi5ZcwOV_BTNoI4smT_LVc=/0x0:0x0/1200x800/data/photo/2025/05/15/6825bb663437c.jpg'
-            },
-            {
-                kategori: 'News Nasional',
-                judul: 'Dukung Penutupan Tambang Nikel di Raja Ampat, Lamhot Sinaga: Keindahan Alam dan Kekayaan Hayati Harus Dilestarikan',
-                deskripsi: 'Wakil Ketua Komisi VII Dewan Perwakilan Rakyat (DPR) RI, Lamhot Sinaga, mendukung penuh keputusan Menteri Energi dan Sumber Daya Mineral (ESDM) Bahlil Lahadalia..',
-                link: 'https://nasional.kompas.com/read/2025/06/08/20044061/dukung-penutupan-tambang-nikel-di-raja-ampat-lamhot-sinaga-keindahan-alam',
-                gambarUrl: 'https://asset.kompas.com/crops/E-dqX3EfKL5oXJ1qRIKN75sdW7c=/321x0:321x0/1200x800/data/photo/2025/06/08/684589355870d.jpeg'
-            },
-        ];
 
-        const beritaContainer = document.getElementById('berita-container');
-        if (beritaContainer) {
+            const beritaContainer = document.getElementById('berita-container');
+
+            // --- PERUBAHAN DI FUNGSI INI ---
             const createBeritaCard = (berita) => {
+                const description = berita.description ? berita.description.substring(0, 100) : "Deskripsi tidak tersedia.";
+                // Tautan sekarang langsung ke URL berita asli dan membuka di tab baru
                 return `
-                    <a href="${berita.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <a href="${berita.url}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
                         <div class="relative h-48 w-full">
-                            <img src="${berita.gambarUrl}" alt="Thumbnail ${berita.judul}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            <img src="${berita.urlToImage || 'https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi'}" alt="Thumbnail ${berita.title}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/2E5339/FFFFFF?text=Gambar+Error'; this.onerror=null;">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                             <div class="absolute bottom-0 left-0 p-4">
-                                <h2 class="text-2xl font-bold text-white">${berita.kategori}</h2>
+                                <h2 class="text-sm font-bold text-white">${berita.source.name}</h2>
                             </div>
                         </div>
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-800 mb-2">${berita.judul}</h3>
-                            <p class="text-gray-600 text-base mb-6 leading-relaxed">${berita.deskripsi}</p>
-                            <span class="font-semibold text-[#2E5339] inline-flex items-center">
-                                Baca selengkapnya
-                                <svg class="w-4 h-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        <div class="p-6 flex flex-col h-full">
+                            <h3 class="text-lg font-bold text-gray-800 mb-2 leading-tight">${berita.title}</h3>
+                            <p class="text-gray-600 text-sm mb-6 leading-relaxed flex-grow">${description}...</p>
+                            <span class="font-semibold text-[#2E5339] inline-flex items-center mt-auto">
+                                Baca di Sumber Asli
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                             </span>
                         </div>
                     </a>
                 `;
             };
 
-            beritaData.forEach(berita => {
-                beritaContainer.innerHTML += createBeritaCard(berita);
-            });
-        }
-    });
+            const fetchAndDisplayNews = async () => {
+                const API_KEY = '048eb3d7d1d44856ae61f652eace3b72'; 
+
+                if (!API_KEY === '048eb3d7d1d44856ae61f652eace3b72') {
+                    beritaContainer.innerHTML = '<p class="text-center md:col-span-3 text-red-600 font-bold">Harap masukkan API Key dari NewsAPI.org di dalam file index.html.</p>';
+                    return;
+                }
+
+                const query = 'environment OR "climate change" OR nature OR deforestation OR "plastic waste" OR "renewable energy"';
+                const API_URL = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=en&sortBy=relevancy&pageSize=6&apiKey=${API_KEY}`;
+                
+                try {
+                    const response = await fetch(API_URL);
+                    const data = await response.json();
+
+                    if (data.status === 'error') throw new Error(data.message);
+                    if (data.articles.length === 0) throw new Error("Tidak ada berita relevan yang ditemukan saat ini.");
+                    
+                    beritaContainer.innerHTML = ''; 
+                    const articlesWithImages = data.articles.filter(article => article.urlToImage);
+                    const articlesToShow = articlesWithImages.slice(0, 3);
+                    if (articlesToShow.length === 0) throw new Error("Ditemukan berita, namun tidak ada yang memiliki gambar thumbnail.");
+                    
+                    articlesToShow.forEach(berita => {
+                        beritaContainer.innerHTML += createBeritaCard(berita);
+                    });
+
+                } catch (error) {
+                    console.error("Gagal memuat berita dari NewsAPI:", error);
+                    beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita. Coba periksa koneksi internet Anda atau lihat pesan error di console (F12).</br><small class="font-normal">(${error.message})</small></p>`;
+                }
+            };
+
+            fetchAndDisplayNews();
+        });
 
     // Get modal elements
         const showPopupButton = document.getElementById('showPopupButton');
