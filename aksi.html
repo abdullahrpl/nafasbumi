@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aksi - NafasBumi</title> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        #preloader {
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .slide-up {
+            transform: translateY(-100%);
+        }
+        
+              /* Warna hijau kustom yang mirip dengan contoh */
+      .custom-green {
+        background-color: #6a994e;
+      }
+      .custom-green-text {
+        color: #6a994e;
+      }
+      .custom-green-border {
+        border-color: #6a994e;
+      }
+      .btn-primary {
+        background-color: transparent;
+        border: 1px solid #386641;
+        color: #386641;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background-color: #386641;
+        color: white;
+      }
+      .btn-secondary {
+        background-color: transparent;
+        border: 1px solid #386641;
+        color: #386641;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+      .btn-secondary:hover {
+        background-color: #386641;
+        color: white;
+      }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <header id="main-header" class="bg-white/80 backdrop-blur-sm fixed w-full top-0 z-40 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-semibold text-[#2E5339]">NafasBumi</a>
+            
+            <div class="hidden md:flex items-center space-x-8 text-gray-700">
+                <a href="index.html" 
+                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+                   Beranda
+                </a>
+                
+                <a href="wawasan.html" 
+                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+                   Wawasan
+                </a>
+                
+                <a href="aksi.html" 
+                   class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]">
+                   Aksi
+                </a>
+                
+                <a href="tentang.html" 
+                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+                   Tentang Kami
+                </a>
+            </div>
+            
+            <a href="#donasi" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">
+                Donasi
+            </a>
+            
+            <button id="mobile-menu-button" class="md:hidden text-2xl text-[#2E5339]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 border-t border-gray-200">
+            <a href="index.html" class="block py-2 px-4 text-sm">Beranda</a>
+            <a href="wawasan.html" class="block py-2 px-4 text-sm">Wawasan</a>
+            <a href="#aksi" class="block py-2 px-4 text-sm font-bold text-[#2E5339]">Aksi</a>
+            <a href="tentang.html" class="block py-2 px-4 text-sm">Tentang Kami</a>
+            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
+        </div>
+    </header>
+
+    <div id="preloader" class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50">
+        <div id="preloader-content" class="flex flex-col justify-between h-full items-center text-center py-8">
+            <div></div>
+            <h1 class="text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']">
+                Aksi
+            </h1>
+            <div class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]">NafasBumi</div>
+        </div>
+    </div>
+
+    <main id="main-content" class="opacity-0">
+        <section id="aksi" class="min-h-screen pt-20">
+            <div class="container mx-auto px-6 lg:px-8 py-12">
+                <section class="flex flex-col md:flex-row items-center gap-8 md:gap-12 mb-20">
+                    <div class="w-full md:w-5/12 text-center md:text-left">
+                        <h1 class="font-bold text-5xl md:text-6xl mb-4 leading-tight">Peranmu untuk <span class="text-[#2E5339]">Melindungi Bumi</span></h1>
+                        <p class="text-lg text-gray-600 leading-relaxed">
+                            Nafasbumi percaya bahwa pelindungan lingkungan hidup harus disuarakan bersama-sama dengan lebih lantang. Dengan begitu, kami membutuhkan bantuanmu untuk turut menyuarakan, memberikan solusi, dan beraksi bersama untuk membuat perubahan ke arah yang lebih baik.
+                        </p>
+                    </div>
+                    <div class="w-full md:w-7/12">
+                        <img src="https://live-production.wcms.abc-cdn.net.au/f6947a0854aca788a51190a6797ab916?impolicy=wcms_crop_resize&cropH=710&cropW=1064&xPos=83&yPos=0&width=862&height=575" alt="Tim aktivis lingkungan di perahu karet" class="rounded-lg shadow-xl w-full h-auto object-cover" />
+                    </div>
+                </section>
+        
+                <section id="petisi" class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 mb-20">
+                    <div class="w-full md:w-5/12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Bersuara Melalui Petisi</h2>
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            Dukunganmu menjadi salah satu faktor keberhasilan kampanye perlindungan lingkungan yang kami lakukan. Bersuara melalui petisi dapat menjadi bentuk konkrit dukunganmu dalam misi penyelamatan lingkungan di Indonesia.
+                        </p>
+                        <button class="w-full md:w-auto px-8 py-3 rounded-lg btn-primary">Lihat Semua Petisi</button>
+                    </div>
+                    <div class="w-full md:w-7/12">
+                        <img src="https://images.unsplash.com/photo-1609911569412-ac56f0c40202?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Orang memegang papan protes tentang lingkungan" class="rounded-lg shadow-xl w-full h-auto object-cover" />
+                    </div>
+                </section>
+        
+                <section id="relawan" class="flex flex-col md:flex-row items-center gap-8 md:gap-12 mb-20">
+                    <div class="w-full md:w-5/12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Menjadi Relawan</h2>
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            Setiap aksimu bisa membuat perubahan positif dalam upaya menyelamatkan bumi dari krisis iklim. Kamu bisa belajar langsung bersama tim Nafasbumi dan komunitas, berkampanye di media sosial, pendidikan lingkungan ke sekolah-sekolah, dan terlibat langsung dalam aksi kreatif.
+                        </p>
+                        <button class="w-full md:w-auto px-8 py-3 rounded-lg btn-secondary">Bergabung Sekarang</button>
+                    </div>
+                    <div class="w-full md:w-7/12">
+                        <img src="https://www.greenpeace.org/static/planet4-indonesia-stateless/2024/11/fef36a16-gp0sttxh7-768x512.jpg" alt="Sekelompok relawan mendengarkan presentasi" class="rounded-lg shadow-xl w-full h-auto object-cover" />
+                    </div>
+                </section>
+        
+                <section id="donasi" class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 mb-24">
+                    <div class="w-full md:w-5/12">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Donasi untuk Lingkungan</h2>
+                        <p class="text-gray-600 mb-6 leading-relaxed">
+                            Sebagai organisasi yang independen secara finansial, kerja kampanye kami dibiayai 100% oleh donatur individual. Independensi ini bertujuan agar suara kampanye Nafasbumi murni untuk kepentingan kelestarian lingkungan dan perdamaian manusia.
+                        </p>
+                        <button class="w-full md:w-auto px-8 py-3 rounded-lg btn-primary">Berdonasi</button>
+                    </div>
+                     <div class="w-full md:w-7/12">
+                        <img src="https://www.greenpeace.org/static/planet4-indonesia-stateless/2024/11/58671d8b-gp0stqzkc-768x509.jpg" alt="Relawan memberikan bantuan kepada masyarakat" class="rounded-lg shadow-xl w-full h-auto object-cover" />
+                    </div>
+                </section>
+        
+                <section class="text-center py-12 bg-white rounded-xl shadow-lg">
+                    <h2 class="text-4xl font-bold mb-10">Beraksi Bersama Kami</h2>
+                    <div class="flex flex-wrap justify-center gap-8 md:gap-16">
+                        <div class="flex flex-col items-center">
+                            <a href="#petisi" class="w-32 h-32 mb-3 rounded-full custom-green flex items-center justify-center text-white hover:bg-[#4A7859] transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </a>
+                            <a href="#petisi" class="font-bold text-gray-700 hover:custom-green-text">Tandatangani Petisi ></a>
+                        </div>
+        
+                        <div class="flex flex-col items-center">
+                            <a href="#relawan" class="w-32 h-32 mb-3 rounded-full custom-green flex items-center justify-center text-white hover:bg-[#4A7859] transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                            </a>
+                            <a href="#relawan" class="font-bold text-gray-700 hover:custom-green-text">Menjadi Relawan ></a>
+                        </div>
+        
+                        <div class="flex flex-col items-center">
+                            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="w-32 h-32 mb-3 rounded-full custom-green flex items-center justify-center text-white hover:bg-[#4A7859] transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c2.25 0 4.5 1.5 4.5 3.75s-2.25 3.75-4.5 3.75S7.5 10.5 7.5 8.25 9.75 4.5 12 4.5z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="font-bold text-gray-700 hover:custom-green-text">Berdonasi ></a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+        <footer class="bg-[#1c3323] text-white mt-16">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-bold mb-4">NafasBumi</h4>
+                    <p class="text-gray-400 text-sm">Aksi Kecil Kita, Nafas Baru Untuk Bumi.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Tautan Cepat</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#wawasan" class="hover:text-gray-300">Wawasan</a></li>
+                        <li><a href="#aksi" class="hover:text-gray-300">Aksi</a></li>
+                        <li><a href="#tentang" class="hover:text-gray-300">Tentang Kami</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Legal</h5>
+                     <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-gray-300">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-gray-300">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-gray-300">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                     <h5 class="font-semibold mb-4">Ikuti Kami</h5>
+                     <div class="flex space-x-4">
+                        <a href="#" class="hover:text-gray-300">FB</a>
+                        <a href="#" class="hover:text-gray-300">IG</a>
+                        <a href="#" class="hover:text-gray-300">TW</a>
+                        <a href="#" class="hover:text-gray-300">YT</a>
+                     </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">
+                &copy; 2024 NafasBumi. Dibuat dengan cinta untuk Planet Bumi.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.getElementById('main-content');
+            const mainHeader = document.getElementById('main-header');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const enableScroll = () => { document.body.style.overflow = 'auto'; };
+    
+            // Preloader logic
+            if (preloader && mainContent) { 
+                document.body.style.overflow = 'hidden'; 
+                setTimeout(() => { 
+                    preloader.classList.add('slide-up'); 
+                    mainContent.style.transition = 'opacity 0.5s ease-in'; 
+                    mainContent.style.opacity = '1'; 
+                    setTimeout(() => { 
+                        preloader.style.display = 'none'; 
+                        enableScroll(); 
+                    }, 1000); 
+                }, 2000); 
+            } else { 
+                enableScroll(); 
+            }
+    
+            // Mobile menu toggle
+            if (mobileMenuButton && mobileMenu) { 
+                mobileMenuButton.addEventListener('click', () => { 
+                    mobileMenu.classList.toggle('hidden'); 
+                }); 
+            }
+        });
+    </script>
+</body>
+</html>

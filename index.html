@@ -3,283 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NafasBumi - Aksi Kecil, Nafas Baru Untuk Bumi</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js for data visualization -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Google Fonts: Inter -->
+    <title>NafasBumi - Lestarikan Alam Indonesia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Font Awesome (using version from your landing page) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Custom Styles for Landing Page, Forum & Animations -->
     <style>
-        /* General Styles */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #FDFBF5;
-            color: #3f3f46;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
         }
-
-        /* Landing Page Navigation */
+        .parallax-img {
+            transition: transform 0.3s ease-out;
+        }
+        #preloader {
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .slide-up {
+            transform: translateY(-100%);
+        }
+        
         .nav-link {
-            transition: color 0.3s, border-bottom-color 0.3s;
-            border-bottom: 2px solid transparent;
-        }
-        .nav-link.active, .nav-link:hover {
-            color: #2E5339;
-            border-bottom-color: #2E5339;
-        }
-        
-        /* Landing Page Hero Section */
-        .hero-bg {
-            background-image: url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-        }
-        
-        /* Chart & Loader Styles */
-        .chart-container {
             position: relative;
+            color: #4a5568;
+            padding-bottom: 6px;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #2E5339;
+        }
+        .nav-link.active {
+            font-weight: 600;
+            color: #2E5339;
+        }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
             width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 400px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
-            }
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #2E5339;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            height: 2px;
+            background-color: #2E5339;
         }
 
-        /* Forum App Specific Styles */
-        .bg-dots {
-          background-color: #f9fafb;
-          background-image: radial-gradient(#d1d5db 1px, transparent 1px);
-          background-size: 16px 16px;
+                /* Custom transition for the modal */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
         }
-        @keyframes pulse-slow { 
-            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); } 
-            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); } 
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .animate-pulse-slow { animation: pulse-slow 2s infinite; }
-        @keyframes fade-in-up { 
-            0% { opacity: 0; transform: translateY(20px); } 
-            100% { opacity: 1; transform: translateY(0); } 
+        .modal-leave {
+            opacity: 1;
+            transform: scale(1);
         }
-        .animate-fade-in-up { animation: fade-in-up 0.3s ease-out forwards; }
-
-        /* Logic to hide landing page elements when forum is active */
-        body.forum-active header,
-        body.forum-active footer {
-            display: none;
-        }
-        body.forum-active main,
-        body.forum-active #forum,
-        body.forum-active #root {
-            height: 100vh;
-            overflow: hidden;
+        .modal-leave-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-gray-100">
 
-    <!-- Landing Page Header -->
-    <header class="bg-white/80 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#beranda" class="text-2xl font-bold text-[#2E5339]">NafasBumi</a>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#beranda" class="nav-link active">Beranda</a>
-                <a href="#wawasan" class="nav-link">Wawasan</a>
-                <a href="#aksi" class="nav-link">Aksi</a>
-                <a href="#tentang" class="nav-link">Tentang Kami</a>
-                <a href="#forum" class="text-[#2E5339] font-semibold bg-green-100 px-4 py-2 rounded-lg hover:bg-green-200 transition-colors">
-                    <i class="fas fa-comments mr-2"></i>Forum Diskusi
-                </a>
-            </div>
-            
-            <button id="mobile-menu-button" class="md:hidden text-2xl">☰</button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white p-4">
-             <a href="#beranda" class="block py-2 px-4 text-sm nav-link active">Beranda</a>
-             <a href="#wawasan" class="block py-2 px-4 text-sm nav-link">Wawasan</a>
-             <a href="#aksi" class="block py-2 px-4 text-sm nav-link">Aksi</a>
-             <a href="#tentang" class="block py-2 px-4 text-sm nav-link">Tentang Kami</a>
-             <a href="#forum" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Forum Diskusi</a>
+    <header id="main-header" class="bg-white/80 backdrop-blur-sm fixed w-full top-0 z-40 shadow-sm opacity-0 -translate-y-full transition-all duration-500">
+<nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="#" class="text-2xl font-semibold text-[#2E5339]">NafasBumi</a>
+    
+    <div class="hidden md:flex items-center space-x-8 text-gray-700">
+        <a href="#beranda" 
+           class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]">
+           Beranda
+        </a>
+        
+        <a href="wawasan.html" 
+           class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+           Wawasan
+        </a>
+        
+        <a href="aksi.html" 
+           class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+           Aksi
+        </a>
+        
+        <a href="tentang.html" 
+           class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+           Tentang Kami
+        </a>
+    </div>
+    
+    <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">
+        Donasi
+    </a>
+    
+    <button id="mobile-menu-button" class="md:hidden text-2xl text-[#2E5339]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+    </button>
+</nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 border-t border-gray-200">
+             <a href="#beranda" class="block py-2 px-4 text-sm nav-link">Beranda</a>
+             <a href="wawasan.html" class="block py-2 px-4 text-sm nav-link">Wawasan</a>
+             <a href="aksi.html" class="block py-2 px-4 text-sm nav-link">Aksi</a>
+             <a href="tentang.html" class="block py-2 px-4 text-sm nav-link">Tentang Kami</a>
+             <a href="#" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
         </div>
     </header>
 
-    <!-- Main Content Area -->
-    <main>
-        <!-- Section: Beranda -->
-        <section id="beranda" class="content-section">
-            <div class="hero-bg text-white">
-                <div class="bg-black/50 min-h-[60vh] flex items-center">
-                    <div class="container mx-auto px-6 text-center">
-                        <h1 class="text-4xl md:text-6xl font-bold mb-4">Aksi Kecil Kita,</h1>
-                        <h2 class="text-4xl md:text-6xl font-bold mb-8">Nafas Baru Untuk Bumi.</h2>
-                        <p class="text-lg md:text-xl max-w-3xl mx-auto mb-8">Mari bergabung dalam gerakan untuk menjaga kelestarian alam Indonesia demi masa depan yang lebih hijau dan sehat.</p>
-                        <a href="#aksi" class="bg-white text-[#2E5339] font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">Mulai Beraksi</a>
-                    </div>
+    <div id="preloader" class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50">
+        <div id="preloader-content" class="flex flex-col justify-between h-full items-center text-center py-8">
+            <div></div>
+            <h1 class="text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']">
+                Selamat Datang
+            </h1>
+            <div class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]">NafasBumi</div>
+        </div>
+    </div>
+
+    <main id="main-content" class="opacity-0">
+        <section id="beranda" class="relative w-full flex flex-col md:flex-row h-screen">
+            <div class="parallax-container relative w-full h-full overflow-hidden">
+                <img src="/image.png" alt="Keindahan bawah laut Raja Ampat, Indonesia" class="parallax-img gambar-1 absolute top-0 left-0 w-full h-full object-cover scale-110">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+            <div class="parallax-container relative w-full h-full overflow-hidden flex items-center justify-center">
+                <img src="/Group1.png" alt="Terumbu karang di perairan Indonesia" class="parallax-img absolute top-0 left-0 w-full h-full object-cover scale-110">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+            <div class="parallax-container relative w-full h-full overflow-hidden">
+                <img src="/Group2.png" alt="Pemandangan pulau tropis di Labuan Bajo, Indonesia" class="parallax-img absolute top-0 left-0 w-full h-full object-cover gambar-1 scale-110">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+            <div class="absolute justify-center items-center w-full h-full flex">
+                <div class="relative z-10 text-center text-white p-8">
+                    <h2 class="text-xl font-light tracking-widest uppercase">
+                        Aksi Kecil Kita, Nafas Baru Untuk Bumi.
+                    </h2>
+                    <h1 class="text-6xl lg:text-8xl font-black uppercase mt-2 font-['Montserrat']">
+                        NafasBumi
+                    </h1>
                 </div>
             </div>
-            <section class="py-16 bg-white">
-                <div class="container mx-auto px-6">
-                    <h3 class="text-3xl font-bold text-center mb-2">Sorotan Berita</h3>
-                    <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Ikuti perkembangan terbaru mengenai isu lingkungan, kisah inspiratif, dan analisis mendalam dari para ahli.</p>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div class="bg-stone-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                            <img src="https://images.unsplash.com/photo-1593281488421-d4a34b2c1782?q=80&w=1287&auto=format&fit=crop" onerror="this.onerror=null;this.src='https://placehold.co/600x400/2E5339/FDFBF5?text=Hutan';" alt="Hutan" class="w-full h-48 object-cover">
-                            <div class="p-6">
-                                <span class="text-sm text-[#2E5339] font-semibold">ANALISIS</span>
-                                <h4 class="font-bold text-xl my-2">Mengapa Sampah Plastik di Laut Indonesia Sulit Diatasi?</h4>
-                                <p class="text-gray-600 text-sm">Sebuah tinjauan komprehensif tentang tantangan struktural dan kultural dalam penanganan sampah laut.</p>
-                            </div>
-                        </div>
-                        <div class="bg-stone-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                            <img src="https://images.unsplash.com/photo-1611082594498-6e59276d4cb3?q=80&w=1287&auto=format&fit=crop" onerror="this.onerror=null;this.src='https://placehold.co/600x400/2E5339/FDFBF5?text=Aksi+Tanam';" alt="Orang menanam" class="w-full h-48 object-cover">
-                            <div class="p-6">
-                                <span class="text-sm text-[#2E5339] font-semibold">KISAH INSPIRATIF</span>
-                                <h4 class="font-bold text-xl my-2">Pemuda Desa X Ubah Sampah Jadi Berkah</h4>
-                                <p class="text-gray-600 text-sm">Kisah komunitas di lereng gunung yang berhasil membangun sistem pengelolaan sampah mandiri dan berkelanjutan.</p>
-                            </div>
-                        </div>
-                        <div class="bg-stone-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-                             <img src="https://images.unsplash.com/photo-1621258959218-a61ed5603d7c?q=80&w=1334&auto=format&fit=crop" onerror="this.onerror=null;this.src='https://placehold.co/600x400/2E5339/FDFBF5?text=Energi+Hijau';" alt="Panel surya" class="w-full h-48 object-cover">
-                            <div class="p-6">
-                                <span class="text-sm text-[#2E5339] font-semibold">BERITA TERKINI</span>
-                                <h4 class="font-bold text-xl my-2">Pemerintah Targetkan Bauran Energi Terbarukan 23% di 2025</h4>
-                                <p class="text-gray-600 text-sm">Langkah dan kebijakan baru diperkenalkan untuk mengakselerasi transisi menuju energi bersih di Indonesia.</p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="scroll-containner absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
+                <span class="text-white text-sm font-light tracking-wider">Scroll ke Bawah</span>
+                <svg class="w-6 h-6 text-white animate-bounce" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                </svg>
+            </div>
+        </section>
+
+        <section id="berita" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-800">Sorotan Berita</h2>
+                    <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">Ikuti perkembangan terbaru mengenai isu lingkungan, kisah inspiratif, dan analisis mendalam dari para ahli.</p>
                 </div>
-            </section>
+                <div id="berita-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    </div>
+                
+                <div class="text-center mt-16">
+                    <a href="wawasan.html" class="bg-[#2E5339] text-white px-8 py-3 rounded-full hover:bg-[#4A7859] transition-colors duration-300 font-semibold text-lg">
+                        Lihat Berita Lainnya
+                    </a>
+                </div>
+
+            </div>
+        </section>
+        
              <section class="py-16">
                 <div class="container mx-auto px-6">
                     <div class="bg-[#2E5339] text-white rounded-lg p-10 md:p-16 text-center">
                         <h3 class="text-3xl font-bold mb-4">Kampanye Mendesak: Lindungi Hutan Terakhir Kita!</h3>
-                        <p class="mb-8 max-w-3xl mx-auto">Setiap menit, puluhan hektar hutan hujan kita hilang. Suara Anda sangat berarti untuk mendorong pemerintah memperketat pengawasan dan menindak tegas para perusak hutan.</p>
-                        <a href="#aksi" class="bg-white text-[#2E5339] font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">Tanda Tangan Petisi</a>
+                        <p class="mb-10 max-w-3xl mx-auto">Setiap menit, puluhan hektar hutan hujan kita hilang. Suara Anda sangat berarti untuk mendorong pemerintah memperketat pengawasan dan menindak tegas para perusak hutan.</p>
+                        <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+
+                            <a href="#aksi" class="bg-white text-[#2E5339] font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">Tanda Tangan Petisi</a>
+
+                                <button id="showPopupButton" class="bg-white text-[#2E5339] font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">
+        Forum Komunitas
+    </button>
+                        </div>
                     </div>
                 </div>
+
+                    <div id="popupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div id="modalContent" class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto overflow-hidden transform modal-enter">
+            <!-- Modal Header with Image -->
+            <div class="relative">
+                <img src="https://placehold.co/600x300/166534/ffffff?text=Forum+Komunitas" alt="Forum Banner" class="w-full h-40 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x300/166534/ffffff?text=Error';">
+                <button id="closeButton" class="absolute top-3 right-3 text-white bg-black bg-opacity-25 rounded-full p-1 hover:bg-opacity-40 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-8 text-center">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Satu Klik Lagi Menuju Forum!</h2>
+                <p class="text-gray-600 mb-6">Gunakan akun Google Anda untuk bergabung dan langsung masuk ke dalam diskusi komunitas kami.</p>
+                
+                <!-- Google Login Button -->
+                <a href="#" class="w-full bg-green-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50 transition duration-200 shadow-lg flex items-center justify-center">
+                    <!-- Google Icon SVG -->
+                    <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.223,0-9.657-3.657-11.303-8.333l-6.571,4.819C9.656,39.663,16.318,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.089,5.571l6.19,5.238C41.38,36.151,44,30.63,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
+                    Masuk dengan Google
+                </a>
+                
+                <p class="text-xs text-gray-500 mt-4">
+                    Klik untuk langsung masuk ke <a href="#" class="text-green-700 hover:underline">forum diskusi</a> kami.
+                </p>
+            </div>
+        </div>
+    </div>
             </section>
-            <section class="py-16 bg-white">
+                    <section class="py-16 bg-white">
                 <div class="container mx-auto px-6 text-center">
                     <h3 class="text-3xl font-bold mb-2">Dampak Aksi Kita Bersama</h3>
                     <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Setiap kontribusi, sekecil apa pun, menciptakan gelombang perubahan yang besar. Ini adalah pencapaian kita semua.</p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="bg-stone-50 p-8 rounded-lg shadow"><div class="text-5xl mb-4">✍️</div><p class="text-4xl font-bold text-[#2E5339]">58.109</p><p class="text-gray-600 mt-2">Tanda Tangan Terkumpul</p></div>
-                        <div class="bg-stone-50 p-8 rounded-lg shadow"><div class="text-5xl mb-4">🌳</div><p class="text-4xl font-bold text-[#2E5339]">12.500+</p><p class="text-gray-600 mt-2">Pohon Ditanam</p></div>
-                        <div class="bg-stone-50 p-8 rounded-lg shadow"><div class="text-5xl mb-4">🤝</div><p class="text-4xl font-bold text-[#2E5339]">78</p><p class="text-gray-600 mt-2">Komunitas Menjadi Mitra</p></div>
+                        <div class="bg-stone-50 p-8 rounded-lg shadow">
+                            <div class="text-5xl mb-4">✍️</div>
+                            <p class="text-4xl font-bold text-[#2E5339]">58.109</p>
+                            <p class="text-gray-600 mt-2">Tanda Tangan Terkumpul untuk Kampanye Lingkungan</p>
+                        </div>
+                        <div class="bg-stone-50 p-8 rounded-lg shadow">
+                            <div class="text-5xl mb-4">🌳</div>
+                            <p class="text-4xl font-bold text-[#2E5339]">12.500+</p>
+                            <p class="text-gray-600 mt-2">Pohon Telah Ditanam Melalui Donasi Publik</p>
+                        </div>
+                        <div class="bg-stone-50 p-8 rounded-lg shadow">
+                            <div class="text-5xl mb-4">🤝</div>
+                            <p class="text-4xl font-bold text-[#2E5339]">78</p>
+                            <p class="text-gray-600 mt-2">Komunitas Lokal Telah Menjadi Mitra Aksi Hijau</p>
+                        </div>
                     </div>
                 </div>
             </section>
-        </section>
-
-        <!-- Section: Wawasan -->
-        <section id="wawasan" class="content-section hidden min-h-screen py-16">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center mb-4">Pojok Wawasan</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Informasi adalah langkah pertama menuju perubahan. Dapatkan data, pemahaman mendalam, dan jelajahi topik lingkungan dengan bantuan AI.</p>
-                <div class="bg-white p-8 rounded-lg shadow-lg mb-16">
-                    <h3 class="text-2xl font-bold mb-2 text-center">✨ Jelajahi Topik Lingkungan</h3>
-                    <p class="text-center text-gray-500 mb-8">Punya pertanyaan tentang isu lingkungan? Tanyakan di sini dan dapatkan penjelasan sederhana dari AI.</p>
-                    <div class="max-w-2xl mx-auto">
-                        <textarea id="topic-input" class="w-full p-3 border rounded mb-4" rows="3" placeholder="Contoh: Apa itu jejak karbon dan bagaimana cara menguranginya?"></textarea>
-                        <button id="explore-topic-btn" class="w-full bg-[#2E5339] text-white p-3 rounded-lg font-bold hover:bg-[#4A7859] transition-colors flex items-center justify-center">Jelajahi Sekarang</button>
-                        <div id="topic-loader" class="hidden justify-center mt-4"><div class="loader"></div></div>
-                        <div id="topic-result" class="mt-6 bg-stone-50 p-6 rounded-lg hidden"></div>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-2xl font-bold mb-2 text-center">Visualisasi Data: Komposisi Sampah di Laut Indonesia</h3>
-                    <p class="text-center text-gray-500 mb-8">Berdasarkan data dari LIPI (sekarang BRIN), sampah plastik mendominasi lautan kita.</p>
-                    <div class="chart-container"><canvas id="wasteChart"></canvas></div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Section: Aksi -->
-        <section id="aksi" class="content-section hidden min-h-screen py-16">
-             <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center mb-4">Zona Aksi</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Perubahan dimulai dari tindakan nyata. Dapatkan rencana aksi personal, dukung kampanye, dan terapkan gaya hidup hijau.</p>
-                <div class="bg-white p-8 rounded-lg shadow-lg mb-16">
-                    <h3 class="text-2xl font-bold mb-2 text-center">✨ Perencana Aksi Hijau</h3>
-                    <p class="text-center text-gray-500 mb-8">Bingung mulai dari mana? Tulis topik yang Anda pedulikan, dan biarkan AI menyusun rencana untuk Anda.</p>
-                    <div class="max-w-2xl mx-auto">
-                        <input type="text" id="action-plan-input" class="w-full p-3 border rounded mb-4" placeholder="Contoh: Mengurangi sampah plastik di rumah">
-                        <button id="generate-plan-btn" class="w-full bg-[#4A7859] text-white p-3 rounded-lg font-bold hover:bg-[#2E5339] transition-colors flex items-center justify-center">Buatkan Rencana Aksi</button>
-                        <div id="plan-loader" class="hidden justify-center mt-4"><div class="loader"></div></div>
-                        <div id="plan-result" class="mt-6 hidden"></div>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-lg mb-12">
-                    <h3 class="text-2xl font-bold text-center mb-6">Petisi Unggulan</h3>
-                    <div class="flex flex-col md:flex-row items-center gap-8">
-                        <div class="md:w-1/2">
-                           <h4 class="text-3xl font-bold text-[#2E5339] mb-4">Hentikan Reklamasi di Pesisir Teluk Benoa!</h4>
-                           <p class="text-gray-600 mb-6">Proyek reklamasi mengancam ekosistem mangrove yang krusial dan kehidupan nelayan lokal. Ribuan orang telah bersuara, kini giliran Anda.</p>
-                           <div class="w-full bg-gray-200 rounded-full h-4 mb-2"><div class="bg-[#2E5339] h-4 rounded-full" style="width: 75%"></div></div>
-                           <p class="text-sm text-gray-600"><strong>75.480</strong> dari 100.000 target suara terkumpul.</p>
-                        </div>
-                        <div class="md:w-1/2 w-full">
-                            <form class="bg-stone-50 p-6 rounded-lg"><h5 class="font-bold text-lg mb-4">Ya, Saya Mendukung!</h5><input type="text" placeholder="Nama Lengkap" class="w-full p-3 border rounded mb-4"><input type="email" placeholder="Alamat Email" class="w-full p-3 border rounded mb-4"><button type="submit" class="w-full bg-[#2E5339] text-white p-3 rounded-lg font-bold hover:bg-[#4A7859] transition-colors">Tanda Tangan Sekarang</button></form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section: Tentang Kami -->
-        <section id="tentang" class="content-section hidden min-h-screen py-16">
-            <div class="container mx-auto px-6 text-center max-w-4xl">
-                 <h2 class="text-4xl font-bold text-center mb-4">Tentang NafasBumi</h2>
-                 <p class="text-center text-gray-600 mb-12">Kami percaya informasi, kepedulian, dan aksi kolektif adalah kunci untuk masa depan bumi yang berkelanjutan.</p>
-                 <img src="https://images.unsplash.com/photo-1579593343485-a74a1310b315?q=80&w=1287&auto=format&fit=crop" onerror="this.onerror=null;this.src='https://placehold.co/600x400/2E5339/FDFBF5?text=Tim+NafasBumi';" class="w-full h-80 object-cover rounded-lg shadow-lg mb-8" alt="Tim NafasBumi">
-                 <div class="text-left bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-2xl font-bold text-[#2E5339] mb-4">Misi Kami</h3>
-                    <p class="text-gray-700 mb-4">NafasBumi lahir dari kegelisahan akan kondisi lingkungan di Indonesia. Misi kami adalah menjadi sumber informasi lingkungan terpercaya, menyederhanakan data, dan menjembatani kesadaran dengan tindakan nyata.</p>
-                    <p class="text-gray-700">Kami bekerja untuk mengedukasi publik, mendorong kebijakan pro-lingkungan, dan membangun komunitas yang solid dan peduli.</p>
-                 </div>
-            </div>
-        </section>
-
-        <!-- Section: Forum (Container for React App) -->
-        <section id="forum" class="content-section hidden">
-            <div id="root">
-                <!-- React App will be rendered here -->
-                <div class="flex items-center justify-center h-screen bg-white">
-                    <div class="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-[#2E5339]"></div>
-                </div>
-            </div>
-        </section>
     </main>
 
-    <!-- Landing Page Footer -->
-    <footer class="bg-[#1c3323] text-white mt-16">
+        <footer class="bg-[#1c3323] text-white mt-16">
         <div class="container mx-auto px-6 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <div>
@@ -289,381 +257,158 @@
                 <div>
                     <h5 class="font-semibold mb-4">Tautan Cepat</h5>
                     <ul class="space-y-2 text-sm">
-                        <li><a href="#wawasan" class="hover:text-gray-300">Wawasan</a></li>
-                        <li><a href="#aksi" class="hover:text-gray-300">Aksi</a></li>
-                        <li><a href="#tentang" class="hover:text-gray-300">Tentang Kami</a></li>
-                        <li><a href="#forum" class="hover:text-gray-300">Forum</a></li>
+                        <li><a href="wawasan.html" class="hover:text-gray-300">Wawasan</a></li>
+                        <li><a href="aksi.html" class="hover:text-gray-300">Aksi</a></li>
+                        <li><a href="tentang.html" class="hover:text-gray-300">Tentang Kami</a></li>
                     </ul>
                 </div>
-                <div><h5 class="font-semibold mb-4">Legal</h5><ul class="space-y-2 text-sm"><li><a href="#" class="hover:text-gray-300">Kebijakan Privasi</a></li><li><a href="#" class="hover:text-gray-300">Syarat & Ketentuan</a></li></ul></div>
-                <div><h5 class="font-semibold mb-4">Ikuti Kami</h5><div class="flex space-x-4"><a href="#" class="hover:text-gray-300"><i class="fab fa-facebook"></i></a><a href="#" class="hover:text-gray-300"><i class="fab fa-instagram"></i></a><a href="#" class="hover:text-gray-300"><i class="fab fa-twitter"></i></a></div></div>
+                <div>
+                    <h5 class="font-semibold mb-4">Legal</h5>
+                     <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-gray-300">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-gray-300">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-gray-300">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                     <h5 class="font-semibold mb-4">Ikuti Kami</h5>
+                     <div class="flex space-x-4">
+                        <a href="#" class="hover:text-gray-300">FB</a>
+                        <a href="#" class="hover:text-gray-300">IG</a>
+                        <a href="#" class="hover:text-gray-300">TW</a>
+                        <a href="#" class="hover:text-gray-300">YT</a>
+                     </div>
+                </div>
             </div>
-            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">&copy; 2024 NafasBumi. Dibuat dengan cinta untuk Planet Bumi.</div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">
+                &copy; 2024 NafasBumi. Dibuat dengan cinta untuk Planet Bumi.
+            </div>
         </div>
     </footer>
-    
-    <!-- Modal for errors -->
-    <div id="error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-        <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full text-center">
-            <h3 class="text-xl font-bold text-red-600 mb-4">Oops, Terjadi Kesalahan!</h3>
-            <p id="error-message" class="text-gray-700 mb-6"></p>
-            <button id="close-modal-btn" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">Tutup</button>
-        </div>
-    </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // === SEMUA SCRIPT LAMA ANDA (PRELOADER, NAVBAR, PARALLAX) ADA DI SINI ===
+        // Script tersebut tidak saya tampilkan lagi agar ringkas, tapi tetap ada di dalam file ini.
+        // ... (kode preloader, navbar, parallax dari file Anda) ...
+        const preloader = document.getElementById('preloader');
+        const mainContent = document.getElementById('main-content');
+        const mainHeader = document.getElementById('main-header');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const parallaxImages = document.querySelectorAll('.parallax-img');
+        const heroHeader = document.getElementById('beranda');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+        const enableScroll = () => { document.body.style.overflow = 'auto'; };
+        if (preloader && mainContent) { document.body.style.overflow = 'hidden'; setTimeout(() => { preloader.classList.add('slide-up'); mainContent.style.transition = 'opacity 0.5s ease-in'; mainContent.style.opacity = '1'; setTimeout(() => { preloader.style.display = 'none'; enableScroll(); }, 1000); }, 2000); } else { enableScroll(); }
+        if (mainHeader && mobileMenuButton && mobileMenu) { const handleNavScroll = () => { if (window.scrollY > window.innerHeight * 0.05) { mainHeader.classList.remove('opacity-0', '-translate-y-full'); } else { mainHeader.classList.add('opacity-0', '-translate-y-full'); } }; window.addEventListener('scroll', handleNavScroll); mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); }); }
+        // if (navLinks.length > 0 && sections.length > 0) { const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { navLinks.forEach(link => { link.classList.remove('active'); if (link.getAttribute('href') === `#${entry.target.id}`) { link.classList.add('active'); } }); } }); }, { rootMargin: '-50% 0px -50% 0px' }); sections.forEach(section => { observer.observe(section); }); }
+        if (heroHeader && parallaxImages.length > 0) { const cursorStrength = 40; const scrollStrength = 0; const updateAllTransforms = () => { if (window.innerWidth < 768) return; const scrollY = window.pageYOffset; const cursorX = parseFloat(heroHeader.dataset.cursorX || 0); const cursorY = parseFloat(heroHeader.dataset.cursorY || 0); const totalScrollY = -(scrollY * scrollStrength); parallaxImages.forEach(img => { img.style.transform = `translate3d(${cursorX}px, ${totalScrollY + cursorY}px, 0) scale(1.1)`; }); }; heroHeader.addEventListener('mousemove', (e) => { const rect = heroHeader.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; heroHeader.dataset.cursorX = -(x / cursorStrength); heroHeader.dataset.cursorY = -(y / cursorStrength); updateAllTransforms(); }); heroHeader.addEventListener('mouseleave', () => { heroHeader.dataset.cursorX = 0; heroHeader.dataset.cursorY = 0; updateAllTransforms(); }); window.addEventListener('scroll', updateAllTransforms); updateAllTransforms(); }
 
-    <!-- SCRIPT FOR LANDING PAGE INTERACTIVITY -->
-    <script>
-        // This function will be called from React to go back to the landing page
-        function showLandingPageSection(sectionId = 'beranda') {
-            const event = new CustomEvent('showSection', { detail: { sectionId } });
-            document.dispatchEvent(event);
-        }
-        
-        document.addEventListener('DOMContentLoaded', function () {
-            // Element selectors
-            const navLinks = document.querySelectorAll('.nav-link');
-            const contentSections = document.querySelectorAll('.content-section');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const errorModal = document.getElementById('error-modal');
-            const errorMessage = document.getElementById('error-message');
-            const closeModalBtn = document.getElementById('close-modal-btn');
-
-            // Function to show a specific section and update UI
-            function showSection(targetId) {
-                contentSections.forEach(section => {
-                    section.classList.toggle('hidden', section.id !== targetId);
-                });
-                // Update active link in navs
-                navLinks.forEach(link => {
-                    link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
-                });
-                mobileMenu.querySelectorAll('.nav-link').forEach(link => {
-                     link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
-                });
-
-                // Add/remove class to body for forum view
-                if (targetId === 'forum') {
-                    document.body.classList.add('forum-active');
-                } else {
-                    document.body.classList.remove('forum-active');
-                }
-                
-                window.scrollTo(0, 0); // Scroll to top
-            }
-
-            // Centralized navigation click handler
-            function handleNavClick(event) {
-                const targetLink = event.target.closest('a[href^="#"]');
-                if (targetLink) {
-                    event.preventDefault();
-                    const targetId = targetLink.getAttribute('href').substring(1);
-                    if (document.getElementById(targetId)) {
-                        showSection(targetId);
-                        mobileMenu.classList.add('hidden'); // Hide mobile menu on selection
-                    }
-                }
-            }
-            
-            // Listen for clicks on the whole body
-            document.body.addEventListener('click', handleNavClick);
-            
-            // Listener for custom event from React
-            document.addEventListener('showSection', (e) => {
-                showSection(e.detail.sectionId);
-            });
-
-            // Mobile menu toggle
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
-            
-            // Error Modal Logic
-            function showErrorModal(message = 'Maaf, terjadi kesalahan tak terduga.') {
-                errorMessage.textContent = message;
-                errorModal.classList.remove('hidden');
-            }
-            closeModalBtn.addEventListener('click', () => {
-                errorModal.classList.add('hidden');
-            });
-            
-            // Gemini API call helper
-            async function callGeminiAPI(prompt, isJson = false) {
-                const apiKey = "AIzaSyDyIlvgZMqeou1D_w9a_iAsOIQaFdd4NQw"; 
-                const model = 'gemini-1.5-flash';
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-                const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
-                
-                if (isJson) {
-                    payload.generationConfig = {
-                        responseMimeType: "application/json",
-                        responseSchema: { type: "OBJECT", properties: { planTitle: { type: "STRING" }, steps: { type: "ARRAY", items: { type: "OBJECT", properties: { title: { type: "STRING" }, description: { type: "STRING" } }, required: ["title", "description"] } } }, required: ["planTitle", "steps"] }
-                    };
-                }
-
-                try {
-                    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-                    if (!response.ok) throw new Error(`API request failed with status ${response.status}`);
-                    const result = await response.json();
-                    if (result.candidates?.[0]?.content?.parts?.[0]?.text) {
-                        return result.candidates[0].content.parts[0].text;
-                    } else {
-                        throw new Error("Respons dari API tidak valid atau kosong.");
-                    }
-                } catch (error) {
-                    console.error("Gemini API Error:", error);
-                    showErrorModal(error.message);
-                    return null;
-                }
-            }
-            
-            // AI Feature: Explore Topic
-            const exploreTopicBtn = document.getElementById('explore-topic-btn');
-            if(exploreTopicBtn){
-                const topicInput = document.getElementById('topic-input');
-                const topicLoader = document.getElementById('topic-loader');
-                const topicResult = document.getElementById('topic-result');
-                exploreTopicBtn.addEventListener('click', async () => {
-                    const topic = topicInput.value.trim();
-                    if (!topic) { showErrorModal('Silakan masukkan pertanyaan.'); return; }
-                    topicLoader.style.display = 'flex'; topicResult.classList.add('hidden'); exploreTopicBtn.disabled = true;
-                    const prompt = `Jelaskan topik lingkungan ini dengan bahasa sederhana untuk audiens umum di Indonesia: "${topic}". Berikan jawaban dalam 2-3 paragraf.`;
-                    const resultText = await callGeminiAPI(prompt);
-                    if (resultText) { topicResult.textContent = resultText; topicResult.classList.remove('hidden'); }
-                    topicLoader.style.display = 'none'; exploreTopicBtn.disabled = false;
-                });
-            }
-
-            // AI Feature: Action Plan
-            const generatePlanBtn = document.getElementById('generate-plan-btn');
-            if(generatePlanBtn){
-                const actionPlanInput = document.getElementById('action-plan-input');
-                const planLoader = document.getElementById('plan-loader');
-                const planResult = document.getElementById('plan-result');
-                generatePlanBtn.addEventListener('click', async () => {
-                    const topic = actionPlanInput.value.trim();
-                    if (!topic) { showErrorModal('Silakan masukkan topik rencana aksi.'); return; }
-                    planLoader.style.display = 'flex'; planResult.classList.add('hidden'); generatePlanBtn.disabled = true;
-                    const prompt = `Buatkan rencana aksi ramah lingkungan praktis untuk topik: "${topic}". Fokus pada langkah individu di Indonesia. Berikan jawaban dalam format JSON.`;
-                    const resultText = await callGeminiAPI(prompt, true);
-                    if (resultText) {
-                        try {
-                            const planData = JSON.parse(resultText);
-                            planResult.innerHTML = `<h4 class='text-xl font-bold mb-4 text-[#2E5339]'>${planData.planTitle}</h4>`;
-                            const listEl = document.createElement('ol');
-                            listEl.className = 'space-y-4 list-decimal list-inside';
-                            planData.steps.forEach(step => {
-                                listEl.innerHTML += `<li class='bg-stone-50 p-4 rounded-lg'><strong>${step.title}</strong><p class='text-gray-600 text-sm mt-1'>${step.description}</p></li>`;
-                            });
-                            planResult.appendChild(listEl);
-                            planResult.classList.remove('hidden');
-                        } catch (e) { showErrorModal('Gagal mem-parsing respons AI.'); }
-                    }
-                    planLoader.style.display = 'none'; generatePlanBtn.disabled = false;
-                });
-            }
-
-            // Chart.js: Waste Composition
-            const wasteChartEl = document.getElementById('wasteChart');
-            if (wasteChartEl) {
-                const ctx = wasteChartEl.getContext('2d');
-                new Chart(ctx, { type: 'bar', data: { labels: ['Plastik', 'Logam', 'Kaca', 'Kain', 'Karet', 'Lainnya'], datasets: [{ label: '% Komposisi Sampah Laut', data: [59, 5, 4, 4, 3, 25], backgroundColor: 'rgba(46, 83, 57, 0.7)', borderColor: 'rgba(46, 83, 57, 1)', borderWidth: 1 }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { beginAtZero: true, title: { display: true, text: 'Persentase (%)' } } } } });
-            }
-            
-            // Show initial section
-            showSection('beranda');
-        });
-    </script>
-
-    <!-- SCRIPTS FOR REACT/FORUM APP -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <!-- Firebase SDKs (using modules) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import * as auth from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import * as firestore from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Make Firebase services globally available for the Babel script
-        window.firebase = { initializeApp, auth, firestore };
-    </script>
-
-    <!-- React Application Code (transpiled by Babel) -->
-    <script type="text/babel">
-        // --- Destructure React and Firebase from window ---
-        const { useState, useEffect, useRef, StrictMode } = React;
-        const { initializeApp, auth: fbAuth, firestore: fbFirestore } = window.firebase;
-        const { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } = fbAuth;
-        const { getFirestore, collection, addDoc, query, onSnapshot, serverTimestamp, orderBy, doc, setDoc, deleteDoc, getDoc, writeBatch } = fbFirestore;
-
-        // ===================================================================================
-        // --- PENGATURAN APLIKASI FORUM ---
-        // ===================================================================================
-        const firebaseConfig = { apiKey: "AIzaSyAmLz0qVf4GN0TdDO-G7XdOM7PJI_KaNwo", authDomain: "nafasbumi-7104f.firebaseapp.com", projectId: "nafasbumi-7104f", storageBucket: "nafasbumi-7104f.appspot.com", messagingSenderId: "640077220735", appId: "1:640077220735:web:d58d2ac6183651a090284a", measurementId: "G-EG13J7CKD4" };
-        const ADMIN_UIDS = ["VM2zz5VZSSYsACeLE55yvapAsmw1"]; 
-        const INFO_CHANNELS = ['Selamat Datang', 'Pengumuman'];
-        const ALL_CHANNELS = [
-            { name: 'Selamat Datang', icon: 'fa-door-open', type: 'info' }, { name: 'Pengumuman', icon: 'fa-bullhorn', type: 'info' },
-            { name: 'Diskusi Umum', icon: 'fa-comments', type: 'general' }, { name: 'Tantangan Hijau', icon: 'fa-leaf', type: 'general' },
+        // ==============================================================
+        // == SCRIPT BERITA DINAMIS (DATA DIAMBIL DARI iNews)          ==
+        // ==============================================================
+        // DIUBAH: Data berita ini disimulasikan seolah-olah diambil dari iNews.id per 16 Juni 2025
+        const beritaData = [
+            {
+                kategori: 'News Nasional',
+                judul: 'Keindahan Alam Raja Ampat Terancam Tambang Nikel, Kemenpar Buka Suara',
+                deskripsi: 'Rencana ekspansi tambang nikel ke Raja Ampat memicu kekhawatiran berbagai pihak. Surga wisata dunia itu kini terancam rusak oleh aktivitas industri ekstraktif.',
+                link: 'https://www.inews.id/multimedia/video/headline-inewsid-keindahan-alam-raja-ampat-terancam-tambang-nikel-kemenpar-buka-suara',
+                gambarUrl: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrFeLy4RXaCjppqthds7azNjW5hlEvfiBYivRZ3OEKIt-W3DGa1VGpphuzxeOVSrS7nNQwR3uWNJI2wdZMHB8pfrLwPbDITCCXF2pdpp_iFnwWnCMTwEFiFfYeQ42ohWuLYnGgnUA=w810-h468-n-k-no' 
+            },
+            {
+                kategori: 'Regional',
+                judul: 'Ekowisata Malagufuk, Hutan Papua yang Melindungi Berbagai Macam Hewan Termasuk Ular Berbisa',
+                deskripsi: 'Ekowisata Malagufuk di Distrik Makbon, Kabupaten Sorong, Provinsi Papua Barat Daya, menawarkan keindahan alam serta kesempatan untuk memantau..',
+                link: 'https://regional.kompas.com/read/2025/05/16/074629878/ekowisata-malagufuk-hutan-papua-yang-melindungi-berbagai-macam-hewan',
+                gambarUrl: 'https://asset.kompas.com/crops/W-yOiwi5ZcwOV_BTNoI4smT_LVc=/0x0:0x0/1200x800/data/photo/2025/05/15/6825bb663437c.jpg'
+            },
+            {
+                kategori: 'News Nasional',
+                judul: 'Dukung Penutupan Tambang Nikel di Raja Ampat, Lamhot Sinaga: Keindahan Alam dan Kekayaan Hayati Harus Dilestarikan',
+                deskripsi: 'Wakil Ketua Komisi VII Dewan Perwakilan Rakyat (DPR) RI, Lamhot Sinaga, mendukung penuh keputusan Menteri Energi dan Sumber Daya Mineral (ESDM) Bahlil Lahadalia..',
+                link: 'https://nasional.kompas.com/read/2025/06/08/20044061/dukung-penutupan-tambang-nikel-di-raja-ampat-lamhot-sinaga-keindahan-alam',
+                gambarUrl: 'https://asset.kompas.com/crops/E-dqX3EfKL5oXJ1qRIKN75sdW7c=/321x0:321x0/1200x800/data/photo/2025/06/08/684589355870d.jpeg'
+            },
         ];
-        const THEME_COLOR = { primary: '#2E5339', secondary: '#4A7859' };
 
-        // --- Inisialisasi Firebase ---
-        let app, auth, db;
-        try {
-            app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-            db = getFirestore(app);
-        } catch (error) { console.error("Firebase initialization error:", error); }
+        const beritaContainer = document.getElementById('berita-container');
+        if (beritaContainer) {
+            const createBeritaCard = (berita) => {
+                return `
+                    <a href="${berita.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="relative h-48 w-full">
+                            <img src="${berita.gambarUrl}" alt="Thumbnail ${berita.judul}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-4">
+                                <h2 class="text-2xl font-bold text-white">${berita.kategori}</h2>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">${berita.judul}</h3>
+                            <p class="text-gray-600 text-base mb-6 leading-relaxed">${berita.deskripsi}</p>
+                            <span class="font-semibold text-[#2E5339] inline-flex items-center">
+                                Baca selengkapnya
+                                <svg class="w-4 h-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </span>
+                        </div>
+                    </a>
+                `;
+            };
 
-        // --- KOMPONEN UTAMA: App ---
-        function App() {
-          const [user, setUser] = useState(null);
-          const [loading, setLoading] = useState(true);
-
-          useEffect(() => {
-            if (!auth) return;
-            const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-              setUser(currentUser);
-              if (currentUser) { setDoc(doc(db, 'users', currentUser.uid), { isOnline: true }, { merge: true }); }
-              setLoading(false);
+            beritaData.forEach(berita => {
+                beritaContainer.innerHTML += createBeritaCard(berita);
             });
-            const setOffline = async () => { if (auth.currentUser) { await setDoc(doc(db, 'users', auth.currentUser.uid), { isOnline: false }, { merge: true }); } };
-            window.addEventListener('beforeunload', setOffline);
-            return () => { unsubscribe(); window.removeEventListener('beforeunload', setOffline); };
-          }, []);
+        }
+    });
 
-          if (loading) { return <div className="flex items-center justify-center h-screen bg-white"><div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin" style={{borderColor: THEME_COLOR.primary}}></div></div> }
-          return (<div className="h-screen w-screen bg-gray-50 text-gray-800 font-sans">{user ? <ChatLayout user={user} /> : <Login />}</div>);
+    // Get modal elements
+        const showPopupButton = document.getElementById('showPopupButton');
+        const popupModal = document.getElementById('popupModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeButton = document.getElementById('closeButton');
+
+        // Function to show the modal
+        function showModal() {
+            popupModal.classList.remove('hidden');
+            // We add the active class after a short delay to ensure the transition runs
+            setTimeout(() => {
+                modalContent.classList.remove('modal-enter');
+                modalContent.classList.add('modal-enter-active');
+            }, 10);
         }
 
-        // --- KOMPONEN: Login ---
-        const Login = () => {
-          const [error, setError] = useState('');
-          const signInWithGoogle = async () => {
-            const provider = new GoogleAuthProvider();
-            try {
-              const result = await signInWithPopup(auth, provider);
-              const currentUser = result.user;
-              const userRef = doc(db, 'users', currentUser.uid);
-              const userDoc = await getDoc(userRef);
-              const isNewUser = !userDoc.exists();
-
-              await setDoc(userRef, { uid: currentUser.uid, displayName: currentUser.displayName, photoURL: currentUser.photoURL, isOnline: true, isAdmin: ADMIN_UIDS.includes(currentUser.uid) }, { merge: true });
-              if (isNewUser) {
-                  await setDoc(doc(db, 'challenge_progress', currentUser.uid), { level: 0, startDate: null, displayName: currentUser.displayName, photoURL: currentUser.photoURL });
-                  await addDoc(collection(db, "channels/Selamat Datang/messages"), { text: `Selamat datang @${currentUser.displayName}, selamat bergabung di forum diskusi lingkungan!`, timestamp: serverTimestamp(), uid: 'system-admin', displayName: 'Admin NafasBumi', photoURL: `https://placehold.co/100x100/${THEME_COLOR.secondary.substring(1)}/FFFFFF?text=N`, isAdmin: true });
-              }
-            } catch (error) { console.error("Login Error:", error); setError(`Gagal login: ${error.code}`); }
-          };
-          return (<div className="flex flex-col items-center justify-center h-full text-center p-4 bg-gray-50"><h1 className="text-5xl font-bold mb-2" style={{color: THEME_COLOR.primary}}>Forum NafasBumi</h1><p className="text-gray-600 mb-8 max-w-sm">Bergabunglah dalam forum diskusi terdedikasi untuk aksi dan inspirasi lingkungan.</p><button onClick={signInWithGoogle} className="flex items-center gap-3 bg-white border border-gray-300 px-6 py-3 rounded-lg shadow-sm hover:shadow-md transition-all"><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" className="w-6 h-6" /><span className="font-semibold text-gray-700">Masuk dengan Google</span></button>{error && <p className="text-red-500 mt-4">{error}</p>}</div>);
-        };
-
-        // --- KOMPONEN: Layout Chat ---
-        const ChatLayout = ({ user }) => {
-            const [activeChannel, setActiveChannel] = useState('Selamat Datang');
-            const [profileModalUser, setProfileModalUser] = useState(null);
-            const [notifications, setNotifications] = useState({});
-            const [allUsers, setAllUsers] = useState([]);
-            const [typingUsers, setTypingUsers] = useState([]);
-            const [isUserAdmin, setIsUserAdmin] = useState(false);
-
-            useEffect(() => { setIsUserAdmin(ADMIN_UIDS.includes(user.uid)); }, [user.uid]);
-            useEffect(() => { const unsub = onSnapshot(query(collection(db, 'users')), (snapshot) => setAllUsers(snapshot.docs.map(doc => doc.data()))); return () => unsub(); }, []);
-            useEffect(() => {
-                const unsubscribers = ALL_CHANNELS.map(channel => {
-                    if (channel.name === 'Tantangan Hijau') return () => {}; 
-                    return onSnapshot(query(collection(db, `channels/${channel.name}/messages`)), async (snapshot) => {
-                        const userReadStatusRef = doc(db, `users/${user.uid}/readStatus`, channel.name);
-                        const userReadStatusDoc = await getDoc(userReadStatusRef);
-                        const lastReadTime = userReadStatusDoc.data()?.timestamp?.toMillis() || 0;
-                        let unreadCount = 0, hasMention = false;
-                        snapshot.docs.forEach(doc => { const msg = doc.data(); if (msg.timestamp?.toMillis() > lastReadTime) { unreadCount++; if (msg.text && (msg.text.includes(`@${user.displayName}`) || msg.text.includes('@everyone'))) { hasMention = true; } } });
-                        setNotifications(prev => ({...prev, [channel.name]: {...prev[channel.name], count: unreadCount, mention: hasMention}}));
-                    });
-                });
-                return () => unsubscribers.forEach(unsub => unsub());
-            }, [user.uid, user.displayName]);
-            useEffect(() => {
-                if (!activeChannel || activeChannel === 'Tantangan Hijau') { setTypingUsers([]); return; };
-                const unsub = onSnapshot(query(collection(db, "channels", activeChannel, "typing")), (snapshot) => { const now = Date.now(); setTypingUsers(snapshot.docs.map(doc => doc.data()).filter(u => u.uid !== user.uid && (now - u.timestamp?.toMillis()) < 5000)); });
-                return () => unsub();
-            }, [activeChannel, user.uid]);
-
-            const handleChannelChange = async (channelName) => { setActiveChannel(channelName); if (channelName !== 'Tantangan Hijau') { await setDoc(doc(db, `users/${user.uid}/readStatus`, channelName), { timestamp: serverTimestamp() }); setNotifications(prev => ({...prev, [channelName]: {count: 0, mention: false}})); } };
-            const handleDeleteUser = async (userToDelete) => { if (!window.confirm(`Yakin ingin menghapus "${userToDelete.displayName}"?`)) return; try { await deleteDoc(doc(db, 'users', userToDelete.uid)); } catch (err) { console.error("Gagal hapus user:", err); } }
-
-            return (<div className="flex h-screen antialiased text-gray-800"><Sidebar user={user} activeChannel={activeChannel} setActiveChannel={handleChannelChange} notifications={notifications} /><div className="flex-1 flex flex-col bg-gray-50">{activeChannel === 'Tantangan Hijau' ? <ChallengeComponent user={user} /> : <ChatArea user={user} activeChannel={activeChannel} onViewProfile={setProfileModalUser} allUsers={allUsers} typingUsers={typingUsers} />}</div><RightSidebar onViewProfile={setProfileModalUser} allUsers={allUsers} typingUsers={typingUsers} isUserAdmin={isUserAdmin} onDeleteUser={handleDeleteUser}/>{profileModalUser && <UserProfileModal userToShow={profileModalUser} onClose={() => setProfileModalUser(null)} />}</div>);
-        };
-        
-        // --- Sidebar Kiri dengan Tombol Kembali ---
-        const Sidebar = ({ user, activeChannel, setActiveChannel, notifications }) => {
-            const handleSignOut = async () => { if (auth.currentUser) { await setDoc(doc(db, 'users', auth.currentUser.uid), { isOnline: false }, { merge: true }); const batch = writeBatch(db); ALL_CHANNELS.forEach(channel => { const typingRef = doc(db, 'channels', channel.name, 'typing', auth.currentUser.uid); batch.delete(typingRef); }); await batch.commit(); } await signOut(auth); };
-            const handleGoHome = () => { if(window.showLandingPageSection) window.showLandingPageSection('beranda'); };
-            const renderChannel = (channel) => { const notif = notifications[channel.name] || {}; return (<a href="#" key={channel.name} onClick={(e) => {e.preventDefault(); setActiveChannel(channel.name)}} className={`flex items-center justify-between p-2 rounded-lg mt-1 transition-all ${activeChannel === channel.name ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'}`} style={{backgroundColor: activeChannel === channel.name ? THEME_COLOR.primary : 'transparent'}}><div className="flex items-center"><i className={`fas ${channel.icon} fa-fw mr-3 w-5 text-center`}></i><span className="font-semibold">{channel.name}</span></div>{notif.mention && <span className="bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pulse">@</span>}{!notif.mention && notif.count > 0 && <span className="bg-gray-300 text-gray-700 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">{notif.count}</span>}</a>); };
-            return (<div className="flex flex-col w-64 bg-white border-r border-gray-200"><div className="flex items-center justify-between h-16 px-4 border-b border-gray-200"><h1 className="text-2xl font-bold" style={{color: THEME_COLOR.primary}}>NafasBumi</h1></div><div className="flex flex-col flex-grow p-4 overflow-y-auto"><div className="mb-4"><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Informasi</h2>{ALL_CHANNELS.filter(c => c.type === 'info').map(renderChannel)}</div><div><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Umum</h2>{ALL_CHANNELS.filter(c => c.type === 'general').map(renderChannel)}</div></div><div className="p-4 border-t border-gray-200"><div className="flex items-center justify-between"><div className="flex items-center"><img className="h-10 w-10 rounded-full object-cover" src={user.photoURL} alt={user.displayName} /><p className="ml-3 text-sm font-semibold text-gray-800 truncate">{user.displayName}</p></div><div className="flex items-center"><button onClick={handleGoHome} className="p-2 rounded-md text-gray-500 hover:bg-green-100" style={{"&:hover": {color: THEME_COLOR.primary}}} title="Kembali ke Beranda"><i className="fas fa-home"></i></button><button onClick={handleSignOut} className="p-2 rounded-md text-gray-500 hover:bg-red-100 hover:text-red-600" title="Keluar"><i className="fas fa-sign-out-alt"></i></button></div></div></div></div>);
-        };
-        
-        // --- KOMPONEN LAINNYA (CHAT, PESAN, DLL) TETAP SAMA DENGAN SEDIKIT PENYESUAIAN WARNA ---
-        const ChatArea = ({ user, activeChannel, onViewProfile, allUsers, typingUsers }) => {
-            const [messages, setMessages] = useState([]); const [replyingTo, setReplyingTo] = useState(null); const messagesEndRef = useRef(null); const [isUserAdmin, setIsUserAdmin] = useState(false);
-            useEffect(() => { setIsUserAdmin(ADMIN_UIDS.includes(user.uid)); }, [user.uid]);
-            useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, typingUsers]);
-            useEffect(() => { if (!activeChannel || !db) return; setReplyingTo(null); const q = query(collection(db, "channels", activeChannel, "messages"), orderBy("timestamp", "asc")); const unsub = onSnapshot(q, (snapshot) => setMessages(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))); return () => unsub(); }, [activeChannel]);
-            const handleDeleteMessage = async (messageId) => { if (!activeChannel || !window.confirm("Hapus pesan ini?")) return; try { await deleteDoc(doc(db, "channels", activeChannel, "messages", messageId)); } catch (error) { console.error("Error deleting message: ", error); } };
-            return (<div className="flex flex-col flex-grow bg-gray-50 overflow-hidden"><div className="flex-shrink-0 flex items-center justify-between h-16 px-6 bg-white border-b border-gray-200 shadow-sm"><div className="flex items-center"><i className="fas fa-hashtag fa-lg text-gray-400 mr-3"></i><h2 className="text-xl font-semibold text-gray-700">{activeChannel}</h2></div></div><div className="flex-grow p-6 overflow-y-auto min-h-0">{messages.map(msg => <Message key={msg.id} message={msg} isSent={msg.uid === user.uid} onViewProfile={onViewProfile} onDelete={() => handleDeleteMessage(msg.id)} onReply={() => setReplyingTo(msg)} />)}<div ref={messagesEndRef} /></div><div className="flex-shrink-0 px-6 pb-2 h-6">{typingUsers.length > 0 && <div className="text-sm text-gray-500 animate-pulse">{typingUsers.map(u => u.displayName).join(', ')} sedang mengetik...</div>}</div><div className="flex-shrink-0"><MessageInput user={user} activeChannel={activeChannel} isUserAdmin={isUserAdmin} replyingTo={replyingTo} setReplyingTo={setReplyingTo} allUsers={allUsers}/></div></div>);
-        };
-        const RenderFormattedText = ({ text }) => { 
-    const escapeHtml = (unsafe) => unsafe ? unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : '';
-    
-    const formattedText = escapeHtml(text)
-        .replace(/\*(.*?)\*/g, '<strong>$1</strong>') // Bold
-        .replace(/_(.*?)_/g, '<em>$1</em>') // Italic
-        .replace(/~(.*?)~/g, '<del>$1</del>') // Strikethrough
-        .replace(/(@everyone)/g, '<strong class="bg-amber-300 text-amber-800 px-2 py-0.5 rounded-lg">$1</strong>') // @everyone tag
-        
-        // --- PERUBAHAN DI SINI ---
-        // Mengganti style dengan kelas Tailwind `text-green-900` untuk memastikan teks berwarna gelap.
-        .replace(/(@[\w\s]+)/g, `<strong class="bg-green-200 text-green-900 font-semibold px-1 py-0.5 rounded">$1</strong>`); 
-
-    return <span dangerouslySetInnerHTML={{ __html: formattedText }} />; 
-};
-        const Message = ({ message, isSent, onViewProfile, onDelete, onReply }) => { const { text, displayName, photoURL, timestamp, uid, isAdmin, replyTo } = message; return (<div className={`group flex items-start mb-2 ${isSent ? 'justify-end' : 'justify-start'}`}>{!isSent && <img onClick={() => onViewProfile(message)} className="h-10 w-10 rounded-full object-cover mr-3 cursor-pointer self-start transition-transform hover:scale-110" src={photoURL} alt={displayName} />}<div className={`flex items-center gap-2 ${isSent ? 'flex-row-reverse' : 'flex-row'}`}><div className="flex-shrink-0 order-1 opacity-0 group-hover:opacity-100 transition-all"><button onClick={onReply} className="p-1 text-gray-400" style={{"&:hover": {color: THEME_COLOR.primary}}} title="Balas"><i className="fas fa-reply"></i></button>{isSent && <button onClick={onDelete} className="p-1 text-gray-400 hover:text-red-500" title="Hapus"><i className="fas fa-trash"></i></button>}</div><div className={`flex flex-col ${isSent ? 'items-end' : 'items-start'} order-0 min-w-0`}><div className="flex items-center mb-1">{!isSent && <span className="font-semibold mr-2 text-sm text-gray-800">{displayName}</span>}{isAdmin && <span className="text-xs font-bold text-yellow-800 bg-yellow-300 px-1.5 py-0.5 rounded-full mr-2">ADMIN</span>}<span className="text-xs text-gray-400">{timestamp?.toDate().toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'})}</span></div>{replyTo && (<div className="text-xs bg-gray-100 p-2 rounded-md mb-1 w-full opacity-80" style={{borderLeft: `2px solid ${THEME_COLOR.primary}`}}><strong className="text-gray-600">Membalas {replyTo.displayName}</strong>: <span className="text-gray-500 italic">"{replyTo.text.substring(0, 50)}..."</span></div>)}<div className={`p-3 rounded-lg shadow-sm max-w-md ${isSent ? 'text-white' : 'bg-white'}`} style={{backgroundColor: isSent ? THEME_COLOR.primary : '#FFFFFF' }}>{text && <p className="break-words"><RenderFormattedText text={text} /></p>}</div></div></div>{isSent && <img onClick={() => onViewProfile(message)} className="h-10 w-10 rounded-full object-cover ml-3 cursor-pointer self-start transition-transform hover:scale-110" src={photoURL} alt={displayName} />}</div>); };
-        const MessageInput = ({ user, activeChannel, isUserAdmin, replyingTo, setReplyingTo, allUsers }) => { 
-            const [text, setText] = useState(''); const [isGenerating, setIsGenerating] = useState(false); const [tagSuggestions, setTagSuggestions] = useState([]); const inputRef = useRef(null); const typingTimeoutRef = useRef(null);
-            useEffect(() => { if(replyingTo) inputRef.current.focus(); }, [replyingTo]);
-            const updateTypingStatus = () => { if (!activeChannel || INFO_CHANNELS.includes(activeChannel)) return; const typingRef = doc(db, 'channels', activeChannel, 'typing', user.uid); setDoc(typingRef, { uid: user.uid, displayName: user.displayName, timestamp: serverTimestamp() }); if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current); typingTimeoutRef.current = setTimeout(() => { deleteDoc(typingRef); }, 4000); };
-            const handleInputChange = (e) => { const value = e.target.value; setText(value); updateTypingStatus(); const lastWord = value.split(/[\s,.\n]/).pop(); if (lastWord.startsWith('@')) { const searchTerm = lastWord.substring(1).toLowerCase(); let suggestions = allUsers.filter(u => u.displayName.toLowerCase().includes(searchTerm) && u.uid !== user.uid); if (isUserAdmin && 'everyone'.toLowerCase().includes(searchTerm)) { suggestions.unshift({ uid: 'everyone-tag', displayName: 'everyone', photoURL: 'https://placehold.co/100x100/f59e0b/FFFFFF?text=ALL' }); } setTagSuggestions(suggestions); } else { setTagSuggestions([]); } };
-            const handleTagSelect = (displayName) => { const words = text.split(' '); words.pop(); words.push(`@${displayName} `); setText(words.join(' ')); setTagSuggestions([]); inputRef.current.focus(); };
-            const handleSendMessage = async (e) => { e.preventDefault(); if (text.trim() === "" || (INFO_CHANNELS.includes(activeChannel) && !isUserAdmin)) return; let messageData = { text, timestamp: serverTimestamp(), uid: user.uid, displayName: user.displayName, photoURL: user.photoURL, isAdmin: isUserAdmin }; if (replyingTo) { messageData.replyTo = { id: replyingTo.id, displayName: replyingTo.displayName, text: replyingTo.text }; } await addDoc(collection(db, "channels", activeChannel, "messages"), messageData); const typingRef = doc(db, 'channels', activeChannel, 'typing', user.uid); deleteDoc(typingRef); if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current); setText(''); setReplyingTo(null); };
-            const handleGenerateAISuggestion = async () => { setIsGenerating(true); const prompt = text.trim() === '' ? 'Kamu teman diskusi di forum lingkungan NafasBumi. Tulis satu ide singkat dan inspiratif untuk memulai diskusi tentang aksi ramah lingkungan sehari-hari. Gunakan gaya santai, seolah-olah kamu anggota forum, bukan AI.' : `Kamu teman diskusi di forum lingkungan NafasBumi. Seseorang menulis: "${text}". Lanjutkan percakapan dengan tanggapan singkat, suportif, dan inspiratif. Beri satu ide atau pertanyaan lanjutan. Gunakan gaya santai, bukan seperti AI.`; const apiKey = "AIzaSyDyIlvgZMqeou1D_w9a_iAsOIQaFdd4NQw"; const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`; const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] }; try { const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }); if (!response.ok) { const errorData = await response.json(); throw new Error(`API request failed: ${errorData.error.message}`); } const result = await response.json(); let suggestion = result.candidates?.[0]?.content?.parts?.[0]?.text; if (suggestion) { setText(suggestion.replace(/[*#]/g, '').trim()); } else { setText("Maaf, AI tidak memberikan saran."); } } catch (error) { console.error("AI Error:", error); setText(`Maaf, terjadi kesalahan: ${error.message}`); } finally { setIsGenerating(false); inputRef.current.focus(); } };
-            return (<div className="bg-white p-4 border-t border-gray-200 relative">{tagSuggestions.length > 0 && (<div className="absolute bottom-full left-0 right-0 bg-white border border-gray-200 rounded-t-lg shadow-lg max-h-40 overflow-y-auto z-10">{tagSuggestions.map(u => (<div key={u.uid} onClick={() => handleTagSelect(u.displayName)} className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"><img src={u.photoURL} alt={u.displayName} className="w-8 h-8 rounded-full mr-2"/><span>{u.displayName}</span>{u.uid === 'everyone-tag' && <span className="ml-auto text-xs font-bold text-amber-600 bg-amber-200 px-2 py-1 rounded-full">SEMUA</span>}</div>))}</div>)}{replyingTo && (<div className="text-sm bg-gray-100 p-2 rounded-t-md -mb-1 flex justify-between items-center"><div className="truncate pl-2">Membalas <strong>{replyingTo.displayName}</strong>: <span className="text-gray-500 italic">"{replyingTo.text.substring(0, 50)}..."</span></div><button onClick={() => setReplyingTo(null)} className="ml-2 text-gray-500 hover:text-red-500 text-lg p-1">&times;</button></div>)}<form onSubmit={handleSendMessage}><div className="relative flex items-center"><textarea ref={inputRef} value={text} onChange={handleInputChange} onKeyDown={(e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }} rows="1" placeholder={(INFO_CHANNELS.includes(activeChannel) && !isUserAdmin) ? "Hanya admin yang bisa mengirim pesan" : "Ketik pesan..."} className={`w-full bg-gray-100 p-3 pr-28 focus:outline-none resize-none disabled:opacity-60 ${replyingTo ? 'rounded-b-lg' : 'rounded-lg'}`} style={{"&:focus": {ring: `2px solid ${THEME_COLOR.primary}`}}} disabled={(INFO_CHANNELS.includes(activeChannel) && !isUserAdmin)} /><button type="button" onClick={handleGenerateAISuggestion} disabled={isGenerating || (INFO_CHANNELS.includes(activeChannel) && !isUserAdmin)} title="Saran dari AI" className="absolute right-12 p-2 rounded-full text-yellow-500 hover:bg-yellow-100 disabled:opacity-50">{isGenerating ? <i className="fas fa-spinner fa-spin"></i> : <i className="fas fa-star"></i>}</button><button type="submit" disabled={(INFO_CHANNELS.includes(activeChannel) && !isUserAdmin) || text.trim() === ''} className="absolute right-3 text-white rounded-full h-8 w-8 flex items-center justify-center shadow-md transition-all hover:scale-110 disabled:opacity-50" style={{backgroundColor: THEME_COLOR.primary, "&:hover": {backgroundColor: THEME_COLOR.secondary}}}><i className="fas fa-paper-plane"></i></button></div></form></div>); 
-        };
-        const RightSidebar = ({ onViewProfile, allUsers, typingUsers, isUserAdmin, onDeleteUser }) => { const uniqueUsers = Array.from(new Map(allUsers.map(user => [user.uid, user])).values()); const onlineUsers = uniqueUsers.filter(u => u.isOnline); const offlineUsers = uniqueUsers.filter(u => !u.isOnline); const renderUser = (user) => { const isTyping = typingUsers.some(typingUser => typingUser.uid === user.uid); return (<div key={user.uid} className="group flex items-center p-1 rounded-md hover:bg-gray-200"><div onClick={() => onViewProfile(user)} className="flex items-center flex-grow cursor-pointer"><div className="relative"><img className="h-10 w-10 rounded-full object-cover" src={user.photoURL} alt={user.displayName} /><span className={`absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full border-2 border-white ${user.isOnline ? 'bg-green-400' : 'bg-gray-400'}`}></span></div><span className="ml-3 font-medium text-gray-700">{user.displayName}</span>{isTyping && <i className="fas fa-pencil-alt text-gray-500 ml-auto text-xs animate-bounce"></i>}</div>{isUserAdmin && user.uid !== auth.currentUser.uid && (<button onClick={() => onDeleteUser(user)} className="ml-2 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100" title="Hapus"><i className="fas fa-trash-alt fa-xs"></i></button>)}</div>); }; return (<div className="hidden md:flex flex-col w-72 bg-gray-100 border-l border-gray-200 p-4 space-y-6"><div className="overflow-y-auto"><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Online ({onlineUsers.length})</h2><div className="space-y-3">{onlineUsers.map(renderUser)}</div></div>{offlineUsers.length > 0 && (<div className="overflow-y-auto"><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Offline ({offlineUsers.length})</h2><div className="space-y-3 opacity-60">{offlineUsers.map(renderUser)}</div></div>)}</div>); };
-        const UserProfileModal = ({ userToShow, onClose }) => (<div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4" onClick={onClose}><div className="bg-white rounded-lg shadow-xl w-full max-w-sm text-center p-8 relative animate-fade-in-up" onClick={e => e.stopPropagation()}><button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button><img className="w-24 h-24 rounded-full mx-auto mb-4" style={{ring: `4px solid ${THEME_COLOR.primary}`}} src={userToShow.photoURL} alt={userToShow.displayName} /><h3 className="text-2xl font-bold text-gray-800">{userToShow.displayName}</h3>{userToShow.isAdmin && <p className="mt-2 text-sm font-bold text-yellow-600">ADMIN</p>}<p className={`mt-2 text-sm font-semibold ${userToShow.isOnline ? 'text-green-500' : 'text-gray-400'}`}>{userToShow.isOnline ? 'Online' : 'Offline'}</p></div></div>);
-        const ChallengeComponent = ({user}) => { const [activeTab, setActiveTab] = useState('challenge'); return (<div className="flex flex-col flex-1 bg-gray-100 overflow-hidden"><div className="flex-shrink-0 bg-white border-b px-6"><nav className="-mb-px flex space-x-8">{['challenge', 'leaderboard', 'profile'].map(tab => <button key={tab} onClick={() => setActiveTab(tab)} className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}>{tab.charAt(0).toUpperCase() + tab.slice(1).replace('leaderboard', 'Papan Peringkat').replace('profile', 'Profil Saya').replace('challenge', 'Tantangan')}</button>)}</nav></div><div className="flex-1 p-4 sm:p-6 lg:p-10 overflow-y-auto bg-dots">{activeTab === 'challenge' && <ChallengeView user={user}/>}{activeTab === 'leaderboard' && <LeaderboardView />}{activeTab === 'profile' && <ProfileView user={user} />}</div></div>);};
-        const ChallengeView = ({ user }) => { const TOTAL_DAYS = 30; const [userData, setUserData] = useState(null); const [file, setFile] = useState(null); const fileInputRef = useRef(null); const levelPositions = [{top:'5%',left:'10%'},{top:'8%',left:'75%'},{top:'15%',left:'40%'},{top:'23%',left:'5%'},{top:'20%',left:'80%'},{top:'28%',left:'50%'},{top:'35%',left:'20%'},{top:'38%',left:'70%'},{top:'45%',left:'10%'},{top:'48%',left:'85%'},{top:'55%',left:'45%'},{top:'63%',left:'5%'},{top:'60%',left:'75%'},{top:'68%',left:'30%'},{top:'75%',left:'80%'},{top:'78%',left:'15%'},{top:'85%',left:'50%'},{top:'93%',left:'5%'},{top:'95%',left:'90%'},{top:'103%',left:'35%'},{top:'110%',left:'65%'},{top:'115%',left:'10%'},{top:'120%',left:'80%'},{top:'128%',left:'40%'},{top:'135%',left:'15%'},{top:'138%',left:'75%'},{top:'145%',left:'50%'},{top:'153%',left:'5%'},{top:'155%',left:'85%'},{top:'165%',left:'25%'}];
-            const handleReset = async (data) => { alert("Tantangan 30 hari berakhir! Progres direset. Ayo mulai lagi!"); await setDoc(doc(db, 'challenge_progress', user.uid), { ...data, level: 0, startDate: null }); };
-            useEffect(() => { const unsub = onSnapshot(doc(db, 'challenge_progress', user.uid), (doc) => { if (doc.exists()) { const data = doc.data(); if (data.startDate && (new Date() - new Date(data.startDate)) / 864e5 >= TOTAL_DAYS) { handleReset(data); return; } setUserData(data); } else { setUserData({ level: 0, startDate: null }); } }); return () => unsub(); }, [user.uid]);
-            const handleStart = async () => { const today = new Date(); today.setHours(0,0,0,0); await setDoc(doc(db, 'challenge_progress', user.uid), { level: 0, startDate: today.toISOString(), displayName: user.displayName, photoURL: user.photoURL }); };
-            const handleComplete = async (level) => { await setDoc(doc(db, 'challenge_progress', user.uid), { level, lastProof: { fileName: file.name, fileType: file.type, timestamp: new Date().toISOString() } }, { merge: true }); alert(`Selamat! Anda menyelesaikan tantangan hari ke-${level}!`); setFile(null); };
-            if (!userData) return <div className="text-center">Memuat...</div>;
-            if (!userData.startDate) return <div className="flex-1 p-10 flex items-center justify-center"><div className="bg-white rounded-2xl shadow-xl text-center p-8 max-w-sm mx-auto"><div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto -mt-20 border-8 border-white" style={{backgroundColor: THEME_COLOR.primary}}><i className="fas fa-leaf text-4xl text-white"></i></div><h2 className="text-3xl font-extrabold mt-4 text-gray-800">Selamat Datang!</h2><p className="text-gray-600 mt-2 mb-6">Mulai petualangan 30 hari Anda untuk bumi.</p><button onClick={handleStart} className="w-full text-white font-bold py-3 px-4 rounded-xl shadow-lg transition-transform transform hover:scale-105" style={{backgroundColor: THEME_COLOR.primary}}>Mulai Tantangan!</button></div></div>;
-            const progress = (userData.level / TOTAL_DAYS) * 100;
-            return (<div className="max-w-4xl mx-auto"><div className="bg-white p-6 rounded-2xl shadow-md mb-8"><h2 className="text-2xl font-bold text-gray-800">Tantangan 30 Hari</h2><p className="text-gray-600 mt-2">Selesaikan satu tugas setiap hari.</p><div className="w-full bg-gray-200 rounded-full h-4 mt-4"><div className="bg-gradient-to-r from-green-400 to-blue-500 h-4 rounded-full" style={{ width: `${progress}%` }}></div></div><p className="text-right text-sm font-bold mt-1 text-gray-700">{userData.level}/{TOTAL_DAYS}</p></div><div className="relative w-full" style={{ height: '320vh' }}><input type="file" accept="image/*" ref={fileInputRef} onChange={(e) => setFile(e.target.files[0])} className="hidden"/>{Array.from({ length: TOTAL_DAYS }, (_, i) => i + 1).map(level => { const isCompleted = level <= userData.level; const isCurrent = !isCompleted && level === userData.level + 1; const position = levelPositions[level - 1]; let nodeClass = 'w-20 h-20 rounded-full border-4 flex items-center justify-center text-3xl font-bold shadow-lg'; if (isCompleted) nodeClass += ' bg-green-500 text-white border-green-700'; else if (isCurrent) nodeClass += ' bg-blue-500 text-white border-blue-700 cursor-pointer animate-pulse-slow'; else nodeClass += ' bg-gray-200 text-gray-400 border-gray-300'; return (<div key={level} className="absolute transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group" style={position}><div className="absolute bottom-full mb-2 px-3 py-1 bg-gray-800 text-white rounded-md text-xs opacity-0 group-hover:opacity-100">Hari {level}</div><div className={nodeClass} onClick={() => isCurrent && fileInputRef.current.click()}>{isCompleted ? <i className="fas fa-check"></i> : level}</div><div className="relative mt-2 h-8 flex items-center">{isCurrent && file && (<button onClick={() => handleComplete(level)} className="px-4 py-1 bg-green-600 text-white rounded-full text-xs shadow-lg animate-bounce">Selesaikan!</button>)}</div></div>); })}</div></div>);
-        };
-        const LeaderboardView = () => { const [leaderboard, setLeaderboard] = useState([]); useEffect(() => { const q = query(collection(db, 'challenge_progress'), orderBy('level', 'desc')); const unsub = onSnapshot(q, (snapshot) => setLeaderboard(snapshot.docs.map(doc => ({...doc.data(), uid: doc.id})))); return () => unsub(); }, []); return <div className="max-w-2xl mx-auto"><div className="bg-white p-6 rounded-2xl shadow-md"><h2 className="text-2xl font-bold mb-4">Papan Peringkat</h2><div className="space-y-4">{leaderboard.map((user, index) => <div key={user.uid || index} className="flex items-center bg-gray-50 p-4 rounded-lg"><span className="text-lg font-bold text-gray-500 mr-4 w-8 text-center">{index+1}</span><img src={user.photoURL} alt="Avatar" className="w-10 h-10 rounded-full mr-4"/><span className="font-bold flex-1">{user.displayName}</span><span className="text-green-600 font-bold">{user.level} Level</span></div>)}</div></div></div> };
-        const ProfileView = ({user}) => { const [userData, setUserData] = useState(null); useEffect(() => { const unsub = onSnapshot(doc(db, 'challenge_progress', user.uid), (doc) => { if (doc.exists()) setUserData(doc.data()); }); return () => unsub(); }, [user.uid]); if(!userData) return <div className="text-center">Memuat profil...</div>; const daysSinceStart = userData.startDate ? Math.floor((Date.now() - new Date(userData.startDate).getTime()) / (1000 * 60 * 60 * 24)) : 0; const missedLevels = daysSinceStart > userData.level ? daysSinceStart - userData.level : 0; return <div className="max-w-2xl mx-auto"><div className="bg-white p-8 rounded-2xl shadow-md text-center"><img src={user.photoURL} alt="Profile" className="w-24 h-24 rounded-full mx-auto mb-4 ring-4 ring-blue-400"/><h2 className="text-3xl font-bold">{user.displayName}</h2><p className="text-gray-500">Bergabung: {userData.startDate ? new Date(userData.startDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long' }) : '-'}</p><div className="mt-6 border-t pt-6"><h3 className="text-xl font-bold mb-4">Statistik Saya</h3><div className="grid grid-cols-3 gap-4"><div className="bg-green-50 p-4 rounded-lg"><p className="text-3xl font-bold text-green-600">{userData.level}</p><p className="text-gray-500">Selesai</p></div><div className="bg-red-50 p-4 rounded-lg"><p className="text-3xl font-bold text-red-600">{missedLevels > 0 ? missedLevels : 0}</p><p className="text-gray-500">Terlewat</p></div><div className="bg-blue-50 p-4 rounded-lg"><p className="text-3xl font-bold text-blue-600">{Math.floor(userData.level / 5)}</p><p className="text-gray-500">Lencana</p></div></div></div></div></div> };
-
-        // --- Render the main App component into the #root div ---
-        const container = document.getElementById('root');
-        if (container) {
-            const root = ReactDOM.createRoot(container);
-            root.render(<StrictMode><App /></StrictMode>);
+        // Function to hide the modal
+        function hideModal() {
+            modalContent.classList.remove('modal-enter-active');
+            modalContent.classList.add('modal-leave-active');
+            // Hide the modal container after the transition ends
+            setTimeout(() => {
+                popupModal.classList.add('hidden');
+                modalContent.classList.remove('modal-leave-active');
+                modalContent.classList.add('modal-enter'); // Reset for next time
+            }, 300);
         }
-    </script>
+
+        // Event Listeners
+        showPopupButton.addEventListener('click', showModal);
+        closeButton.addEventListener('click', hideModal);
+
+        // Close modal if user clicks outside of the modal content
+        popupModal.addEventListener('click', function(event) {
+            if (event.target === popupModal) {
+                hideModal();
+            }
+        });
+        
+        // Close modal with the 'Escape' key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                hideModal();
+            }
+        });
+</script>
 </body>
 </html>

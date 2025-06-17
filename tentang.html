@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aksi - NafasBumi</title> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        #preloader {
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .slide-up {
+            transform: translateY(-100%);
+        }
+        
+              /* Warna hijau kustom yang mirip dengan contoh */
+      .custom-green {
+        background-color: #6a994e;
+      }
+      .custom-green-text {
+        color: #6a994e;
+      }
+      .custom-green-border {
+        border-color: #6a994e;
+      }
+      .btn-primary {
+        background-color: transparent;
+        border: 1px solid #386641;
+        color: #386641;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background-color: #386641;
+        color: white;
+      }
+      .btn-secondary {
+        background-color: transparent;
+        border: 1px solid #386641;
+        color: #386641;
+        font-weight: bold;
+        transition: all 0.3s ease;
+      }
+      .btn-secondary:hover {
+        background-color: #386641;
+        color: white;
+      }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <header id="main-header" class="bg-white/80 backdrop-blur-sm fixed w-full top-0 z-40 shadow-sm">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-semibold text-[#2E5339]">NafasBumi</a>
+            
+            <div class="hidden md:flex items-center space-x-8 text-gray-700">
+                <a href="index.html" 
+                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+                   Beranda
+                </a>
+                
+                <a href="wawasan.html" 
+                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-ful">
+                   Wawasan
+                </a>
+                
+                <a href="aksi.html" 
+                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+                   Aksi
+                </a>
+                
+                <a href="#tentang" 
+                   class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]">
+                   Tentang Kami
+                </a>
+            </div>
+            
+            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">
+                Donasi
+            </a>
+            
+            <button id="mobile-menu-button" class="md:hidden text-2xl text-[#2E5339]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 border-t border-gray-200">
+            <a href="index.html" class="block py-2 px-4 text-sm">Beranda</a>
+            <a href="wawasan.html" class="block py-2 px-4 text-sm">Wawasan</a>
+            <a href="#aksi" class="block py-2 px-4 text-sm font-bold text-[#2E5339]">Aksi</a>
+            <a href="tentang.html" class="block py-2 px-4 text-sm">Tentang Kami</a>
+            <a href="#donasi" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
+        </div>
+    </header>
+
+    <div id="preloader" class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50">
+        <div id="preloader-content" class="flex flex-col justify-between h-full items-center text-center py-8">
+            <div></div>
+            <h1 class="text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']">
+                Tentang NafasBumi
+            </h1>
+            <div class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]">NafasBumi</div>
+        </div>
+    </div>
+
+    <main id="main-content">
+      <section id="tentang" class="content-section mt-10 min-h-screen py-16">
+        <div class="container mx-auto px-6 text-center max-w-4xl">
+          <h2 class="text-4xl font-bold text-center mb-4">Tentang NafasBumi</h2>
+          <p class="text-center text-gray-600 mb-12">
+            Kami percaya bahwa informasi yang akurat, kepedulian yang tulus, dan
+            aksi kolektif adalah kunci untuk masa depan bumi yang berkelanjutan.
+          </p>
+          <img
+            src="https://images.unsplash.com/photo-1579593343485-a74a1310b315?q=80&w=1287&auto=format&fit=crop"
+            onerror="this.onerror=null;this.src='https://placehold.co/600x400/2E5339/FDFBF5?text=Tim+NafasBumi';"
+            class="w-full h-80 object-cover rounded-lg shadow-lg mb-8"
+            alt="Tim NafasBumi"
+          />
+          <div class="text-left bg-white p-8 rounded-lg shadow-lg">
+            <h3 class="text-2xl font-bold text-[#2E5339] mb-4">Misi Kami</h3>
+            <p class="text-gray-700 mb-4">
+              NafasBumi adalah platform digital independen yang lahir dari
+              kegelisahan akan kondisi lingkungan di Indonesia. Misi kami adalah
+              menjadi sumber informasi lingkungan yang terpercaya,
+              menyederhanakan data yang kompleks, dan yang terpenting,
+              menjembatani kesadaran dengan tindakan nyata.
+            </p>
+            <p class="text-gray-700">
+              Kami bekerja untuk mengedukasi publik, mendorong kebijakan yang
+              pro-lingkungan, dan membangun komunitas yang solid dan peduli.
+              Setiap artikel yang kami tulis, setiap kampanye yang kami
+              suarakan, dan setiap panduan yang kami bagikan adalah bagian dari
+              upaya memberikan nafas baru untuk bumi pertiwi.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+        <footer class="bg-[#1c3323] text-white mt-16">
+        <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-bold mb-4">NafasBumi</h4>
+                    <p class="text-gray-400 text-sm">Aksi Kecil Kita, Nafas Baru Untuk Bumi.</p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Tautan Cepat</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="wawasan.html" class="hover:text-gray-300">Wawasan</a></li>
+                        <li><a href="aksi.html" class="hover:text-gray-300">Aksi</a></li>
+                        <li><a href="tentang.html" class="hover:text-gray-300">Tentang Kami</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Legal</h5>
+                     <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-gray-300">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-gray-300">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-gray-300">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                     <h5 class="font-semibold mb-4">Ikuti Kami</h5>
+                     <div class="flex space-x-4">
+                        <a href="#" class="hover:text-gray-300">FB</a>
+                        <a href="#" class="hover:text-gray-300">IG</a>
+                        <a href="#" class="hover:text-gray-300">TW</a>
+                        <a href="#" class="hover:text-gray-300">YT</a>
+                     </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">
+                &copy; 2024 NafasBumi. Dibuat dengan cinta untuk Planet Bumi.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            const mainContent = document.getElementById('main-content');
+            const mainHeader = document.getElementById('main-header');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const enableScroll = () => { document.body.style.overflow = 'auto'; };
+    
+            // Preloader logic
+            if (preloader && mainContent) { 
+                document.body.style.overflow = 'hidden'; 
+                setTimeout(() => { 
+                    preloader.classList.add('slide-up'); 
+                    mainContent.style.transition = 'opacity 0.5s ease-in'; 
+                    mainContent.style.opacity = '1'; 
+                    setTimeout(() => { 
+                        preloader.style.display = 'none'; 
+                        enableScroll(); 
+                    }, 1000); 
+                }, 2000); 
+            } else { 
+                enableScroll(); 
+            }
+    
+            // Mobile menu toggle
+            if (mobileMenuButton && mobileMenu) { 
+                mobileMenuButton.addEventListener('click', () => { 
+                    mobileMenu.classList.toggle('hidden'); 
+                }); 
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+        // Logika untuk menu mobile
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // =======================================================
+        // == DATA BERITA DENGAN VARIASI SUDUT PANDANG          ==
+        // =======================================================
+        const beritaData = [
+            {
+                kategori: 'News Nasional',
+                judul: 'Keindahan Alam Raja Ampat Terancam Tambang Nikel, Kemenpar Buka Suara',
+                deskripsi: 'Rencana ekspansi tambang nikel ke Raja Ampat memicu kekhawatiran berbagai pihak. Surga wisata dunia itu kini terancam rusak oleh aktivitas industri ekstraktif.',
+                link: 'https://www.inews.id/multimedia/video/headline-inewsid-keindahan-alam-raja-ampat-terancam-tambang-nikel-kemenpar-buka-suara',
+                gambarUrl: 'https://lh3.googleusercontent.com/gps-cs-s/AC9h4nrFeLy4RXaCjppqthds7azNjW5hlEvfiBYivRZ3OEKIt-W3DGa1VGpphuzxeOVSrS7nNQwR3uWNJI2wdZMHB8pfrLwPbDITCCXF2pdpp_iFnwWnCMTwEFiFfYeQ42ohWuLYnGgnUA=w810-h468-n-k-no'
+            },
+            {
+                kategori: 'Regional',
+                judul: 'Ekowisata Malagufuk, Hutan Papua yang Melindungi Berbagai Macam Hewan Termasuk Ular Berbisa',
+                deskripsi: 'Ekowisata Malagufuk di Distrik Makbon, Kabupaten Sorong, Provinsi Papua Barat Daya, menawarkan keindahan alam serta kesempatan untuk memantau..',
+                link: 'https://regional.kompas.com/read/2025/05/16/074629878/ekowisata-malagufuk-hutan-papua-yang-melindungi-berbagai-macam-hewan',
+                gambarUrl: 'https://asset.kompas.com/crops/W-yOiwi5ZcwOV_BTNoI4smT_LVc=/0x0:0x0/1200x800/data/photo/2025/05/15/6825bb663437c.jpg'
+            },
+            {
+                kategori: 'News Nasional',
+                judul: 'Dukung Penutupan Tambang Nikel di Raja Ampat, Lamhot Sinaga: Keindahan Alam dan Kekayaan Hayati Harus Dilestarikan',
+                deskripsi: 'Wakil Ketua Komisi VII Dewan Perwakilan Rakyat (DPR) RI, Lamhot Sinaga, mendukung penuh keputusan Menteri Energi dan Sumber Daya Mineral (ESDM) Bahlil Lahadalia..',
+                link: 'https://nasional.kompas.com/read/2025/06/08/20044061/dukung-penutupan-tambang-nikel-di-raja-ampat-lamhot-sinaga-keindahan-alam',
+                gambarUrl: 'https://asset.kompas.com/crops/E-dqX3EfKL5oXJ1qRIKN75sdW7c=/321x0:321x0/1200x800/data/photo/2025/06/08/684589355870d.jpeg'
+            },
+            {
+                kategori: 'Kisah Komunitas',
+                judul: 'Kisah Petani Kopi di Lereng Gunung yang Beralih ke Pertanian Organik',
+                deskripsi: 'Berangkat dari keprihatinan akan kerusakan tanah, sekelompok petani berhasil meningkatkan hasil panen sekaligus memulihkan ekosistem.',
+                link: 'https://www.google.com/search?q=berita+kisah+petani+organik+indonesia&tbm=nws',
+                gambarUrl: 'https://images.unsplash.com/photo-1509785307050-d4a529320981?q=80&w=2070&auto=format&fit=crop'
+            },
+            {
+                kategori: 'Satwa Liar',
+                judul: 'Konflik Manusia dan Gajah Kembali Terjadi di Perkebunan Sawit Aceh',
+                deskripsi: 'Menyusutnya habitat alami memicu gajah memasuki area perkebunan, menimbulkan kerugian dan menuntut solusi jangka panjang dari semua pihak.',
+                link: 'https://www.google.com/search?q=berita+konflik+gajah+manusia+aceh&tbm=nws',
+                gambarUrl: 'https://images.unsplash.com/photo-1551106399-450a31818314?q=80&w=1974&auto=format&fit=crop'
+            },
+            {
+                kategori: 'Kesehatan Lingkungan',
+                judul: 'Studi Terbaru Kaitkan Polusi Udara di Perkotaan dengan Peningkatan Kasus Asma',
+                deskripsi: 'Penelitian yang dipublikasikan di jurnal kesehatan internasional menunjukkan korelasi kuat antara partikel PM2.5 dengan gangguan pernapasan.',
+                link: 'https://www.google.com/search?q=berita+studi+polusi+udara+penyakit+pernapasan&tbm=nws',
+                gambarUrl: 'https://images.unsplash.com/photo-1611270418597-a6c7e334b6ce?q=80&w=1964&auto=format&fit=crop'
+            },
+        ];
+
+        const beritaContainer = document.getElementById('berita-container');
+        if (beritaContainer) {
+            const createBeritaCard = (berita) => {
+                return `
+                    <a href="${berita.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="relative h-48 w-full">
+                            <img src="${berita.gambarUrl}" alt="Thumbnail ${berita.judul}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-4"><h2 class="text-2xl font-bold text-white">${berita.kategori}</h2></div>
+                        </div>
+                        <div class="p-6 flex flex-col h-full">
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">${berita.judul}</h3>
+                            <p class="text-gray-600 text-base mb-6 leading-relaxed flex-grow">${berita.deskripsi}</p>
+                            <span class="font-semibold text-[#2E5339] inline-flex items-center mt-auto">
+                                Jelajahi Topik Ini
+                                <svg class="w-4 h-4 ml-1 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                            </span>
+                        </div>
+                    </a>
+                `;
+            };
+            beritaData.forEach(berita => {
+                beritaContainer.innerHTML += createBeritaCard(berita);
+            });
+        }
+    });
+    </script>
+</body>
+</html>
