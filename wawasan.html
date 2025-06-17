@@ -1,138 +1,251 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wawasan - NafasBumi</title> 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="icon" type="image/x-icon" href="/eekend (1).svg">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wawasan - NafasBumi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="icon" type="image/x-icon" href="/eekend (1).svg" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
-        }
-        .nav-link-active {
-            font-weight: 600;
-            color: #2E5339;
-        }
-        #preloader {
-            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-        .slide-up {
-            transform: translateY(-100%);
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #2E5339;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .chart-container {
-            position: relative;
-            margin: auto;
-            height: 60vh;
-            max-height: 450px;
-            width: 100%;
-        }
-    </style>
-</head>
-<body class="bg-gray-100">
 
-    <header id="main-header" class="bg-white/80 backdrop-blur-sm sticky w-full top-0 z-40 shadow-sm">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-semibold text-[#2E5339]">NafasBumi</a>
-            <div class="hidden md:flex items-center space-x-8 text-gray-700">
-                <a href="index.html" class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">Beranda</a>
-                <a href="wawasan.html" class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]">Wawasan</a>
-                <a href="aksi.html" class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">Aksi</a>
-                <a href="tentang.html" class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">Tentang Kami</a>
-            </div>
-            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
-            <button id="mobile-menu-button" class="md:hidden text-2xl text-[#2E5339]">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 border-t border-gray-200">
-            <a href="index.html" class="block py-2 px-4 text-sm">Beranda</a>
-            <a href="wawasan.html" class="block py-2 px-4 text-sm nav-link-active">Wawasan</a>
-            <a href="aksi.html" class="block py-2 px-4 text-sm">Aksi</a>
-            <a href="tentang.html" class="block py-2 px-4 text-sm">Tentang Kami</a>
-            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full">Donasi</a>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f8f9fa;
+      }
+      .nav-link-active {
+        font-weight: 600;
+        color: #2e5339;
+      }
+      #preloader {
+        transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+      }
+      .slide-up {
+        transform: translateY(-100%);
+      }
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #2e5339;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .chart-container {
+        position: relative;
+        margin: auto;
+        height: 60vh;
+        max-height: 450px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <header
+      id="main-header"
+      class="bg-white/80 backdrop-blur-sm sticky w-full top-0 z-40 shadow-sm"
+    >
+      <nav
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <a href="index.html" class="text-2xl font-semibold text-[#2E5339]"
+          >NafasBumi</a
+        >
+        <div class="hidden md:flex items-center space-x-8 text-gray-700">
+          <a
+            href="index.html"
+            class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full"
+            >Beranda</a
+          >
+          <a
+            href="wawasan.html"
+            class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]"
+            >Wawasan</a
+          >
+          <a
+            href="aksi.html"
+            class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full"
+            >Aksi</a
+          >
+          <a
+            href="tentang.html"
+            class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full"
+            >Tentang Kami</a
+          >
         </div>
+        <a
+          href="https://forms.gle/7ihXz8gV9WV83QVW8"
+          class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors"
+          >Donasi</a
+        >
+        <button
+          id="mobile-menu-button"
+          class="md:hidden text-2xl text-[#2E5339]"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            />
+          </svg>
+        </button>
+      </nav>
+      <div
+        id="mobile-menu"
+        class="hidden md:hidden bg-white p-4 border-t border-gray-200"
+      >
+        <a href="index.html" class="block py-2 px-4 text-sm">Beranda</a>
+        <a href="wawasan.html" class="block py-2 px-4 text-sm nav-link-active"
+          >Wawasan</a
+        >
+        <a href="aksi.html" class="block py-2 px-4 text-sm">Aksi</a>
+        <a href="tentang.html" class="block py-2 px-4 text-sm">Tentang Kami</a>
+        <a
+          href="https://forms.gle/7ihXz8gV9WV83QVW8"
+          class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full"
+          >Donasi</a
+        >
+      </div>
     </header>
 
-    <div id="preloader" class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50">
-        <div id="preloader-content" class="flex flex-col justify-between h-full items-center text-center py-8">
-            <div></div>
-            <h1 class="text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']">Wawasan</h1>
-            <div class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]">NafasBumi</div>
+    <div
+      id="preloader"
+      class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50"
+    >
+      <div
+        id="preloader-content"
+        class="flex flex-col justify-between h-full items-center text-center py-8"
+      >
+        <div></div>
+        <h1
+          class="text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']"
+        >
+          Wawasan
+        </h1>
+        <div
+          class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]"
+        >
+          NafasBumi
         </div>
+      </div>
     </div>
 
     <main id="main-content" class="opacity-0">
-        <section class="bg-white pt-32 pb-16">
-            <div class="container mx-auto px-6 text-center">
-                <h1 class="text-5xl font-extrabold text-[#2E5339] font-['Montserrat']">Galeri Wawasan</h1>
-                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Jelajahi kumpulan artikel, analisis mendalam, dan berita terkini seputar isu lingkungan di Indonesia dan dunia.</p>
+      <section class="bg-white pt-32 pb-16">
+        <div class="container mx-auto px-6 text-center">
+          <h1
+            class="text-5xl font-extrabold text-[#2E5339] font-['Montserrat']"
+          >
+            Galeri Wawasan
+          </h1>
+          <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+            Jelajahi kumpulan artikel, analisis mendalam, dan berita terkini
+            seputar isu lingkungan di Indonesia dan dunia.
+          </p>
+        </div>
+      </section>
+
+      <section class="py-16">
+        <div class="container mx-auto px-6">
+          <div
+            id="berita-container"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            <div class="text-center md:col-span-3">
+              Memuat lebih banyak berita...
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        <section class="py-16">
-            <div class="container mx-auto px-6">
-                <div id="berita-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <div class="text-center md:col-span-3">Memuat lebih banyak berita...</div>
-                </div>
+      <section id="pojok-wawasan" class="min-h-screen">
+        <div class="container mx-auto px-6">
+          <div class="bg-white p-8 rounded-lg shadow-lg mb-16">
+            <h2
+              class="text-5xl font-extrabold text-[#2E5339] text-center font-['Montserrat'] mb-4"
+            >
+              Pojok Wawasan
+            </h2>
+            <p class="text-center text-gray-600 mb-20 max-w-3xl mx-auto">
+              Informasi adalah langkah pertama menuju perubahan. Dapatkan data,
+              pemahaman mendalam, dan jelajahi topik lingkungan dengan bantuan
+              AI.
+            </p>
+            <h3 class="text-2xl font-bold mb-2 text-center">
+              ✨ Jelajahi Topik Lingkungan
+            </h3>
+            <p class="text-center text-gray-500 mb-8">
+              Punya pertanyaan tentang isu lingkungan? Tanyakan di sini dan
+              dapatkan penjelasan sederhana dari AI.
+            </p>
+            <div class="max-w-2xl mx-auto">
+              <textarea
+                id="topic-input"
+                class="w-full p-3 border rounded mb-4 focus:ring-2 focus:ring-[#4A7859] focus:border-transparent outline-none transition"
+                rows="3"
+                placeholder="Contoh: Apa itu jejak karbon dan bagaimana cara menguranginya?"
+              ></textarea>
+
+              <button
+                id="explore-topic-btn"
+                class="w-full bg-[#2E5339] text-white p-3 rounded-lg font-bold hover:bg-[#4A7859] transition-colors flex items-center justify-center disabled:bg-gray-400"
+              >
+                Jelajahi Sekarang
+              </button>
+
+              <div id="topic-loader" class="hidden flex justify-center mt-4">
+                <div class="loader"></div>
+              </div>
+
+              <div
+                id="topic-result"
+                class="mt-6 bg-stone-50 p-6 rounded-lg hidden text-gray-700 leading-relaxed"
+              ></div>
             </div>
-        </section>
+          </div>
 
-        <section id="pojok-wawasan" class="min-h-screen py-16">
-            <div class="container mx-auto px-6">
-                <h2 class="text-4xl font-bold text-center mb-4">Pojok Wawasan</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Informasi adalah langkah pertama menuju perubahan. Dapatkan data, pemahaman mendalam, dan jelajahi topik lingkungan dengan bantuan AI.</p>
-
-                <div class="bg-white p-8 rounded-lg shadow-lg mb-16">
-                    <h3 class="text-2xl font-bold mb-2 text-center">✨ Jelajahi Topik Lingkungan</h3>
-                    <p class="text-center text-gray-500 mb-8">Punya pertanyaan tentang isu lingkungan? Tanyakan di sini dan dapatkan penjelasan sederhana dari AI.</p>
-                    <div class="max-w-2xl mx-auto">
-                        <textarea id="topic-input" class="w-full p-3 border rounded mb-4 focus:ring-2 focus:ring-[#4A7859] focus:border-transparent outline-none transition" rows="3" placeholder="Contoh: Apa itu jejak karbon dan bagaimana cara menguranginya?"></textarea>
-                        
-                        <button id="explore-topic-btn" class="w-full bg-[#2E5339] text-white p-3 rounded-lg font-bold hover:bg-[#4A7859] transition-colors flex items-center justify-center disabled:bg-gray-400">
-                            Jelajahi Sekarang
-                        </button>
-
-                        <div id="topic-loader" class="hidden flex justify-center mt-4">
-                            <div class="loader"></div>
-                        </div>
-                        
-                        <div id="topic-result" class="mt-6 bg-stone-50 p-6 rounded-lg hidden text-gray-700 leading-relaxed"></div>
-                    </div>
-                </div>
-                
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-2xl font-bold mb-2 text-center">Visualisasi Data: Tren Komposisi Sampah Tahunan</h3>
-                    <p class="text-center text-gray-500 mb-8 max-w-3xl mx-auto">Data simulasi ini membandingkan perkiraan volume berbagai jenis sampah yang masuk ke lingkungan dari tahun ke tahun. Terlihat bahwa sampah plastik terus menjadi perhatian utama.</p>
-                    <div class="chart-container">
-                        <canvas id="wasteChart"></canvas>
-                    </div>
-                </div>
+          <div class="bg-white p-8 rounded-lg shadow-lg">
+            <h3 class="text-2xl font-bold text-[#304529] mb-2 text-center">
+              Visualisasi Data: Tren Komposisi Sampah Tahunan
+            </h3>
+            <p class="text-center text-gray-500 mb-8 max-w-3xl mx-auto">
+              Data simulasi ini membandingkan perkiraan volume berbagai jenis
+              sampah yang masuk ke lingkungan dari tahun ke tahun. Terlihat
+              bahwa sampah plastik terus menjadi perhatian utama.
+            </p>
+            <div class="chart-container">
+              <canvas id="wasteChart"></canvas>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
     </main>
 
     <footer class="bg-[#1c3323] text-white mt-16">
-         <div class="container mx-auto px-6 py-12">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <div class="container mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h4 class="text-lg font-bold mb-4">NafasBumi</h4>
             <p class="text-gray-400 text-sm">
@@ -168,38 +281,88 @@
           <div>
             <h5 class="font-semibold mb-4">Ikuti Kami</h5>
             <div class="flex flex-col sm:flex-row items-center justify-between">
-                <div class="flex space-x-5 order-1 sm:order-2">
-                    <!-- Ikon Facebook -->
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <span class="sr-only">Facebook</span>
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                    <!-- Ikon Instagram -->
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <span class="sr-only">Instagram</span>
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                           <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.148 2.148c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.148 2.148c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.148-2.148c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427A4.902 4.902 0 015.08 4.623c.636-.247 1.363-.416 2.427-.465C8.53 2.013 8.884 2 12.315 2zm-1.04 1.792c-2.392 0-2.71.01-3.664.053-1.002.046-1.594.208-1.943.362a3.103 3.103 0 00-1.363 1.363c-.154.349-.316.941-.362 1.943-.043.954-.053 1.272-.053 3.664s.01 2.71.053 3.664c.046 1.002.208 1.594.362 1.943a3.103 3.103 0 001.363 1.363c.349.154.941.316 1.943.362.954.043 1.272.053 3.664.053s2.71-.01 3.664-.053c1.002-.046 1.594-.208 1.943-.362a3.103 3.103 0 001.363-1.363c.154-.349.316-.941.362-1.943.043-.954.053-1.272.053-3.664s-.01-2.71-.053-3.664c-.046-1.002-.208-1.594-.362-1.943a3.103 3.103 0 00-1.363-1.363c-.349-.154-.941-.316-1.943-.362-.954-.043-1.272-.053-3.664-.053z" clip-rule="evenodd" />
-                           <path d="M12.315 8.192a4.123 4.123 0 100 8.246 4.123 4.123 0 000-8.246zm0 6.453a2.33 2.33 0 110-4.66 2.33 2.33 0 010 4.66z" />
-                           <path d="M16.936 8.362a.96.96 0 11-1.92 0 .96.96 0 011.92 0z" />
-                        </svg>
-                    </a>
-                    <!-- Ikon Twitter/X -->
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <span class="sr-only">Twitter</span>
-                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                        </svg>
-                    </a>
-                     <!-- Ikon YouTube -->
-                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                        <span class="sr-only">YouTube</span>
-                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2.002 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM9.94 15.008V8.992l4.94 3.008-4.94 3.008Z" clip-rule="evenodd"/>
-                        </svg>
-                    </a>
-                </div>
+              <div class="flex space-x-5 order-1 sm:order-2">
+                <!-- Ikon Facebook -->
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                >
+                  <span class="sr-only">Facebook</span>
+                  <svg
+                    class="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </a>
+                <!-- Ikon Instagram -->
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                >
+                  <span class="sr-only">Instagram</span>
+                  <svg
+                    class="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.148 2.148c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.148 2.148c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.148-2.148c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427A4.902 4.902 0 015.08 4.623c.636-.247 1.363-.416 2.427-.465C8.53 2.013 8.884 2 12.315 2zm-1.04 1.792c-2.392 0-2.71.01-3.664.053-1.002.046-1.594.208-1.943.362a3.103 3.103 0 00-1.363 1.363c-.154.349-.316.941-.362 1.943-.043.954-.053 1.272-.053 3.664s.01 2.71.053 3.664c.046 1.002.208 1.594.362 1.943a3.103 3.103 0 001.363 1.363c.349.154.941.316 1.943.362.954.043 1.272.053 3.664.053s2.71-.01 3.664-.053c1.002-.046 1.594-.208 1.943-.362a3.103 3.103 0 001.363-1.363c.154-.349.316-.941.362-1.943.043-.954.053-1.272.053-3.664s-.01-2.71-.053-3.664c-.046-1.002-.208-1.594-.362-1.943a3.103 3.103 0 00-1.363-1.363c-.349-.154-.941-.316-1.943-.362-.954-.043-1.272-.053-3.664-.053z"
+                      clip-rule="evenodd"
+                    />
+                    <path
+                      d="M12.315 8.192a4.123 4.123 0 100 8.246 4.123 4.123 0 000-8.246zm0 6.453a2.33 2.33 0 110-4.66 2.33 2.33 0 010 4.66z"
+                    />
+                    <path
+                      d="M16.936 8.362a.96.96 0 11-1.92 0 .96.96 0 011.92 0z"
+                    />
+                  </svg>
+                </a>
+                <!-- Ikon Twitter/X -->
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                >
+                  <span class="sr-only">Twitter</span>
+                  <svg
+                    class="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                    />
+                  </svg>
+                </a>
+                <!-- Ikon YouTube -->
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors"
+                >
+                  <span class="sr-only">YouTube</span>
+                  <svg
+                    class="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2.002 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM9.94 15.008V8.992l4.94 3.008-4.94 3.008Z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -208,35 +371,39 @@
         >
           &copy; 2024 NafasBumi. Dibuat dengan cinta untuk Planet Bumi.
         </div>
-        </div>
+      </div>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- Logika UI (Preloader, Menu Mobile) ---
-            const preloader = document.getElementById('preloader');
-            const mainContent = document.getElementById('main-content');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- Logika UI (Preloader, Menu Mobile) ---
+        const preloader = document.getElementById("preloader");
+        const mainContent = document.getElementById("main-content");
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
 
-            setTimeout(() => {
-                if(preloader) {
-                    preloader.classList.add('slide-up');
-                    setTimeout(() => preloader.style.display = 'none', 1000);
-                }
-                if(mainContent) mainContent.style.opacity = '1';
-            }, 1500);
+        setTimeout(() => {
+          if (preloader) {
+            preloader.classList.add("slide-up");
+            setTimeout(() => (preloader.style.display = "none"), 1000);
+          }
+          if (mainContent) mainContent.style.opacity = "1";
+        }, 1500);
 
-            if (mobileMenuButton && mobileMenu) {
-                mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-            }
+        if (mobileMenuButton && mobileMenu) {
+          mobileMenuButton.addEventListener("click", () =>
+            mobileMenu.classList.toggle("hidden")
+          );
+        }
 
-            // --- Logika untuk Bagian Berita ---
-            const beritaContainer = document.getElementById('berita-container');
-            if (beritaContainer) {
-                const createBeritaCard = (berita) => {
-                    const description = berita.content ? berita.content.substring(0, 100) : "Klik untuk membaca lebih lanjut.";
-                    return `
+        // --- Logika untuk Bagian Berita ---
+        const beritaContainer = document.getElementById("berita-container");
+        if (beritaContainer) {
+          const createBeritaCard = (berita) => {
+            const description = berita.content
+              ? berita.content.substring(0, 100)
+              : "Klik untuk membaca lebih lanjut.";
+            return `
                         <a href="${berita.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
                             <div class="relative h-48 w-full">
                                 <img src="${berita.thumbnail}" alt="Thumbnail ${berita.title}" class="absolute h-full w-full object-cover" onerror="this.src='https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi';">
@@ -248,163 +415,176 @@
                             </div>
                         </a>
                     `;
-                };
+          };
 
-                const fetchMoreNews = async () => {
-                    const API_URL = `https://api-berita-indonesia.vercel.app/antara/terbaru/`;
-                    try {
-                        const response = await fetch(API_URL);
-                        const data = await response.json();
-                        if (!response.ok || data.success === false) throw new Error("Gagal ambil data");
-                        
-                        beritaContainer.innerHTML = '';
-                        // Tampilkan 6 berita di halaman ini
-                        const articlesToShow = data.data.posts.slice(0, 6);
-                        articlesToShow.forEach(berita => beritaContainer.innerHTML += createBeritaCard(berita));
-                    } catch (error) {
-                        beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita.</p>`;
-                    }
-                };
-                fetchMoreNews();
+          const fetchMoreNews = async () => {
+            const API_URL = `https://api-berita-indonesia.vercel.app/antara/terbaru/`;
+            try {
+              const response = await fetch(API_URL);
+              const data = await response.json();
+              if (!response.ok || data.success === false)
+                throw new Error("Gagal ambil data");
+
+              beritaContainer.innerHTML = "";
+              // Tampilkan 6 berita di halaman ini
+              const articlesToShow = data.data.posts.slice(0, 6);
+              articlesToShow.forEach(
+                (berita) =>
+                  (beritaContainer.innerHTML += createBeritaCard(berita))
+              );
+            } catch (error) {
+              beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita.</p>`;
             }
-            
-            // --- Logika untuk "Pojok Wawasan" (AI & Chart) ---
-            const topicInput = document.getElementById('topic-input');
-            const exploreBtn = document.getElementById('explore-topic-btn');
-            const topicLoader = document.getElementById('topic-loader');
-            const topicResult = document.getElementById('topic-result');
+          };
+          fetchMoreNews();
+        }
 
-            const callGeminiAPI = async (prompt) => {
-                // Sebaiknya API Key tidak diekspos di sisi klien dalam produksi nyata
-                const GEMINI_API_KEY = "AIzaSyDyIlvgZMqeou1D_w9a_iAsOIQaFdd4NQw"; 
-                const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-                
-                try {
-                    const response = await fetch(API_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                    });
-                    if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
-                    const data = await response.json();
-                    return data.candidates[0].content.parts[0].text;
-                } catch (error) {
-                    console.error("Gemini API Error:", error);
-                    return "Maaf, terjadi kesalahan saat menghubungi AI. Coba lagi nanti.";
-                }
-            };
-            
-            if (exploreBtn) {
-                exploreBtn.addEventListener('click', async () => {
-                    const topic = topicInput.value.trim();
-                    if (!topic) { alert('Silakan masukkan topik terlebih dahulu.'); return; }
-                    
-                    exploreBtn.disabled = true;
-                    topicLoader.classList.remove('hidden');
-                    topicResult.classList.add('hidden');
-                    
-                    const prompt = `Jelaskan topik lingkungan ini dengan bahasa sederhana, ringkas, dan dalam format markdown untuk audiens umum di Indonesia: "${topic}".`;
-                    const resultText = await callGeminiAPI(prompt);
-                    
-                    topicResult.innerHTML = resultText.replace(/\n/g, '<br>'); // Ganti newline dengan <br>
-                    topicResult.classList.remove('hidden');
-                    topicLoader.classList.add('hidden');
-                    exploreBtn.disabled = false;
-                });
+        // --- Logika untuk "Pojok Wawasan" (AI & Chart) ---
+        const topicInput = document.getElementById("topic-input");
+        const exploreBtn = document.getElementById("explore-topic-btn");
+        const topicLoader = document.getElementById("topic-loader");
+        const topicResult = document.getElementById("topic-result");
+
+        const callGeminiAPI = async (prompt) => {
+          // Sebaiknya API Key tidak diekspos di sisi klien dalam produksi nyata
+          const GEMINI_API_KEY = "AIzaSyDyIlvgZMqeou1D_w9a_iAsOIQaFdd4NQw";
+          const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+          try {
+            const response = await fetch(API_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                contents: [{ parts: [{ text: prompt }] }],
+              }),
+            });
+            if (!response.ok)
+              throw new Error(`API Error: ${response.statusText}`);
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
+          } catch (error) {
+            console.error("Gemini API Error:", error);
+            return "Maaf, terjadi kesalahan saat menghubungi AI. Coba lagi nanti.";
+          }
+        };
+
+        if (exploreBtn) {
+          exploreBtn.addEventListener("click", async () => {
+            const topic = topicInput.value.trim();
+            if (!topic) {
+              alert("Silakan masukkan topik terlebih dahulu.");
+              return;
             }
 
-            // --- BAGIAN 1: LOGIKA UNTUK GRAFIK (DIUBAH MENJADI MULTI-LINE CHART) ---
+            exploreBtn.disabled = true;
+            topicLoader.classList.remove("hidden");
+            topicResult.classList.add("hidden");
 
-            const ctx = document.getElementById('wasteChart');
-            if (ctx) {
-                // Data baru dengan beberapa kategori
-                const multiLineChartData = {
-                    labels: ['2020', '2021', '2022', '2023', '2024', '2025 (Estimasi)'],
-                    datasets: [
-                        {
-                            label: 'Sampah Plastik',
-                            data: [480, 510, 550, 540, 580, 620],
-                            borderColor: '#3B82F6', // Biru
-                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                            fill: true,
-                            tension: 0.3
-                        },
-                        {
-                            label: 'Sampah Organik',
-                            data: [350, 360, 340, 370, 350, 380],
-                            borderColor: '#10B981', // Hijau
-                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                            fill: true,
-                            tension: 0.3
-                        },
-                        {
-                            label: 'Lainnya (Logam, Kaca, dll.)',
-                            data: [210, 200, 220, 240, 230, 250],
-                            borderColor: '#6B7280', // Abu-abu
-                            backgroundColor: 'rgba(107, 114, 128, 0.2)',
-                            fill: true,
-                            tension: 0.3
-                        }
-                    ]
-                };
+            const prompt = `Jelaskan topik lingkungan ini dengan bahasa sederhana, ringkas, dan dalam format markdown untuk audiens umum di Indonesia: "${topic}".`;
+            const resultText = await callGeminiAPI(prompt);
 
-                new Chart(ctx, {
-                    type: 'line',
-                    data: multiLineChartData,
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: false,
-                                title: {
-                                    display: true,
-                                    text: 'Volume (dalam ribu ton)',
-                                    font: { family: "'Poppins', sans-serif" }
-                                }
-                            },
-                            x: {
-                                title: {
-                                    display: true,
-                                    text: 'Tahun',
-                                    font: { family: "'Poppins', sans-serif" }
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                display: true, // DIUBAH: Menampilkan legenda
-                                position: 'top',
-                                labels: {
-                                    font: { family: "'Poppins', sans-serif" }
-                                }
-                            },
-                            tooltip: {
-                                padding: 10,
-                                titleFont: { family: "'Poppins', sans-serif", weight: 'bold'},
-                                bodyFont: { family: "'Poppins', sans-serif"},
-                                callbacks: {
-                                    label: function(context) {
-                                        let label = context.dataset.label || '';
-                                        if (label) {
-                                            label += ': ';
-                                        }
-                                        if (context.parsed.y !== null) {
-                                            label += `${context.parsed.y} ribu ton`;
-                                        }
-                                        return label;
-                                    }
-                                }
-                            }
-                        },
-                        interaction: {
-                          intersect: false,
-                          mode: 'index',
-                        },
-                    }
-                });
-            }
-        });
+            topicResult.innerHTML = resultText.replace(/\n/g, "<br>"); // Ganti newline dengan <br>
+            topicResult.classList.remove("hidden");
+            topicLoader.classList.add("hidden");
+            exploreBtn.disabled = false;
+          });
+        }
+
+        // --- BAGIAN 1: LOGIKA UNTUK GRAFIK (DIUBAH MENJADI MULTI-LINE CHART) ---
+
+        const ctx = document.getElementById("wasteChart");
+        if (ctx) {
+          // Data baru dengan beberapa kategori
+          const multiLineChartData = {
+            labels: ["2020", "2021", "2022", "2023", "2024", "2025 (Estimasi)"],
+            datasets: [
+              {
+                label: "Sampah Plastik",
+                data: [480, 510, 550, 540, 580, 620],
+                borderColor: "#3B82F6", // Biru
+                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                fill: true,
+                tension: 0.3,
+              },
+              {
+                label: "Sampah Organik",
+                data: [350, 360, 340, 370, 350, 380],
+                borderColor: "#10B981", // Hijau
+                backgroundColor: "rgba(16, 185, 129, 0.2)",
+                fill: true,
+                tension: 0.3,
+              },
+              {
+                label: "Lainnya (Logam, Kaca, dll.)",
+                data: [210, 200, 220, 240, 230, 250],
+                borderColor: "#6B7280", // Abu-abu
+                backgroundColor: "rgba(107, 114, 128, 0.2)",
+                fill: true,
+                tension: 0.3,
+              },
+            ],
+          };
+
+          new Chart(ctx, {
+            type: "line",
+            data: multiLineChartData,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: false,
+                  title: {
+                    display: true,
+                    text: "Volume (dalam ribu ton)",
+                    font: { family: "'Poppins', sans-serif" },
+                  },
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Tahun",
+                    font: { family: "'Poppins', sans-serif" },
+                  },
+                },
+              },
+              plugins: {
+                legend: {
+                  display: true, // DIUBAH: Menampilkan legenda
+                  position: "top",
+                  labels: {
+                    font: { family: "'Poppins', sans-serif" },
+                  },
+                },
+                tooltip: {
+                  padding: 10,
+                  titleFont: {
+                    family: "'Poppins', sans-serif",
+                    weight: "bold",
+                  },
+                  bodyFont: { family: "'Poppins', sans-serif" },
+                  callbacks: {
+                    label: function (context) {
+                      let label = context.dataset.label || "";
+                      if (label) {
+                        label += ": ";
+                      }
+                      if (context.parsed.y !== null) {
+                        label += `${context.parsed.y} ribu ton`;
+                      }
+                      return label;
+                    },
+                  },
+                },
+              },
+              interaction: {
+                intersect: false,
+                mode: "index",
+              },
+            },
+          });
+        }
+      });
     </script>
-</body>
+  </body>
 </html>
