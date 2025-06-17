@@ -312,17 +312,17 @@
 
             const beritaContainer = document.getElementById('berita-container');
 
-            // --- PERUBAHAN DI FUNGSI INI ---
             const createBeritaCard = (berita) => {
-                const description = berita.description ? berita.description.substring(0, 100) : "Deskripsi tidak tersedia.";
-                // Tautan sekarang langsung ke URL berita asli dan membuka di tab baru
+                // API ini menyediakan deskripsi di dalam 'content'
+                const description = berita.content ? berita.content.substring(0, 100) : "Klik untuk membaca lebih lanjut.";
+                
                 return `
-                    <a href="${berita.url}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                    <a href="${berita.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
                         <div class="relative h-48 w-full">
-                            <img src="${berita.urlToImage || 'https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi'}" alt="Thumbnail ${berita.title}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/2E5339/FFFFFF?text=Gambar+Error'; this.onerror=null;">
+                            <img src="${berita.thumbnail}" alt="Thumbnail ${berita.title}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi'; this.onerror=null;">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
                             <div class="absolute bottom-0 left-0 p-4">
-                                <h2 class="text-sm font-bold text-white">${berita.source.name}</h2>
+                                <h2 class="text-sm font-bold text-white">${new Date(berita.pubDate).toLocaleDateString('id-ID')}</h2>
                             </div>
                         </div>
                         <div class="p-6 flex flex-col h-full">
@@ -338,35 +338,30 @@
             };
 
             const fetchAndDisplayNews = async () => {
-                const API_KEY = '048eb3d7d1d44856ae61f652eace3b72'; 
-
-                if (!API_KEY === '048eb3d7d1d44856ae61f652eace3b72') {
-                    beritaContainer.innerHTML = '<p class="text-center md:col-span-3 text-red-600 font-bold">Harap masukkan API Key dari NewsAPI.org di dalam file index.html.</p>';
-                    return;
-                }
-
-                const query = 'environment OR "climate change" OR nature OR deforestation OR "plastic waste" OR "renewable energy"';
-                const API_URL = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=en&sortBy=relevancy&pageSize=6&apiKey=${API_KEY}`;
+                // --- PERUBAHAN API ---
+                // Menggunakan API publik yang ramah untuk Vercel. Tidak perlu API Key.
+                // Kita ambil dari kategori "Lingkungan" di CNN.
+                const API_URL = `https://api-berita-indonesia.vercel.app/antara/terbaru/`;
                 
                 try {
                     const response = await fetch(API_URL);
                     const data = await response.json();
 
-                    if (data.status === 'error') throw new Error(data.message);
-                    if (data.articles.length === 0) throw new Error("Tidak ada berita relevan yang ditemukan saat ini.");
+                    if (!response.ok || data.success === false) {
+                        throw new Error(data.message || "Gagal mengambil data berita.");
+                    }
                     
                     beritaContainer.innerHTML = ''; 
-                    const articlesWithImages = data.articles.filter(article => article.urlToImage);
-                    const articlesToShow = articlesWithImages.slice(0, 3);
-                    if (articlesToShow.length === 0) throw new Error("Ditemukan berita, namun tidak ada yang memiliki gambar thumbnail.");
-                    
+
+                    // Tampilkan 3 berita teratas
+                    const articlesToShow = data.data.posts.slice(0, 3);
                     articlesToShow.forEach(berita => {
                         beritaContainer.innerHTML += createBeritaCard(berita);
                     });
 
                 } catch (error) {
-                    console.error("Gagal memuat berita dari NewsAPI:", error);
-                    beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita. Coba periksa koneksi internet Anda atau lihat pesan error di console (F12).</br><small class="font-normal">(${error.message})</small></p>`;
+                    console.error("Gagal memuat berita:", error);
+                    beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita. Silakan coba muat ulang halaman.</p>`;
                 }
             };
 

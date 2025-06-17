@@ -192,52 +192,34 @@
             const beritaContainer = document.getElementById('berita-container');
             if (beritaContainer) {
                 const createBeritaCard = (berita) => {
-                    const description = berita.description ? berita.description.substring(0, 100) : "Deskripsi tidak tersedia.";
-                    // PERUBAHAN: Tautan href sekarang langsung ke URL berita asli dan membuka tab baru
+                    const description = berita.content ? berita.content.substring(0, 100) : "Klik untuk membaca lebih lanjut.";
                     return `
-                        <a href="${berita.url}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                        <a href="${berita.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
                             <div class="relative h-48 w-full">
-                                <img src="${berita.urlToImage || 'https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi'}" alt="Thumbnail ${berita.title}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/2E5339/FFFFFF?text=Gambar+Error'; this.onerror=null;">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                                <div class="absolute bottom-0 left-0 p-4"><h2 class="text-sm font-bold text-white">${berita.source.name}</h2></div>
+                                <img src="${berita.thumbnail}" alt="Thumbnail ${berita.title}" class="absolute h-full w-full object-cover" onerror="this.src='https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi';">
                             </div>
                             <div class="p-6 flex flex-col h-full">
-                                <h3 class="text-lg font-bold text-gray-800 mb-2 leading-tight">${berita.title}</h3>
-                                <p class="text-gray-600 text-sm mb-6 leading-relaxed flex-grow">${description}...</p>
-                                <span class="font-semibold text-[#2E5339] inline-flex items-center mt-auto">
-                                    Baca di Sumber Asli
-                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                                </span>
+                                <h3 class="text-lg font-bold text-gray-800 mb-2">${berita.title}</h3>
+                                <p class="text-gray-600 text-sm mb-6 flex-grow">${description}...</p>
+                                <span class="font-semibold text-[#2E5339] mt-auto">Baca di Sumber Asli ↗</span>
                             </div>
                         </a>
                     `;
                 };
 
                 const fetchMoreNews = async () => {
-                    const API_KEY = '048eb3d7d1d44856ae61f652eace3b72'; 
-                    if (!API_KEY === '048eb3d7d1d44856ae61f652eace3b72') {
-                        beritaContainer.innerHTML = '<p class="text-center md:col-span-3 text-red-600 font-bold">Harap masukkan API Key dari NewsAPI.org.</p>';
-                        return;
-                    }
-                    const query = 'environment OR "climate change" OR nature OR deforestation OR "plastic waste" OR "renewable energy"';
-                    // Ambil lebih banyak berita untuk halaman ini
-                    const API_URL = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&language=en&sortBy=relevancy&pageSize=12&apiKey=${API_KEY}`;
-                    
+                    const API_URL = `https://api-berita-indonesia.vercel.app/antara/terbaru/`;
                     try {
                         const response = await fetch(API_URL);
                         const data = await response.json();
-                        if (data.status === 'error') throw new Error(data.message);
-                        if (data.articles.length === 0) throw new Error("Tidak ada berita relevan yang ditemukan.");
+                        if (!response.ok || data.success === false) throw new Error("Gagal ambil data");
                         
                         beritaContainer.innerHTML = '';
-                        const articlesWithImages = data.articles.filter(article => article.urlToImage);
-                        // Tampilkan 6 berita
-                        const articlesToShow = articlesWithImages.slice(0, 6);
-                        if (articlesToShow.length === 0) throw new Error("Tidak ada berita dengan gambar yang ditemukan.");
+                        // Tampilkan 6 berita di halaman ini
+                        const articlesToShow = data.data.posts.slice(0, 6);
                         articlesToShow.forEach(berita => beritaContainer.innerHTML += createBeritaCard(berita));
                     } catch (error) {
-                        console.error("Gagal memuat berita:", error);
-                        beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita. (${error.message})</p>`;
+                        beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita.</p>`;
                     }
                 };
                 fetchMoreNews();
