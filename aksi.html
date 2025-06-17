@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="main.js"></script>
 
     
     <style>
@@ -23,6 +22,19 @@
         }
         .slide-up {
             transform: translateY(-100%);
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4A7859; /* Warna disesuaikan dengan tombol */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
               /* Warna hijau kustom yang mirip dengan contoh */
@@ -118,7 +130,7 @@
 
     <main id="main-content" class="opacity-0">
         <section id="aksi" class="min-h-screen pt-20">
-            <div class="container mx-auto px-6 lg:px-8 py-12">
+            <div class="container mx-auto px-6 lg:px-8 py-8">
                 <section class="flex flex-col md:flex-row items-center gap-8 md:gap-12 mb-20">
                     <div class="w-full md:w-5/12 text-center md:text-left">
                         <h1 class="font-bold text-5xl md:text-6xl mb-4 leading-tight">Peranmu untuk <span class="text-[#2E5339]">Melindungi Bumi</span></h1>
@@ -157,7 +169,7 @@
                     </div>
                 </section>
         
-                <section id="donasi" class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 mb-24">
+                <section id="donasi" class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 mb-20">
                     <div class="w-full md:w-5/12">
                         <h2 class="text-3xl md:text-4xl font-bold mb-4">Donasi untuk Lingkungan</h2>
                         <p class="text-gray-600 mb-6 leading-relaxed">
@@ -170,38 +182,28 @@
                     </div>
                 </section>
         
-                <section class="text-center py-12 bg-white rounded-xl shadow-lg">
-                    <h2 class="text-4xl font-bold mb-10">Beraksi Bersama Kami</h2>
-                    <div class="flex flex-wrap justify-center gap-8 md:gap-16">
-                        <div class="flex flex-col items-center">
-                            <a href="#petisi" class="w-32 h-32 mb-3 rounded-full custom-green flex items-center justify-center text-white hover:bg-[#4A7859] transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                            </a>
-                            <a href="#petisi" class="font-bold text-gray-700 hover:custom-green-text">Tandatangani Petisi ></a>
+            </div>
+        </section>
+
+        <section id="aksi" class="min-h-auto py-16">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-bold text-center mb-4">Zona Aksi</h2>
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Perubahan dimulai dari tindakan nyata. Dapatkan rencana aksi personal dari AI, dukung kampanye, dan terapkan gaya hidup hijau.</p>
+                
+                <div class="bg-white p-8 rounded-lg shadow-lg mb-16">
+                    <h3 class="text-2xl font-bold mb-2 text-center">✨ Perencana Aksi Hijau</h3>
+                    <p class="text-center text-gray-500 mb-8">Bingung mulai dari mana? Tulis topik yang Anda pedulikan, dan biarkan AI menyusun rencana langkah demi langkah untuk Anda.</p>
+                    <div class="max-w-2xl mx-auto">
+                        <input type="text" id="action-plan-input" class="w-full p-3 border rounded mb-4 focus:ring-2 focus:ring-[#2E5339] focus:border-transparent outline-none transition" placeholder="Contoh: Mengurangi sampah plastik di rumah">
+                        <button id="generate-plan-btn" class="w-full bg-[#4A7859] text-white p-3 rounded-lg font-bold hover:bg-[#2E5339] transition-colors flex items-center justify-center disabled:bg-gray-400">
+                            Buatkan Rencana Aksi
+                        </button>
+                        <div id="plan-loader" class="hidden justify-center mt-4">
+                            <div class="loader"></div>
                         </div>
-        
-                        <div class="flex flex-col items-center">
-                            <a href="#relawan" class="w-32 h-32 mb-3 rounded-full custom-green flex items-center justify-center text-white hover:bg-[#4A7859] transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                </svg>
-                            </a>
-                            <a href="#relawan" class="font-bold text-gray-700 hover:custom-green-text">Menjadi Relawan ></a>
-                        </div>
-        
-                        <div class="flex flex-col items-center">
-                            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="w-32 h-32 mb-3 rounded-full custom-green flex items-center justify-center text-white hover:bg-[#4A7859] transition-colors">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5c2.25 0 4.5 1.5 4.5 3.75s-2.25 3.75-4.5 3.75S7.5 10.5 7.5 8.25 9.75 4.5 12 4.5z" clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="font-bold text-gray-700 hover:custom-green-text">Berdonasi ></a>
-                        </div>
+                        <div id="plan-result" class="mt-6 hidden"></div>
                     </div>
-                </section>
+                </div>
             </div>
         </section>
     </main>
@@ -286,6 +288,250 @@
         </div>
         </div>
     </footer>
+
+    <script>
+
+ document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            const preloader = document.getElementById('preloader');
+
+            
+            const generatePlanBtn = document.getElementById('generate-plan-btn');
+            const actionPlanInput = document.getElementById('action-plan-input');
+            const planLoader = document.getElementById('plan-loader');
+            const planResult = document.getElementById('plan-result');
+            
+            const exploreTopicBtn = document.getElementById('explore-topic-btn');
+            const topicInput = document.getElementById('topic-input');
+            const topicLoader = document.getElementById('topic-loader');
+            const topicResult = document.getElementById('topic-result');
+            
+            const errorModal = document.getElementById('error-modal');
+            const errorMessage = document.getElementById('error-message');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+
+            function updateActiveLink(targetId) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+                });
+                
+                const mobileNavLinks = mobileMenu.querySelectorAll('.nav-link');
+                mobileNavLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+                });
+            }
+
+            function showSection(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.toggle('hidden', section.id !== targetId);
+                });
+                updateActiveLink(targetId);
+                window.scrollTo(0, 0);
+            }
+            
+            function handleNavClick(event) {
+                let targetLink = null;
+                if (event.target.matches('a[href^="#"]')) {
+                    targetLink = event.target;
+                } else if (event.target.closest('a[href^="#"]')) {
+                    targetLink = event.target.closest('a[href^="#"]');
+                }
+
+                if (targetLink) {
+                    event.preventDefault();
+                    const targetId = targetLink.getAttribute('href').substring(1);
+                    if(document.getElementById(targetId)) {
+                        showSection(targetId);
+                        if (!mobileMenu.classList.contains('hidden')) {
+                           mobileMenu.classList.add('hidden');
+                        }
+                    } else {
+                         showSection('beranda');
+                    }
+                }
+            }
+            
+            document.body.addEventListener('click', handleNavClick);
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            function showErrorModal(message = 'Maaf, terjadi kesalahan tak terduga. Silakan coba lagi nanti.') {
+                errorMessage.textContent = message;
+                errorModal.classList.remove('hidden');
+            }
+            
+            closeModalBtn.addEventListener('click', () => {
+                errorModal.classList.add('hidden');
+            });
+
+            async function callGeminiAPI(prompt, isJson = false) {
+                const apiKey = "";
+                const model = 'gemini-2.0-flash';
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ role: "user", parts: [{ text: prompt }] }]
+                };
+                
+                if (isJson) {
+                    payload.generationConfig = {
+                        responseMimeType: "application/json",
+                        responseSchema: {
+                          type: "OBJECT",
+                          properties: {
+                            planTitle: { type: "STRING" },
+                            steps: {
+                              type: "ARRAY",
+                              items: {
+                                type: "OBJECT",
+                                properties: {
+                                  title: { type: "STRING" },
+                                  description: { type: "STRING" }
+                                },
+                                required: ["title", "description"]
+                              }
+                            }
+                          },
+                          required: ["planTitle", "steps"]
+                        }
+                    };
+                }
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                       throw new Error(`API request failed with status ${response.status}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        throw new Error("Respons dari API tidak valid atau kosong.");
+                    }
+                } catch (error) {
+                    console.error("Gemini API Error:", error);
+                    showErrorModal(error.message);
+                    return null;
+                }
+            }
+            
+            generatePlanBtn.addEventListener('click', async () => {
+                const topic = actionPlanInput.value.trim();
+                if (!topic) {
+                    showErrorModal('Silakan masukkan topik untuk rencana aksi Anda.');
+                    return;
+                }
+                
+                planLoader.style.display = 'flex';
+                planResult.classList.add('hidden');
+                generatePlanBtn.disabled = true;
+
+                const prompt = `Buatkan saya rencana aksi ramah lingkungan yang praktis dan dapat ditindaklanjuti untuk topik ini: "${topic}". Fokus pada langkah-langkah yang dapat dilakukan oleh individu di Indonesia. Berikan jawaban dalam format JSON yang valid sesuai skema.`;
+                
+                const resultText = await callGeminiAPI(prompt, true);
+                
+                if (resultText) {
+                    try {
+                        const planData = JSON.parse(resultText);
+                        planResult.innerHTML = '';
+                        const titleEl = document.createElement('h4');
+                        titleEl.className = 'text-xl font-bold mb-4 text-[#2E5339]';
+                        titleEl.textContent = planData.planTitle;
+                        planResult.appendChild(titleEl);
+                        
+                        const listEl = document.createElement('ol');
+                        listEl.className = 'space-y-4 list-decimal list-inside';
+                        planData.steps.forEach(step => {
+                            const itemEl = document.createElement('li');
+                            itemEl.className = 'bg-stone-50 p-4 rounded-lg';
+                            const stepTitle = document.createElement('strong');
+                            stepTitle.textContent = step.title;
+                            const stepDesc = document.createElement('p');
+                            stepDesc.className = 'text-gray-600 text-sm mt-1';
+                            stepDesc.textContent = step.description;
+                            itemEl.appendChild(stepTitle);
+                            itemEl.appendChild(stepDesc);
+                            listEl.appendChild(itemEl);
+                        });
+                        planResult.appendChild(listEl);
+                        planResult.classList.remove('hidden');
+                    } catch (e) {
+                         showErrorModal('Gagal mem-parsing respons dari AI. Silakan coba lagi.');
+                    }
+                }
+                
+                planLoader.style.display = 'none';
+                generatePlanBtn.disabled = false;
+            });
+
+            exploreTopicBtn.addEventListener('click', async () => {
+                const topic = topicInput.value.trim();
+                if (!topic) {
+                    showErrorModal('Silakan masukkan pertanyaan atau topik untuk dijelajahi.');
+                    return;
+                }
+                
+                topicLoader.style.display = 'flex';
+                topicResult.classList.add('hidden');
+                exploreTopicBtn.disabled = true;
+
+                const prompt = `Jelaskan topik lingkungan berikut dengan bahasa yang sederhana, ringkas, dan mudah dipahami untuk audiens umum di Indonesia: "${topic}". Berikan jawaban dalam 2-3 paragraf singkat.`;
+                
+                const resultText = await callGeminiAPI(prompt);
+                
+                if (resultText) {
+                    topicResult.textContent = resultText;
+                    topicResult.classList.remove('hidden');
+                }
+                
+                topicLoader.style.display = 'none';
+                exploreTopicBtn.disabled = false;
+            });
+            
+            const ctx = document.getElementById('wasteChart').getContext('2d');
+            const wasteChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Plastik', 'Logam', 'Kaca', 'Kain', 'Karet', 'Lainnya'],
+                    datasets: [{
+                        label: '% Komposisi Sampah Laut',
+                        data: [59, 5, 4, 4, 3, 25],
+                        backgroundColor: [
+                            'rgba(46, 83, 57, 0.7)', 'rgba(119, 136, 153, 0.7)', 'rgba(176, 196, 222, 0.7)',
+                            'rgba(244, 164, 96, 0.7)', 'rgba(128, 128, 128, 0.7)', 'rgba(211, 211, 211, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(46, 83, 57, 1)', 'rgba(119, 136, 153, 1)', 'rgba(176, 196, 222, 1)',
+                             'rgba(244, 164, 96, 1)', 'rgba(128, 128, 128, 1)', 'rgba(211, 211, 211, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw}%` } } },
+                    scales: { x: { beginAtZero: true, title: { display: true, text: 'Persentase (%)' } }, y: { ticks: { autoSkip: false, callback: function(v) { const l = this.getLabelForValue(v); return l.length > 16 ? l.match(/.{1,16}/g) : l; } } } }
+                }
+            });
+            
+            showSection('beranda');
+        });
+    </script>
 
 </body>
 </html>
