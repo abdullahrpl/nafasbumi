@@ -8,6 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="main.js"></script>
+
     
     <style>
         body {
@@ -241,38 +243,5 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const preloader = document.getElementById('preloader');
-            const mainContent = document.getElementById('main-content');
-            const mainHeader = document.getElementById('main-header');
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const enableScroll = () => { document.body.style.overflow = 'auto'; };
-    
-            // Preloader logic
-            if (preloader && mainContent) { 
-                document.body.style.overflow = 'hidden'; 
-                setTimeout(() => { 
-                    preloader.classList.add('slide-up'); 
-                    mainContent.style.transition = 'opacity 0.5s ease-in'; 
-                    mainContent.style.opacity = '1'; 
-                    setTimeout(() => { 
-                        preloader.style.display = 'none'; 
-                        enableScroll(); 
-                    }, 1000); 
-                }, 2000); 
-            } else { 
-                enableScroll(); 
-            }
-    
-            // Mobile menu toggle
-            if (mobileMenuButton && mobileMenu) { 
-                mobileMenuButton.addEventListener('click', () => { 
-                    mobileMenu.classList.toggle('hidden'); 
-                }); 
-            }
-        });
-    </script>
 </body>
 </html>
