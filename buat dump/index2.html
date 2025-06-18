@@ -5,97 +5,464 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NafasBumi - Lestarikan Alam Indonesia</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" type="image/x-icon" href="/eekend (1).svg">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #f8f9fa; }
-        #preloader { transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1); }
-        .slide-up { transform: translateY(-100%); }
-        .parallax-img { transition: transform 0.3s ease-out; }
-        .modal-enter { opacity: 0; transform: scale(0.95); }
-        .modal-enter-active { opacity: 1; transform: scale(1); transition: all 300ms; }
-        .modal-leave-active { opacity: 0; transform: scale(0.95); transition: all 300ms; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .parallax-img {
+            transition: transform 0.3s ease-out;
+        }
+        #preloader {
+            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .slide-up {
+            transform: translateY(-100%);
+        }
+        
+        .nav-link {
+            position: relative;
+            color: #4a5568;
+            padding-bottom: 6px;
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #2E5339;
+        }
+        .nav-link.active {
+            font-weight: 600;
+            color: #2E5339;
+        }
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #2E5339;
+        }
+
+                /* Custom transition for the modal */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .modal-leave {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .modal-leave-active {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
     </style>
 </head>
 <body class="bg-gray-100">
 
-    <div id="preloader" class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50">
-        <h1 class="text-5xl md:text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']">NafasBumi</h1>
-    </div>
-
     <header id="main-header" class="bg-white/80 backdrop-blur-sm fixed w-full top-0 z-40 shadow-sm opacity-0 -translate-y-full transition-all duration-500">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-2xl font-semibold text-[#2E5339]">NafasBumi</a>
-            <div class="hidden md:flex items-center space-x-8 text-gray-700">
-                <a href="index.html" class="relative text-[#2E5339] font-semibold">Beranda</a>
-                <a href="wawasan.html" class="relative hover:text-[#2E5339] transition-colors">Wawasan</a>
-                <a href="aksi.html" class="relative hover:text-[#2E5339] transition-colors">Aksi</a>
-                <a href="tentang.html" class="relative hover:text-[#2E5339] transition-colors">Tentang Kami</a>
-            </div>
-            <button id="forum-popup-button" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">
-                Forum Komunitas
-            </button>
-            <button id="mobile-menu-button" class="md:hidden text-2xl text-[#2E5339]">
-                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 border-t">
-            <a href="index.html" class="block py-2 px-4 text-sm">Beranda</a>
-            <a href="wawasan.html" class="block py-2 px-4 text-sm">Wawasan</a>
-            <a href="aksi.html" class="block py-2 px-4 text-sm">Aksi</a>
-            <a href="tentang.html" class="block py-2 px-4 text-sm">Tentang Kami</a>
-            <button id="forum-popup-button-mobile" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full">Forum Komunitas</button>
+<nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+    <a href="#" class="text-2xl font-semibold text-[#2E5339]">NafasBumi</a>
+    
+    <div class="hidden md:flex items-center space-x-8 text-gray-700">
+        <a href="#beranda" 
+           class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]">
+           Beranda
+        </a>
+        
+        <a href="wawasan.html" 
+           class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+           Wawasan
+        </a>
+        
+        <a href="aksi.html" 
+           class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+           Aksi
+        </a>
+        
+        <a href="tentang.html" 
+           class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+           Tentang Kami
+        </a>
+    </div>
+    
+    <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">
+        Donasi
+    </a>
+    
+    <button id="mobile-menu-button" class="md:hidden text-2xl text-[#2E5339]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+    </button>
+</nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 border-t border-gray-200">
+             <a href="#beranda" class="block py-2 px-4 text-sm nav-link">Beranda</a>
+             <a href="wawasan.html" class="block py-2 px-4 text-sm nav-link">Wawasan</a>
+             <a href="aksi.html" class="block py-2 px-4 text-sm nav-link">Aksi</a>
+             <a href="tentang.html" class="block py-2 px-4 text-sm nav-link">Tentang Kami</a>
+             <a href="#" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
         </div>
     </header>
 
+    <div id="preloader" class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50">
+        <div id="preloader-content" class="flex flex-col justify-between h-full items-center text-center py-8">
+            <div></div>
+            <h1 class="text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']">
+                Selamat Datang
+            </h1>
+            <div class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]">NafasBumi</div>
+        </div>
+    </div>
+
     <main id="main-content" class="opacity-0">
-        <section class="relative w-full flex flex-col md:flex-row h-screen">
-             <div class="parallax-container relative w-full h-full overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?q=80&w=2400&auto=format&fit=crop" alt="Nature" class="parallax-img absolute top-0 left-0 w-full h-full object-cover scale-110">
+        <section id="beranda" class="relative w-full flex flex-col md:flex-row h-screen">
+            <div class="parallax-container relative w-full h-full overflow-hidden">
+                <img src="/image.png" alt="Keindahan bawah laut Raja Ampat, Indonesia" class="parallax-img gambar-1 absolute top-0 left-0 w-full h-full object-cover scale-110">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+            <div class="parallax-container relative w-full h-full overflow-hidden flex items-center justify-center">
+                <img src="/Group1.png" alt="Terumbu karang di perairan Indonesia" class="parallax-img absolute top-0 left-0 w-full h-full object-cover scale-110">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+            <div class="parallax-container relative w-full h-full overflow-hidden">
+                <img src="/Group2.png" alt="Pemandangan pulau tropis di Labuan Bajo, Indonesia" class="parallax-img absolute top-0 left-0 w-full h-full object-cover gambar-1 scale-110">
                 <div class="absolute inset-0 bg-black/60"></div>
             </div>
             <div class="absolute justify-center items-center w-full h-full flex">
                 <div class="relative z-10 text-center text-white p-8">
-                    <h2 class="text-xl font-light tracking-widest uppercase">Aksi Kecil Kita, Nafas Baru Untuk Bumi.</h2>
-                    <h1 class="text-6xl lg:text-8xl font-black uppercase mt-2 font-['Montserrat']">NafasBumi</h1>
+                    <h2 class="text-xl font-light tracking-widest uppercase">
+                        Aksi Kecil Kita, Nafas Baru Untuk Bumi.
+                    </h2>
+                    <h1 class="text-6xl lg:text-8xl font-black uppercase mt-2 font-['Montserrat']">
+                        NafasBumi
+                    </h1>
                 </div>
+            </div>
+            <div class="scroll-containner absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
+                <span class="text-white text-sm font-light tracking-wider">Scroll ke Bawah</span>
+                <svg class="w-6 h-6 text-white animate-bounce" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                </svg>
             </div>
         </section>
 
-        <section class="py-16 bg-white">
+        <section id="berita" class="py-20 bg-white">
             <div class="container mx-auto px-6">
-                <div class="bg-[#2E5339] text-white rounded-lg p-10 md:p-16 text-center">
-                    <h3 class="text-3xl font-bold mb-4">Gabung Diskusi Komunitas!</h3>
-                    <p class="mb-10 max-w-3xl mx-auto">Tukar ide, cari inspirasi, dan berkolaborasi dengan para pejuang lingkungan lainnya di seluruh Indonesia.</p>
-                    <button id="forum-popup-button-cta" class="bg-white text-[#2E5339] font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">
-                        Masuk ke Forum
-                    </button>
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold text-gray-800">Sorotan Berita</h2>
+                    <p class="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">Ikuti perkembangan terbaru mengenai isu lingkungan, kisah inspiratif, dan analisis mendalam dari para ahli.</p>
+                </div>
+                <div id="berita-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="text-center md:col-span-3">Memuat berita terkini...</div>
+                </div>
+                <div class="text-center mt-16">
+                    <a href="wawasan.html" class="bg-[#2E5339] text-white px-8 py-3 rounded-full hover:bg-[#4A7859] transition-colors duration-300 font-semibold text-lg">
+                        Lihat Berita Lainnya
+                    </a>
                 </div>
             </div>
         </section>
 
-    </main>
-    
-    <footer class="bg-[#1c3323] text-white mt-16">
-        </footer>
+             <section class="py-16">
+                <div class="container mx-auto px-6">
+                    <div class="bg-[#2E5339] text-white rounded-lg p-10 md:p-16 text-center">
+                        <h3 class="text-3xl font-bold mb-4">Kampanye Mendesak: Lindungi Hutan Terakhir Kita!</h3>
+                        <p class="mb-10 max-w-3xl mx-auto">Setiap menit, puluhan hektar hutan hujan kita hilang. Suara Anda sangat berarti untuk mendorong pemerintah memperketat pengawasan dan menindak tegas para perusak hutan.</p>
+                        <div class="flex flex-col md:flex-row justify-center items-center gap-4">
 
-    <div id="popupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+                            <a href="#aksi" class="bg-white text-[#2E5339] font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">Tanda Tangan Petisi</a>
+
+                                <button id="showPopupButton" class="bg-white text-[#2E5339] font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">
+        Forum Komunitas
+    </button>
+                        </div>
+                    </div>
+                </div>
+
+                    <div id="popupModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
         <div id="modalContent" class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto overflow-hidden transform modal-enter">
-            <div class="relative"><img src="https://placehold.co/600x300/166534/ffffff?text=Forum+Komunitas" alt="Forum Banner" class="w-full h-40 object-cover"></div>
+            <!-- Modal Header with Image -->
+            <div class="relative">
+                <img src="https://placehold.co/600x300/166534/ffffff?text=Forum+Komunitas" alt="Forum Banner" class="w-full h-40 object-cover" onerror="this.onerror=null;this.src='https://placehold.co/600x300/166534/ffffff?text=Error';">
+                <button id="closeButton" class="absolute top-3 right-3 text-white bg-black bg-opacity-25 rounded-full p-1 hover:bg-opacity-40 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
             <div class="p-8 text-center">
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Satu Klik Lagi Menuju Forum!</h2>
                 <p class="text-gray-600 mb-6">Gunakan akun Google Anda untuk bergabung dan langsung masuk ke dalam diskusi komunitas kami.</p>
-                <button id="google-login-button" class="w-full bg-green-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-800 transition duration-200 shadow-lg flex items-center justify-center">
-                    <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12s5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.223,0-9.657-3.657-11.303-8.333l-6.571,4.819C9.656,39.663,16.318,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.089,5.571l6.19,5.238C41.38,36.151,44,30.63,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
+                
+                <!-- Google Login Button -->
+                <button id="google-login-button" class="w-full bg-green-700 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-opacity-50 transition duration-200 shadow-lg flex items-center justify-center">
+                    <!-- Google Icon SVG -->
+                    <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48px" height="48px"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24s8.955,20,20,20s20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"></path><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"></path><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.223,0-9.657-3.657-11.303-8.333l-6.571,4.819C9.656,39.663,16.318,44,24,44z"></path><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.089,5.571l6.19,5.238C41.38,36.151,44,30.63,44,24C44,22.659,43.862,21.35,43.611,20.083z"></path></svg>
                     Masuk dengan Google
                 </button>
-                <button id="closeModalButton" class="mt-4 text-sm text-gray-500 hover:text-black">Nanti saja</button>
+                
+                <p class="text-xs text-gray-500 mt-4">
+                    Klik untuk langsung masuk ke <a href="#" class="text-green-700 hover:underline">forum diskusi</a> kami.
+                </p>
             </div>
         </div>
     </div>
+            </section>
+                    <section class="py-16 bg-white">
+                <div class="container mx-auto px-6 text-center">
+                    <h3 class="text-3xl font-bold mb-2">Dampak Aksi Kita Bersama</h3>
+                    <p class="text-center text-gray-600 mb-12 max-w-2xl mx-auto">Setiap kontribusi, sekecil apa pun, menciptakan gelombang perubahan yang besar. Ini adalah pencapaian kita semua.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-stone-50 p-8 rounded-lg shadow">
+                            <div class="text-5xl mb-4">✍️</div>
+                            <p class="text-4xl font-bold text-[#2E5339]">58.109</p>
+                            <p class="text-gray-600 mt-2">Tanda Tangan Terkumpul untuk Kampanye Lingkungan</p>
+                        </div>
+                        <div class="bg-stone-50 p-8 rounded-lg shadow">
+                            <div class="text-5xl mb-4">🌳</div>
+                            <p class="text-4xl font-bold text-[#2E5339]">12.500+</p>
+                            <p class="text-gray-600 mt-2">Pohon Telah Ditanam Melalui Donasi Publik</p>
+                        </div>
+                        <div class="bg-stone-50 p-8 rounded-lg shadow">
+                            <div class="text-5xl mb-4">🤝</div>
+                            <p class="text-4xl font-bold text-[#2E5339]">78</p>
+                            <p class="text-gray-600 mt-2">Komunitas Lokal Telah Menjadi Mitra Aksi Hijau</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    </main>
 
-    <script type="module">
+    <footer class="bg-[#1c3323] text-white mt-16">
+         <div class="container mx-auto px-6 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h4 class="text-lg font-bold mb-4">NafasBumi</h4>
+            <p class="text-gray-400 text-sm">
+              Aksi Kecil Kita, Nafas Baru Untuk Bumi.
+            </p>
+          </div>
+          <div>
+            <h5 class="font-semibold mb-4">Tautan Cepat</h5>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a href="wawasan.html" class="hover:text-gray-300">Wawasan</a>
+              </li>
+              <li><a href="aksi.html" class="hover:text-gray-300">Aksi</a></li>
+              <li>
+                <a href="tentang.html" class="hover:text-gray-300"
+                  >Tentang Kami</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h5 class="font-semibold mb-4">Legal</h5>
+            <ul class="space-y-2 text-sm">
+              <li>
+                <a href="#" class="hover:text-gray-300">Kebijakan Privasi</a>
+              </li>
+              <li>
+                <a href="#" class="hover:text-gray-300">Syarat & Ketentuan</a>
+              </li>
+              <li><a href="#" class="hover:text-gray-300">FAQ</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 class="font-semibold mb-4">Ikuti Kami</h5>
+            <div class="flex flex-col sm:flex-row items-center justify-between">
+                <div class="flex space-x-5 order-1 sm:order-2">
+                    <!-- Ikon Facebook -->
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <span class="sr-only">Facebook</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <!-- Ikon Instagram -->
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <span class="sr-only">Instagram</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                           <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.148 2.148c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.148 2.148c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.148-2.148c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427A4.902 4.902 0 015.08 4.623c.636-.247 1.363-.416 2.427-.465C8.53 2.013 8.884 2 12.315 2zm-1.04 1.792c-2.392 0-2.71.01-3.664.053-1.002.046-1.594.208-1.943.362a3.103 3.103 0 00-1.363 1.363c-.154.349-.316.941-.362 1.943-.043.954-.053 1.272-.053 3.664s.01 2.71.053 3.664c.046 1.002.208 1.594.362 1.943a3.103 3.103 0 001.363 1.363c.349.154.941.316 1.943.362.954.043 1.272.053 3.664.053s2.71-.01 3.664-.053c1.002-.046 1.594-.208 1.943-.362a3.103 3.103 0 001.363-1.363c.154-.349.316-.941.362-1.943.043-.954.053-1.272.053-3.664s-.01-2.71-.053-3.664c-.046-1.002-.208-1.594-.362-1.943a3.103 3.103 0 00-1.363-1.363c-.349-.154-.941-.316-1.943-.362-.954-.043-1.272-.053-3.664-.053z" clip-rule="evenodd" />
+                           <path d="M12.315 8.192a4.123 4.123 0 100 8.246 4.123 4.123 0 000-8.246zm0 6.453a2.33 2.33 0 110-4.66 2.33 2.33 0 010 4.66z" />
+                           <path d="M16.936 8.362a.96.96 0 11-1.92 0 .96.96 0 011.92 0z" />
+                        </svg>
+                    </a>
+                    <!-- Ikon Twitter/X -->
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <span class="sr-only">Twitter</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg>
+                    </a>
+                     <!-- Ikon YouTube -->
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <span class="sr-only">YouTube</span>
+                         <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2.002 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM9.94 15.008V8.992l4.94 3.008-4.94 3.008Z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500"
+        >
+          &copy; 2024 NafasBumi. Dibuat dengan cinta untuk Planet Bumi.
+        </div>
+        </div>
+    </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // === SEMUA SCRIPT LAMA ANDA (PRELOADER, NAVBAR, PARALLAX) ADA DI SINI ===
+        // Script tersebut tidak saya tampilkan lagi agar ringkas, tapi tetap ada di dalam file ini.
+        // ... (kode preloader, navbar, parallax dari file Anda) ...
+        const preloader = document.getElementById('preloader');
+        const mainContent = document.getElementById('main-content');
+        const mainHeader = document.getElementById('main-header');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const parallaxImages = document.querySelectorAll('.parallax-img');
+        const heroHeader = document.getElementById('beranda');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('main section');
+        const enableScroll = () => { document.body.style.overflow = 'auto'; };
+        if (preloader && mainContent) { document.body.style.overflow = 'hidden'; setTimeout(() => { preloader.classList.add('slide-up'); mainContent.style.transition = 'opacity 0.5s ease-in'; mainContent.style.opacity = '1'; setTimeout(() => { preloader.style.display = 'none'; enableScroll(); }, 1000); }, 2000); } else { enableScroll(); }
+        if (mainHeader && mobileMenuButton && mobileMenu) { const handleNavScroll = () => { if (window.scrollY > window.innerHeight * 0.05) { mainHeader.classList.remove('opacity-0', '-translate-y-full'); } else { mainHeader.classList.add('opacity-0', '-translate-y-full'); } }; window.addEventListener('scroll', handleNavScroll); mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); }); }
+        // if (navLinks.length > 0 && sections.length > 0) { const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { navLinks.forEach(link => { link.classList.remove('active'); if (link.getAttribute('href') === `#${entry.target.id}`) { link.classList.add('active'); } }); } }); }, { rootMargin: '-50% 0px -50% 0px' }); sections.forEach(section => { observer.observe(section); }); }
+        if (heroHeader && parallaxImages.length > 0) { const cursorStrength = 40; const scrollStrength = 0; const updateAllTransforms = () => { if (window.innerWidth < 768) return; const scrollY = window.pageYOffset; const cursorX = parseFloat(heroHeader.dataset.cursorX || 0); const cursorY = parseFloat(heroHeader.dataset.cursorY || 0); const totalScrollY = -(scrollY * scrollStrength); parallaxImages.forEach(img => { img.style.transform = `translate3d(${cursorX}px, ${totalScrollY + cursorY}px, 0) scale(1.1)`; }); }; heroHeader.addEventListener('mousemove', (e) => { const rect = heroHeader.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; heroHeader.dataset.cursorX = -(x / cursorStrength); heroHeader.dataset.cursorY = -(y / cursorStrength); updateAllTransforms(); }); heroHeader.addEventListener('mouseleave', () => { heroHeader.dataset.cursorX = 0; heroHeader.dataset.cursorY = 0; updateAllTransforms(); }); window.addEventListener('scroll', updateAllTransforms); updateAllTransforms(); }
+        if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        // ==============================================================
+        // == SCRIPT BERITA DINAMIS (DATA DIAMBIL DARI iNews)          ==
+        // ==============================================================
+        // DIUBAH: Data berita ini disimulasikan seolah-olah diambil dari iNews.id per 16 Juni 2025
+
+            const beritaContainer = document.getElementById('berita-container');
+
+            const createBeritaCard = (berita) => {
+                // API ini menyediakan deskripsi di dalam 'content'
+                const description = berita.content ? berita.content.substring(0, 100) : "Klik untuk membaca lebih lanjut.";
+                
+                return `
+                    <a href="${berita.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                        <div class="relative h-48 w-full">
+                            <img src="${berita.thumbnail}" alt="Thumbnail ${berita.title}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi'; this.onerror=null;">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                            <div class="absolute bottom-0 left-0 p-4">
+                                <h2 class="text-sm font-bold text-white">${new Date(berita.pubDate).toLocaleDateString('id-ID')}</h2>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col h-full">
+                            <h3 class="text-lg font-bold text-gray-800 mb-2 leading-tight">${berita.title}</h3>
+                            <p class="text-gray-600 text-sm mb-6 leading-relaxed flex-grow">${description}...</p>
+                            <span class="font-semibold text-[#2E5339] inline-flex items-center mt-auto">
+                                Baca di Sumber Asli
+                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </span>
+                        </div>
+                    </a>
+                `;
+            };
+
+            const fetchAndDisplayNews = async () => {
+                // --- PERUBAHAN API ---
+                // Menggunakan API publik yang ramah untuk Vercel. Tidak perlu API Key.
+                // Kita ambil dari kategori "Lingkungan" di CNN.
+                const API_URL = `https://api-berita-indonesia.vercel.app/antara/terbaru/`;
+                
+                try {
+                    const response = await fetch(API_URL);
+                    const data = await response.json();
+
+                    if (!response.ok || data.success === false) {
+                        throw new Error(data.message || "Gagal mengambil data berita.");
+                    }
+                    
+                    beritaContainer.innerHTML = ''; 
+
+                    // Tampilkan 3 berita teratas
+                    const articlesToShow = data.data.posts.slice(0, 3);
+                    articlesToShow.forEach(berita => {
+                        beritaContainer.innerHTML += createBeritaCard(berita);
+                    });
+
+                } catch (error) {
+                    console.error("Gagal memuat berita:", error);
+                    beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita. Silakan coba muat ulang halaman.</p>`;
+                }
+            };
+
+            fetchAndDisplayNews();
+        });
+
+    // Get modal elements
+        const showPopupButton = document.getElementById('showPopupButton');
+        const popupModal = document.getElementById('popupModal');
+        const modalContent = document.getElementById('modalContent');
+        const closeButton = document.getElementById('closeButton');
+
+        // Function to show the modal
+        function showModal() {
+            popupModal.classList.remove('hidden');
+            // We add the active class after a short delay to ensure the transition runs
+            setTimeout(() => {
+                modalContent.classList.remove('modal-enter');
+                modalContent.classList.add('modal-enter-active');
+            }, 10);
+        }
+
+        // Function to hide the modal
+        function hideModal() {
+            modalContent.classList.remove('modal-enter-active');
+            modalContent.classList.add('modal-leave-active');
+            // Hide the modal container after the transition ends
+            setTimeout(() => {
+                popupModal.classList.add('hidden');
+                modalContent.classList.remove('modal-leave-active');
+                modalContent.classList.add('modal-enter'); // Reset for next time
+            }, 300);
+        }
+
+        // Event Listeners
+        showPopupButton.addEventListener('click', showModal);
+        closeButton.addEventListener('click', hideModal);
+
+        // Close modal if user clicks outside of the modal content
+        popupModal.addEventListener('click', function(event) {
+            if (event.target === popupModal) {
+                hideModal();
+            }
+        });
+        
+        // Close modal with the 'Escape' key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                hideModal();
+            }
+        });
+</script>
+
+<script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 

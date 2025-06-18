@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aksi - NafasBumi</title> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="icon" type="image/x-icon" href="/logo-nafas-bumi.svg">
+    <link rel="icon" type="image/x-icon" href="/eekend (1).svg">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
@@ -99,7 +99,7 @@
                 </a>
             </div>
             
-            <a href="#donasi" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">
+            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">
                 Donasi
             </a>
             
@@ -175,7 +175,7 @@
                         <p class="text-gray-600 mb-6 leading-relaxed">
                             Sebagai organisasi yang independen secara finansial, kerja kampanye kami dibiayai 100% oleh donatur individual. Independensi ini bertujuan agar suara kampanye Nafasbumi murni untuk kepentingan kelestarian lingkungan dan perdamaian manusia.
                         </p>
-                        <button class="w-full md:w-auto px-8 py-3 rounded-lg btn-primary">Berdonasi</button>
+                        <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="w-full md:w-auto px-8 py-3 rounded-lg btn-primary">Berdonasi</a>
                     </div>
                      <div class="w-full md:w-7/12">
                         <img src="https://www.greenpeace.org/static/planet4-indonesia-stateless/2024/11/58671d8b-gp0stqzkc-768x509.jpg" alt="Relawan memberikan bantuan kepada masyarakat" class="rounded-lg shadow-xl w-full h-auto object-cover" />
@@ -297,8 +297,9 @@
     </div>
 
     <script>
-
+        
         document.addEventListener('DOMContentLoaded', () => {
+            
             const preloader = document.getElementById('preloader');
             const mainContent = document.getElementById('main-content');
             const mainHeader = document.getElementById('main-header');
@@ -332,6 +333,11 @@
         });
 
         document.addEventListener('DOMContentLoaded', function () {
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
             const navLinks = document.querySelectorAll('.nav-link');
             const contentSections = document.querySelectorAll('.content-section');
             const mobileMenuButton = document.getElementById('mobile-menu-button');
