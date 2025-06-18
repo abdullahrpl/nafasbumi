@@ -21,8 +21,6 @@
         .initial-loader { display: flex; align-items: center; justify-content: center; height: 100vh; background-color: #FDFBF5; }
         .initial-loader .spinner { width: 4rem; height: 4rem; border: 4px dashed #2E5339; border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* Styles untuk animasi dari kode asli */
         .bg-dots { background-color: #f9fafb; background-image: radial-gradient(#d1d5db 1px, transparent 1px); background-size: 16px 16px; }
         @keyframes pulse-slow { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); } 50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); } }
         .animate-pulse-slow { animation: pulse-slow 2s infinite; }
@@ -80,30 +78,57 @@
             const [user, setUser] = useState(undefined); 
             
             useEffect(() => {
-                const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+                const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
                     if (currentUser) {
-                        const userData = {
-                            isOnline: true,
-                            uid: currentUser.uid,
-                            displayName: currentUser.displayName,
-                            photoURL: currentUser.photoURL,
-                        };
-                        setDoc(doc(db, 'users', currentUser.uid), userData, { merge: true });
+                        const userDocRef = doc(db, 'users', currentUser.uid);
+                        const userDocSnap = await getDoc(userDocRef);
+
+                        if (!userDocSnap.exists()) {
+                            console.log("Pengguna baru terdeteksi, mengirim pesan selamat datang...");
+                            const newUserdata = {
+                                isOnline: true,
+                                uid: currentUser.uid,
+                                displayName: currentUser.displayName,
+                                photoURL: currentUser.photoURL,
+                            };
+                            await setDoc(userDocRef, newUserdata);
+
+                            const welcomeMessage = {
+                                text: `Selamat datang @${currentUser.displayName}, ini adalah forum diskusi tentang lingkungan, silahkan ke channel Diskusi Umum untuk berdiskusi dengan yang lainnya`,
+                                timestamp: serverTimestamp(),
+                                displayName: "Admin NafasBumi",
+                                uid: "system-admin-bot",
+                                photoURL: "https://placehold.co/100x100/2E5339/FFFFFF?text=N",
+                                isAdmin: true, 
+                            };
+                            await addDoc(collection(db, "channels", "Selamat Datang", "messages"), welcomeMessage);
+
+                        } else {
+                            await setDoc(userDocRef, { isOnline: true }, { merge: true });
+                        }
+
                         setUser(currentUser);
                     } else {
                         window.location.href = 'index.html';
                     }
                 });
-                const setOffline = async () => { if (auth.currentUser) { await setDoc(doc(db, 'users', auth.currentUser.uid), { isOnline: false }, { merge: true }); } };
+
+                const setOffline = async () => { 
+                    if (auth.currentUser) { 
+                        await setDoc(doc(db, 'users', auth.currentUser.uid), { isOnline: false }, { merge: true }); 
+                    } 
+                };
                 window.addEventListener('beforeunload', setOffline);
-                return () => { unsubscribe(); window.removeEventListener('beforeunload', setOffline); };
+                return () => { 
+                    unsubscribe(); 
+                    window.removeEventListener('beforeunload', setOffline); 
+                };
             }, []);
 
             if (user === undefined) return <div className="initial-loader"><div className="spinner"></div></div>;
             return <div className="h-screen w-screen bg-gray-50 text-gray-800 antialiased"><ChatLayout user={user} /></div>;
         }
         
-        // === DIUBAH: ChatLayout sekarang SELALU merender layout 3 kolom ===
         const ChatLayout = ({ user }) => {
             const [activeChannel, setActiveChannel] = useState('Selamat Datang');
             const [profileModalUser, setProfileModalUser] = useState(null);
@@ -115,33 +140,60 @@
             const [isSidebarOpen, setIsSidebarOpen] = useState(false);
             const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
 
-            useEffect(() => { setIsUserAdmin(ADMIN_UIDS.includes(user.uid)); }, [user.uid]);
+            useEffect(() => { 
+                if(user?.uid) {
+                    setIsUserAdmin(ADMIN_UIDS.includes(user.uid));
+                }
+            }, [user]);
+
             useEffect(() => { const unsub = onSnapshot(query(collection(db, 'users')), (snapshot) => setAllUsers(snapshot.docs.map(doc => doc.data()))); return () => unsub(); }, []);
+            
             useEffect(() => {
                 if (!user?.uid || !user?.displayName) return;
                 const unsubscribers = ALL_CHANNELS.map(channel => {
                     if (channel.name === 'Tantangan Hijau') return () => {}; 
                     return onSnapshot(query(collection(db, `channels/${channel.name}/messages`)), async (snapshot) => {
-                        const userReadStatusRef = doc(db, `users/${user.uid}/readStatus`, channel.name);
-                        const userReadStatusDoc = await getDoc(userReadStatusRef);
-                        const lastReadTime = userReadStatusDoc.data()?.timestamp?.toMillis() || 0;
-                        let unreadCount = 0, hasMention = false;
-                        snapshot.docs.forEach(doc => { const msg = doc.data(); if (msg.timestamp?.toMillis() > lastReadTime) { unreadCount++; if (msg.text && (msg.text.includes(`@${user.displayName}`) || msg.text.includes('@everyone'))) { hasMention = true; } } });
-                        setNotifications(prev => ({...prev, [channel.name]: {...prev[channel.name], count: unreadCount, mention: hasMention}}));
+                        try {
+                            const userReadStatusRef = doc(db, `users/${user.uid}/readStatus`, channel.name);
+                            const userReadStatusDoc = await getDoc(userReadStatusRef);
+                            const lastReadTime = userReadStatusDoc.data()?.timestamp?.toMillis() || 0;
+                            let unreadCount = 0, hasMention = false;
+                            snapshot.docs.forEach(doc => { const msg = doc.data(); if (msg.timestamp?.toMillis() > lastReadTime) { unreadCount++; if (msg.text && (msg.text.includes(`@${user.displayName}`) || msg.text.includes('@everyone'))) { hasMention = true; } } });
+                            setNotifications(prev => ({...prev, [channel.name]: {...prev[channel.name], count: unreadCount, mention: hasMention}}));
+                        } catch (error) {
+                            console.error("Error getting read status:", error);
+                        }
                     });
                 });
                 return () => unsubscribers.forEach(unsub => unsub());
-            }, [user.uid, user.displayName]);
+            }, [user?.uid, user?.displayName]);
+            
             useEffect(() => {
-                if (!activeChannel || activeChannel === 'Tantangan Hijau') { setTypingUsers([]); return; };
+                if (!activeChannel || activeChannel === 'Tantangan Hijau' || !user?.uid) { setTypingUsers([]); return; };
                 const unsub = onSnapshot(query(collection(db, "channels", activeChannel, "typing")), (snapshot) => { const now = Date.now(); setTypingUsers(snapshot.docs.map(doc => doc.data()).filter(u => u.uid !== user.uid && (now - u.timestamp?.toMillis()) < 5000)); });
                 return () => unsub();
-            }, [activeChannel, user.uid]);
+            }, [activeChannel, user?.uid]);
 
+            // ==========================================================
+            // === PERBAIKAN DI SINI: Tambahkan guard clause untuk user.uid ===
+            // ==========================================================
             const handleChannelChange = async (channelName) => { 
+                if (!user?.uid) {
+                    console.warn("User data not ready, cannot change channel yet.");
+                    return; // Mencegah fungsi berjalan jika user belum siap
+                }
+                
                 setActiveChannel(channelName);
                 setIsSidebarOpen(false);
-                if (channelName !== 'Tantangan Hijau') { await setDoc(doc(db, `users/${user.uid}/readStatus`, channelName), { timestamp: serverTimestamp() }); setNotifications(prev => ({...prev, [channelName]: {count: 0, mention: false}})); } 
+                
+                if (channelName !== 'Tantangan Hijau') { 
+                    try {
+                        await setDoc(doc(db, `users/${user.uid}/readStatus`, channelName), { timestamp: serverTimestamp() }); 
+                        setNotifications(prev => ({...prev, [channelName]: {count: 0, mention: false}})); 
+                    } catch (error) {
+                        console.error("Failed to update read status:", error);
+                    }
+                } 
             };
             const handleDeleteUser = async (userToDelete) => { if (!window.confirm(`Yakin ingin menghapus "${userToDelete.displayName}"?`)) return; try { await deleteDoc(doc(db, 'users', userToDelete.uid)); } catch (err) { console.error("Gagal hapus user:", err); } }
             
@@ -298,7 +350,6 @@
         };
         const UserProfileModal = ({ userToShow, onClose }) => (<div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4" onClick={onClose}><div className="bg-white rounded-lg shadow-xl w-full max-w-sm text-center p-8 relative animate-fade-in-up" onClick={e => e.stopPropagation()}><button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">×</button><img className="w-24 h-24 rounded-full mx-auto mb-4" style={{ring: `4px solid ${THEME_COLOR.primary}`}} src={userToShow?.photoURL || PLACEHOLDER_AVATAR} alt={userToShow?.displayName || 'User'} /><h3 className="text-2xl font-bold text-gray-800">{userToShow?.displayName || 'Pengguna Dihapus'}</h3>{userToShow.isAdmin && <p className="mt-2 text-sm font-bold text-yellow-600">ADMIN</p>}<p className={`mt-2 text-sm font-semibold ${userToShow.isOnline ? 'text-green-500' : 'text-gray-400'}`}>{userToShow.isOnline ? 'Online' : 'Offline'}</p></div></div>);
         
-        // === DIUBAH: ChallengeComponent sekarang punya header sendiri agar konsisten ===
         const ChallengeComponent = ({user, onToggleSidebar, onToggleRightSidebar}) => { 
             const [activeTab, setActiveTab] = useState('challenge'); 
             return (
@@ -480,4 +531,4 @@
         }
     </script>
 </body>
-</html>
+</html> 
