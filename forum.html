@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="/eekend (1).svg">
 
-
     <title>Forum Diskusi - NafasBumi</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -66,6 +65,7 @@
             { name: 'Diskusi Umum', icon: 'fa-comments', type: 'general' }, { name: 'Tantangan Hijau', icon: 'fa-leaf', type: 'general' },
         ];
         const THEME_COLOR = { primary: '#2E5339', secondary: '#4A7859' };
+        const PLACEHOLDER_AVATAR = 'https://placehold.co/100x100/E2E8F0/4A5568?text=?';
 
         // --- Inisialisasi Firebase ---
         let app, auth, db;
@@ -82,7 +82,13 @@
             useEffect(() => {
                 const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
                     if (currentUser) {
-                        setDoc(doc(db, 'users', currentUser.uid), { isOnline: true }, { merge: true });
+                        const userData = {
+                            isOnline: true,
+                            uid: currentUser.uid,
+                            displayName: currentUser.displayName,
+                            photoURL: currentUser.photoURL,
+                        };
+                        setDoc(doc(db, 'users', currentUser.uid), userData, { merge: true });
                         setUser(currentUser);
                     } else {
                         window.location.href = 'index.html';
@@ -93,11 +99,11 @@
                 return () => { unsubscribe(); window.removeEventListener('beforeunload', setOffline); };
             }, []);
 
-            if (user === undefined) return null;
+            if (user === undefined) return <div className="initial-loader"><div className="spinner"></div></div>;
             return <div className="h-screen w-screen bg-gray-50 text-gray-800 antialiased"><ChatLayout user={user} /></div>;
         }
-
-        // --- SEMUA KOMPONEN LENGKAP DI BAWAH INI ---
+        
+        // === DIUBAH: ChatLayout sekarang SELALU merender layout 3 kolom ===
         const ChatLayout = ({ user }) => {
             const [activeChannel, setActiveChannel] = useState('Selamat Datang');
             const [profileModalUser, setProfileModalUser] = useState(null);
@@ -105,10 +111,14 @@
             const [allUsers, setAllUsers] = useState([]);
             const [typingUsers, setTypingUsers] = useState([]);
             const [isUserAdmin, setIsUserAdmin] = useState(false);
+            
+            const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+            const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
 
             useEffect(() => { setIsUserAdmin(ADMIN_UIDS.includes(user.uid)); }, [user.uid]);
             useEffect(() => { const unsub = onSnapshot(query(collection(db, 'users')), (snapshot) => setAllUsers(snapshot.docs.map(doc => doc.data()))); return () => unsub(); }, []);
             useEffect(() => {
+                if (!user?.uid || !user?.displayName) return;
                 const unsubscribers = ALL_CHANNELS.map(channel => {
                     if (channel.name === 'Tantangan Hijau') return () => {}; 
                     return onSnapshot(query(collection(db, `channels/${channel.name}/messages`)), async (snapshot) => {
@@ -128,13 +138,63 @@
                 return () => unsub();
             }, [activeChannel, user.uid]);
 
-            const handleChannelChange = async (channelName) => { setActiveChannel(channelName); if (channelName !== 'Tantangan Hijau') { await setDoc(doc(db, `users/${user.uid}/readStatus`, channelName), { timestamp: serverTimestamp() }); setNotifications(prev => ({...prev, [channelName]: {count: 0, mention: false}})); } };
+            const handleChannelChange = async (channelName) => { 
+                setActiveChannel(channelName);
+                setIsSidebarOpen(false);
+                if (channelName !== 'Tantangan Hijau') { await setDoc(doc(db, `users/${user.uid}/readStatus`, channelName), { timestamp: serverTimestamp() }); setNotifications(prev => ({...prev, [channelName]: {count: 0, mention: false}})); } 
+            };
             const handleDeleteUser = async (userToDelete) => { if (!window.confirm(`Yakin ingin menghapus "${userToDelete.displayName}"?`)) return; try { await deleteDoc(doc(db, 'users', userToDelete.uid)); } catch (err) { console.error("Gagal hapus user:", err); } }
+            
+            return (
+                <div className="relative h-screen w-screen flex antialiased text-gray-800 overflow-hidden">
+                    {(isSidebarOpen || isRightSidebarOpen) && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden" onClick={() => { setIsSidebarOpen(false); setIsRightSidebarOpen(false); }}></div>
+                    )}
+                
+                    <Sidebar 
+                        user={user} 
+                        activeChannel={activeChannel} 
+                        setActiveChannel={handleChannelChange} 
+                        notifications={notifications}
+                        isOpen={isSidebarOpen}
+                        setIsOpen={setIsSidebarOpen}
+                    />
+                    
+                    <div className="flex-1 flex flex-col bg-gray-50 min-w-0">
+                        {activeChannel === 'Tantangan Hijau' ? 
+                            <ChallengeComponent 
+                                user={user}
+                                onToggleSidebar={() => setIsSidebarOpen(true)}
+                                onToggleRightSidebar={() => setIsRightSidebarOpen(true)}
+                            /> : 
+                            <ChatArea 
+                                user={user} 
+                                activeChannel={activeChannel} 
+                                onViewProfile={setProfileModalUser} 
+                                allUsers={allUsers} 
+                                typingUsers={typingUsers}
+                                onToggleSidebar={() => setIsSidebarOpen(true)}
+                                onToggleRightSidebar={() => setIsRightSidebarOpen(true)}
+                            />
+                        }
+                    </div>
 
-            return (<div className="flex h-screen antialiased text-gray-800"><Sidebar user={user} activeChannel={activeChannel} setActiveChannel={handleChannelChange} notifications={notifications} /><div className="flex-1 flex flex-col bg-gray-50">{activeChannel === 'Tantangan Hijau' ? <ChallengeComponent user={user} /> : <ChatArea user={user} activeChannel={activeChannel} onViewProfile={setProfileModalUser} allUsers={allUsers} typingUsers={typingUsers} />}</div><RightSidebar onViewProfile={setProfileModalUser} allUsers={allUsers} typingUsers={typingUsers} isUserAdmin={isUserAdmin} onDeleteUser={handleDeleteUser}/>{profileModalUser && <UserProfileModal userToShow={profileModalUser} onClose={() => setProfileModalUser(null)} />}</div>);
+                    <RightSidebar 
+                        onViewProfile={setProfileModalUser} 
+                        allUsers={allUsers} 
+                        typingUsers={typingUsers} 
+                        isUserAdmin={isUserAdmin} 
+                        onDeleteUser={handleDeleteUser}
+                        isOpen={isRightSidebarOpen}
+                        setIsOpen={setIsRightSidebarOpen}
+                    />
+
+                    {profileModalUser && <UserProfileModal userToShow={profileModalUser} onClose={() => setProfileModalUser(null)} />}
+                </div>
+            );
         };
         
-        const Sidebar = ({ user, activeChannel, setActiveChannel, notifications }) => {
+        const Sidebar = ({ user, activeChannel, setActiveChannel, notifications, isOpen, setIsOpen }) => {
             const handleSignOut = async () => {
                 if (auth.currentUser) {
                     await setDoc(doc(db, 'users', auth.currentUser.uid), { isOnline: false }, { merge: true });
@@ -151,58 +211,123 @@
                 const notif = notifications[channel.name] || {};
                 return (<a href="#" key={channel.name} onClick={(e) => { e.preventDefault(); setActiveChannel(channel.name); }} className={`flex items-center justify-between p-2 rounded-lg mt-1 transition-all ${activeChannel === channel.name ? 'text-white shadow-md' : 'text-gray-600 hover:bg-gray-100'}`} style={{ backgroundColor: activeChannel === channel.name ? THEME_COLOR.primary : 'transparent' }}><div className="flex items-center"><i className={`fas ${channel.icon} fa-fw mr-3 w-5 text-center`}></i><span className="font-semibold">{channel.name}</span></div>{notif.mention && <span className="bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full animate-pulse">@</span>}{!notif.mention && notif.count > 0 && <span className="bg-gray-300 text-gray-700 text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">{notif.count}</span>}</a>);
             };
+            
+            const responsiveClasses = `
+                fixed inset-y-0 left-0 z-40 transform transition-transform duration-300 ease-in-out
+                md:static md:transform-none md:z-auto
+                ${isOpen ? 'translate-x-0' : '-translate-x-full'}
+            `;
 
             return (
-                <div className="flex flex-col w-64 bg-white border-r border-gray-200"><div className="flex items-center justify-center h-16 px-4 border-b border-gray-200"><h1 className="text-2xl font-bold" style={{ color: THEME_COLOR.primary }}>Forum Diskusi</h1></div><div className="flex flex-col flex-grow p-4 overflow-y-auto"><div className="mb-4"><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Informasi</h2>{ALL_CHANNELS.filter(c => c.type === 'info').map(renderChannel)}</div><div><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Umum</h2>{ALL_CHANNELS.filter(c => c.type === 'general').map(renderChannel)}</div></div><div className="p-4 border-t border-gray-200"><div className="flex items-center justify-between"><div className="flex items-center"><img className="h-10 w-10 rounded-full object-cover" src={user.photoURL} alt={user.displayName} /><p className="ml-3 text-sm font-semibold text-gray-800 truncate">{user.displayName}</p></div><div className="flex items-center"><button onClick={handleGoHome} className="p-2 rounded-md text-gray-500 hover:bg-green-100" title="Kembali ke Landing Page"><i className="fas fa-home"></i></button><button onClick={handleSignOut} className="p-2 rounded-md text-gray-500 hover:bg-red-100 hover:text-red-600" title="Keluar"><i className="fas fa-sign-out-alt"></i></button></div></div></div></div>
+                <div className={`flex flex-col w-64 bg-white border-r border-gray-200 ${responsiveClasses}`}>
+                    <div className="flex items-center justify-between h-16 px-4 border-b border-gray-200">
+                        <h1 className="text-2xl font-bold" style={{ color: THEME_COLOR.primary }}>Forum Diskusi</h1>
+                        <button onClick={() => setIsOpen(false)} className="md:hidden p-2 text-gray-500 hover:bg-gray-100 rounded-md"><i className="fas fa-times"></i></button>
+                    </div>
+                    <div className="flex flex-col flex-grow p-4 overflow-y-auto">
+                        <div className="mb-4"><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Informasi</h2>{ALL_CHANNELS.filter(c => c.type === 'info').map(renderChannel)}</div>
+                        <div><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">Umum</h2>{ALL_CHANNELS.filter(c => c.type === 'general').map(renderChannel)}</div>
+                    </div>
+                    <div className="p-4 border-t border-gray-200">
+                        <div className="flex items-center justify-between"><div className="flex items-center min-w-0"><img className="h-10 w-10 rounded-full object-cover" src={user?.photoURL || PLACEHOLDER_AVATAR} alt={user?.displayName || 'User'} /><p className="ml-3 text-sm font-semibold text-gray-800 truncate">{user?.displayName || 'User'}</p></div><div className="flex items-center"><button onClick={handleGoHome} className="p-2 rounded-md text-gray-500 hover:bg-green-100" title="Kembali ke Landing Page"><i className="fas fa-home"></i></button><button onClick={handleSignOut} className="p-2 rounded-md text-gray-500 hover:bg-red-100 hover:text-red-600" title="Keluar"><i className="fas fa-sign-out-alt"></i></button></div></div>
+                    </div>
+                </div>
             );
         };
         
-        const ChatArea = ({ user, activeChannel, onViewProfile, allUsers, typingUsers }) => {
+        const ChatArea = ({ user, activeChannel, onViewProfile, allUsers, typingUsers, onToggleSidebar, onToggleRightSidebar }) => {
             const [messages, setMessages] = useState([]); const [replyingTo, setReplyingTo] = useState(null); const messagesEndRef = useRef(null); const [isUserAdmin, setIsUserAdmin] = useState(false);
             useEffect(() => { setIsUserAdmin(ADMIN_UIDS.includes(user.uid)); }, [user.uid]);
             useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, typingUsers]);
             useEffect(() => { if (!activeChannel || !db) return; setReplyingTo(null); const q = query(collection(db, "channels", activeChannel, "messages"), orderBy("timestamp", "asc")); const unsub = onSnapshot(q, (snapshot) => setMessages(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })))); return () => unsub(); }, [activeChannel]);
             const handleDeleteMessage = async (messageId) => { if (!activeChannel || !window.confirm("Hapus pesan ini?")) return; try { await deleteDoc(doc(db, "channels", activeChannel, "messages", messageId)); } catch (error) { console.error("Error deleting message: ", error); } };
-            return (<div className="flex flex-col flex-grow bg-gray-50 overflow-hidden"><div className="flex-shrink-0 flex items-center justify-between h-16 px-6 bg-white border-b border-gray-200 shadow-sm"><div className="flex items-center"><i className="fas fa-hashtag fa-lg text-gray-400 mr-3"></i><h2 className="text-xl font-semibold text-gray-700">{activeChannel}</h2></div></div><div className="flex-grow p-6 overflow-y-auto min-h-0">{messages.map(msg => <Message key={msg.id} message={msg} isSent={msg.uid === user.uid} onViewProfile={onViewProfile} onDelete={() => handleDeleteMessage(msg.id)} onReply={() => setReplyingTo(msg)} />)}<div ref={messagesEndRef} /></div><div className="flex-shrink-0 px-6 pb-2 h-6">{typingUsers.length > 0 && <div className="text-sm text-gray-500 animate-pulse">{typingUsers.map(u => u.displayName).join(', ')} sedang mengetik...</div>}</div><div className="flex-shrink-0"><MessageInput user={user} activeChannel={activeChannel} isUserAdmin={isUserAdmin} replyingTo={replyingTo} setReplyingTo={setReplyingTo} allUsers={allUsers}/></div></div>);
+            
+            return (
+                <div className="flex flex-col flex-grow bg-gray-50 overflow-hidden">
+                    <div className="flex-shrink-0 flex items-center justify-between h-16 px-4 sm:px-6 bg-white border-b border-gray-200 shadow-sm">
+                        <div className="flex items-center min-w-0">
+                            <button onClick={onToggleSidebar} className="md:hidden p-2 mr-2 text-gray-500 hover:bg-gray-100 rounded-full"><i className="fas fa-bars"></i></button>
+                            <i className="fas fa-hashtag fa-lg text-gray-400 mr-3 hidden sm:inline-block"></i>
+                            <h2 className="text-xl font-semibold text-gray-700 truncate">{activeChannel}</h2>
+                        </div>
+                        <div className="flex items-center">
+                            <button onClick={onToggleRightSidebar} className="md:hidden p-2 ml-2 text-gray-500 hover:bg-gray-100 rounded-full"><i className="fas fa-users"></i></button>
+                        </div>
+                    </div>
+                    <div className="flex-grow p-2 sm:p-6 overflow-y-auto min-h-0">{messages.map(msg => <Message key={msg.id} message={msg} isSent={msg.uid === user.uid} onViewProfile={onViewProfile} onDelete={() => handleDeleteMessage(msg.id)} onReply={() => setReplyingTo(msg)} />)}<div ref={messagesEndRef} /></div>
+                    <div className="flex-shrink-0 px-6 pb-2 h-6">{typingUsers.length > 0 && <div className="text-sm text-gray-500 animate-pulse">{typingUsers.map(u => u.displayName).join(', ')} sedang mengetik...</div>}</div>
+                    <div className="flex-shrink-0"><MessageInput user={user} activeChannel={activeChannel} isUserAdmin={isUserAdmin} replyingTo={replyingTo} setReplyingTo={setReplyingTo} allUsers={allUsers}/></div>
+                </div>
+            );
         };
         const RenderFormattedText = ({ text }) => { 
             const escapeHtml = (unsafe) => unsafe ? unsafe.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;") : '';
             const formattedText = escapeHtml(text).replace(/\*(.*?)\*/g, '<strong>$1</strong>').replace(/_(.*?)_/g, '<em>$1</em>').replace(/~(.*?)~/g, '<del>$1</del>').replace(/(@everyone)/g, '<strong class="bg-amber-300 text-amber-800 px-2 py-0.5 rounded-lg">$1</strong>').replace(/(@[\w\s]+)/g, `<strong class="bg-green-200 text-green-900 font-semibold px-1 py-0.5 rounded">$1</strong>`); 
             return <span dangerouslySetInnerHTML={{ __html: formattedText }} />; 
         };
-        const Message = ({ message, isSent, onViewProfile, onDelete, onReply }) => { const { text, displayName, photoURL, timestamp, uid, isAdmin, replyTo } = message; return (<div className={`group flex items-start mb-2 ${isSent ? 'justify-end' : 'justify-start'}`}>{!isSent && <img onClick={() => onViewProfile(message)} className="h-10 w-10 rounded-full object-cover mr-3 cursor-pointer self-start transition-transform hover:scale-110" src={photoURL} alt={displayName} />}<div className={`flex items-center gap-2 ${isSent ? 'flex-row-reverse' : 'flex-row'}`}><div className="flex-shrink-0 order-1 opacity-0 group-hover:opacity-100 transition-all"><button onClick={onReply} className="p-1 text-gray-400 hover:text-green-600" title="Balas"><i className="fas fa-reply"></i></button>{isSent && <button onClick={onDelete} className="p-1 text-gray-400 hover:text-red-500" title="Hapus"><i className="fas fa-trash"></i></button>}</div><div className={`flex flex-col ${isSent ? 'items-end' : 'items-start'} order-0 min-w-0`}><div className="flex items-center mb-1">{!isSent && <span className="font-semibold mr-2 text-sm text-gray-800">{displayName}</span>}{isAdmin && <span className="text-xs font-bold text-yellow-800 bg-yellow-300 px-1.5 py-0.5 rounded-full mr-2">ADMIN</span>}<span className="text-xs text-gray-400">{timestamp?.toDate().toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'})}</span></div>{replyTo && (<div className="text-xs bg-gray-100 p-2 rounded-md mb-1 w-full opacity-80" style={{borderLeft: `2px solid ${THEME_COLOR.primary}`}}><strong className="text-gray-600">Membalas {replyTo.displayName}</strong>: <span className="text-gray-500 italic">"{replyTo.text.substring(0, 50)}..."</span></div>)}<div className={`p-3 rounded-lg shadow-sm max-w-md ${isSent ? 'text-white' : 'bg-white'}`} style={{backgroundColor: isSent ? THEME_COLOR.primary : '#FFFFFF' }}>{text && <p className="break-words"><RenderFormattedText text={text} /></p>}</div></div></div>{isSent && <img onClick={() => onViewProfile(message)} className="h-10 w-10 rounded-full object-cover ml-3 cursor-pointer self-start transition-transform hover:scale-110" src={photoURL} alt={displayName} />}</div>); };
+        const Message = ({ message, isSent, onViewProfile, onDelete, onReply }) => { const { text, displayName, photoURL, timestamp, uid, isAdmin, replyTo } = message; return (<div className={`group flex items-start mb-2 ${isSent ? 'justify-end' : 'justify-start'}`}>{!isSent && <img onClick={() => onViewProfile(message)} className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover mr-2 sm:mr-3 cursor-pointer self-start transition-transform hover:scale-110" src={photoURL || PLACEHOLDER_AVATAR} alt={displayName || 'User'} />}<div className={`flex items-center gap-2 ${isSent ? 'flex-row-reverse' : 'flex-row'}`}><div className="flex-shrink-0 order-1 opacity-0 group-hover:opacity-100 transition-all"><button onClick={onReply} className="p-1 text-gray-400 hover:text-green-600" title="Balas"><i className="fas fa-reply"></i></button>{isSent && <button onClick={onDelete} className="p-1 text-gray-400 hover:text-red-500" title="Hapus"><i className="fas fa-trash"></i></button>}</div><div className={`flex flex-col ${isSent ? 'items-end' : 'items-start'} order-0 min-w-0`}><div className="flex items-center mb-1">{!isSent && <span className="font-semibold mr-2 text-sm text-gray-800">{displayName || 'Pengguna Dihapus'}</span>}{isAdmin && <span className="text-xs font-bold text-yellow-800 bg-yellow-300 px-1.5 py-0.5 rounded-full mr-2">ADMIN</span>}<span className="text-xs text-gray-400">{timestamp?.toDate().toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'})}</span></div>{replyTo && (<div className="text-xs bg-gray-100 p-2 rounded-md mb-1 w-full opacity-80" style={{borderLeft: `2px solid ${THEME_COLOR.primary}`}}><strong className="text-gray-600">Membalas {replyTo.displayName || 'Pengguna Dihapus'}</strong>: <span className="text-gray-500 italic">"{replyTo.text.substring(0, 50)}..."</span></div>)}<div className={`p-3 rounded-lg shadow-sm max-w-xs sm:max-w-md ${isSent ? 'text-white' : 'bg-white'}`} style={{backgroundColor: isSent ? THEME_COLOR.primary : '#FFFFFF' }}>{text && <p className="break-words"><RenderFormattedText text={text} /></p>}</div></div></div>{isSent && <img onClick={() => onViewProfile(message)} className="h-8 w-8 sm:h-10 sm:w-10 rounded-full object-cover ml-2 sm:ml-3 cursor-pointer self-start transition-transform hover:scale-110" src={photoURL || PLACEHOLDER_AVATAR} alt={displayName || 'User'} />}</div>); };
         const MessageInput = ({ user, activeChannel, isUserAdmin, replyingTo, setReplyingTo, allUsers }) => { 
-            const [text, setText] = useState(''); const [isGenerating, setIsGenerating] = useState(false); const [tagSuggestions, setTagSuggestions] = useState([]); const inputRef = useRef(null); const typingTimeoutRef = useRef(null);
+            const [text, setText] = useState(''); const [tagSuggestions, setTagSuggestions] = useState([]); const inputRef = useRef(null); const typingTimeoutRef = useRef(null);
             useEffect(() => { if(replyingTo) inputRef.current.focus(); }, [replyingTo]);
             const updateTypingStatus = () => { if (!activeChannel || INFO_CHANNELS.includes(activeChannel)) return; const typingRef = doc(db, 'channels', activeChannel, 'typing', user.uid); setDoc(typingRef, { uid: user.uid, displayName: user.displayName, timestamp: serverTimestamp() }); if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current); typingTimeoutRef.current = setTimeout(() => { deleteDoc(typingRef); }, 4000); };
-            const handleInputChange = (e) => { const value = e.target.value; setText(value); updateTypingStatus(); const lastWord = value.split(/[\s,.\n]/).pop(); if (lastWord.startsWith('@')) { const searchTerm = lastWord.substring(1).toLowerCase(); let suggestions = allUsers.filter(u => u.displayName.toLowerCase().includes(searchTerm) && u.uid !== user.uid); if (isUserAdmin && 'everyone'.toLowerCase().includes(searchTerm)) { suggestions.unshift({ uid: 'everyone-tag', displayName: 'everyone', photoURL: 'https://placehold.co/100x100/f59e0b/FFFFFF?text=ALL' }); } setTagSuggestions(suggestions); } else { setTagSuggestions([]); } };
-            const handleTagSelect = (displayName) => { const words = text.split(' '); words.pop(); words.push(`@${displayName} `); setText(words.join(' ')); setTagSuggestions([]); inputRef.current.focus(); };
+            const handleInputChange = (e) => { const value = e.target.value; setText(value); updateTypingStatus(); const lastWord = value.split(/\s+/).pop(); if (lastWord.startsWith('@')) { const searchTerm = lastWord.substring(1).toLowerCase(); let suggestions = allUsers.filter(u => u.displayName?.toLowerCase().includes(searchTerm) && u.uid !== user.uid); if (isUserAdmin && 'everyone'.toLowerCase().includes(searchTerm)) { suggestions.unshift({ uid: 'everyone-tag', displayName: 'everyone', photoURL: 'https://placehold.co/100x100/f59e0b/FFFFFF?text=ALL' }); } setTagSuggestions(suggestions); } else { setTagSuggestions([]); } };
+            const handleTagSelect = (displayName) => { const lastAt = text.lastIndexOf('@'); if (lastAt !== -1) { const newText = text.substring(0, lastAt) + `@${displayName} `; setText(newText); } setTagSuggestions([]); inputRef.current.focus(); };
             const handleSendMessage = async (e) => { e.preventDefault(); if (text.trim() === "" || (INFO_CHANNELS.includes(activeChannel) && !isUserAdmin)) return; let messageData = { text, timestamp: serverTimestamp(), uid: user.uid, displayName: user.displayName, photoURL: user.photoURL, isAdmin: isUserAdmin }; if (replyingTo) { messageData.replyTo = { id: replyingTo.id, displayName: replyingTo.displayName, text: replyingTo.text }; } await addDoc(collection(db, "channels", activeChannel, "messages"), messageData); const typingRef = doc(db, 'channels', activeChannel, 'typing', user.uid); deleteDoc(typingRef); if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current); setText(''); setReplyingTo(null); };
-            return (<div className="bg-white p-4 border-t border-gray-200 relative">{tagSuggestions.length > 0 && (<div className="absolute bottom-full left-0 right-0 bg-white border border-gray-200 rounded-t-lg shadow-lg max-h-40 overflow-y-auto z-10">{tagSuggestions.map(u => (<div key={u.uid} onClick={() => handleTagSelect(u.displayName)} className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"><img src={u.photoURL} alt={u.displayName} className="w-8 h-8 rounded-full mr-2"/><span>{u.displayName}</span>{u.uid === 'everyone-tag' && <span className="ml-auto text-xs font-bold text-amber-600 bg-amber-200 px-2 py-1 rounded-full">SEMUA</span>}</div>))}</div>)}{replyingTo && (<div className="text-sm bg-gray-100 p-2 rounded-t-md -mb-1 flex justify-between items-center"><div className="truncate pl-2">Membalas <strong>{replyingTo.displayName}</strong>: <span className="text-gray-500 italic">"{replyingTo.text.substring(0, 50)}..."</span></div><button onClick={() => setReplyingTo(null)} className="ml-2 text-gray-500 hover:text-red-500 text-lg p-1">&times;</button></div>)}<form onSubmit={handleSendMessage}><div className="relative flex items-center"><textarea ref={inputRef} value={text} onChange={handleInputChange} onKeyDown={(e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }} rows="1" placeholder={(INFO_CHANNELS.includes(activeChannel) && !isUserAdmin) ? "Hanya admin yang bisa mengirim pesan" : "Ketik pesan..."} className={`w-full bg-gray-100 p-3 pr-28 focus:outline-none resize-none disabled:opacity-60 ${replyingTo ? 'rounded-b-lg' : 'rounded-lg'}`} style={{"&:focus": {ring: `2px solid ${THEME_COLOR.primary}`}}} disabled={(INFO_CHANNELS.includes(activeChannel) && !isUserAdmin)} /><button type="submit" disabled={(INFO_CHANNELS.includes(activeChannel) && !isUserAdmin) || text.trim() === ''} className="absolute right-3 text-white rounded-full h-8 w-8 flex items-center justify-center shadow-md transition-all hover:scale-110 disabled:opacity-50" style={{backgroundColor: THEME_COLOR.primary, "&:hover": {backgroundColor: THEME_COLOR.secondary}}}><i className="fas fa-paper-plane"></i></button></div></form></div>);  
+            return (<div className="bg-white p-2 sm:p-4 border-t border-gray-200 relative">{tagSuggestions.length > 0 && (<div className="absolute bottom-full left-0 right-0 bg-white border border-gray-200 rounded-t-lg shadow-lg max-h-40 overflow-y-auto z-10">{tagSuggestions.map(u => (<div key={u.uid} onClick={() => handleTagSelect(u.displayName)} className="flex items-center p-2 hover:bg-gray-100 cursor-pointer"><img src={u.photoURL || PLACEHOLDER_AVATAR} alt={u.displayName || 'User'} className="w-8 h-8 rounded-full mr-2"/><span>{u.displayName}</span>{u.uid === 'everyone-tag' && <span className="ml-auto text-xs font-bold text-amber-600 bg-amber-200 px-2 py-1 rounded-full">SEMUA</span>}</div>))}</div>)}{replyingTo && (<div className="text-sm bg-gray-100 p-2 rounded-t-md -mb-1 flex justify-between items-center"><div className="truncate pl-2">Membalas <strong>{replyingTo.displayName}</strong>: <span className="text-gray-500 italic">"{replyingTo.text.substring(0, 50)}..."</span></div><button onClick={() => setReplyingTo(null)} className="ml-2 text-gray-500 hover:text-red-500 text-lg p-1">×</button></div>)}<form onSubmit={handleSendMessage}><div className="relative flex items-center"><textarea ref={inputRef} value={text} onChange={handleInputChange} onKeyDown={(e) => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(e); } }} rows="1" placeholder={(INFO_CHANNELS.includes(activeChannel) && !isUserAdmin) ? "Hanya admin yang bisa mengirim pesan" : "Ketik pesan..."} className={`w-full bg-gray-100 p-3 pr-28 focus:outline-none resize-none disabled:opacity-60 ${replyingTo ? 'rounded-b-lg' : 'rounded-lg'}`} style={{"&:focus": {ring: `2px solid ${THEME_COLOR.primary}`}}} disabled={(INFO_CHANNELS.includes(activeChannel) && !isUserAdmin)} /><button type="submit" disabled={(INFO_CHANNELS.includes(activeChannel) && !isUserAdmin) || text.trim() === ''} className="absolute right-3 text-white rounded-full h-8 w-8 flex items-center justify-center shadow-md transition-all hover:scale-110 disabled:opacity-50" style={{backgroundColor: THEME_COLOR.primary, "&:hover": {backgroundColor: THEME_COLOR.secondary}}}><i className="fas fa-paper-plane"></i></button></div></form></div>);  
         };
-        const RightSidebar = ({ onViewProfile, allUsers, typingUsers, isUserAdmin, onDeleteUser }) => { const uniqueUsers = Array.from(new Map(allUsers.map(user => [user.uid, user])).values()); const onlineUsers = uniqueUsers.filter(u => u.isOnline); const offlineUsers = uniqueUsers.filter(u => !u.isOnline); const renderUser = (user) => { const isTyping = typingUsers.some(typingUser => typingUser.uid === user.uid); return (<div key={user.uid} className="group flex items-center p-1 rounded-md hover:bg-gray-200"><div onClick={() => onViewProfile(user)} className="flex items-center flex-grow cursor-pointer"><div className="relative"><img className="h-10 w-10 rounded-full object-cover" src={user.photoURL} alt={user.displayName} /><span className={`absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full border-2 border-white ${user.isOnline ? 'bg-green-400' : 'bg-gray-400'}`}></span></div><span className="ml-3 font-medium text-gray-700">{user.displayName}</span>{isTyping && <i className="fas fa-pencil-alt text-gray-500 ml-auto text-xs animate-bounce"></i>}</div>{isUserAdmin && user.uid !== auth.currentUser.uid && (<button onClick={() => onDeleteUser(user)} className="ml-2 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100" title="Hapus"><i className="fas fa-trash-alt fa-xs"></i></button>)}</div>); }; return (<div className="hidden md:flex flex-col w-72 bg-gray-100 border-l border-gray-200 p-4 space-y-6"><div className="overflow-y-auto"><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Online ({onlineUsers.length})</h2><div className="space-y-3">{onlineUsers.map(renderUser)}</div></div>{offlineUsers.length > 0 && (<div className="overflow-y-auto"><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Offline ({offlineUsers.length})</h2><div className="space-y-3 opacity-60">{offlineUsers.map(renderUser)}</div></div>)}</div>); };
-        const UserProfileModal = ({ userToShow, onClose }) => (<div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4" onClick={onClose}><div className="bg-white rounded-lg shadow-xl w-full max-w-sm text-center p-8 relative animate-fade-in-up" onClick={e => e.stopPropagation()}><button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">&times;</button><img className="w-24 h-24 rounded-full mx-auto mb-4" style={{ring: `4px solid ${THEME_COLOR.primary}`}} src={userToShow.photoURL} alt={userToShow.displayName} /><h3 className="text-2xl font-bold text-gray-800">{userToShow.displayName}</h3>{userToShow.isAdmin && <p className="mt-2 text-sm font-bold text-yellow-600">ADMIN</p>}<p className={`mt-2 text-sm font-semibold ${userToShow.isOnline ? 'text-green-500' : 'text-gray-400'}`}>{userToShow.isOnline ? 'Online' : 'Offline'}</p></div></div>);
+        const RightSidebar = ({ onViewProfile, allUsers, typingUsers, isUserAdmin, onDeleteUser, isOpen, setIsOpen }) => { 
+            const uniqueUsers = Array.from(new Map(allUsers.map(user => user && [user.uid, user])).values()).filter(Boolean);
+            const onlineUsers = uniqueUsers.filter(u => u.isOnline); const offlineUsers = uniqueUsers.filter(u => !u.isOnline); const renderUser = (user) => { const isTyping = typingUsers.some(typingUser => typingUser.uid === user.uid); return (<div key={user.uid} className="group flex items-center p-1 rounded-md hover:bg-gray-200"><div onClick={() => onViewProfile(user)} className="flex items-center flex-grow cursor-pointer"><div className="relative"><img className="h-10 w-10 rounded-full object-cover" src={user.photoURL || PLACEHOLDER_AVATAR} alt={user.displayName || 'User'} /><span className={`absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full border-2 border-white ${user.isOnline ? 'bg-green-400' : 'bg-gray-400'}`}></span></div><span className="ml-3 font-medium text-gray-700">{user.displayName || 'Pengguna Dihapus'}</span>{isTyping && <i className="fas fa-pencil-alt text-gray-500 ml-auto text-xs animate-bounce"></i>}</div>{isUserAdmin && user.uid !== auth.currentUser.uid && (<button onClick={() => onDeleteUser(user)} className="ml-2 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100" title="Hapus"><i className="fas fa-trash-alt fa-xs"></i></button>)}</div>); }; 
+            
+            const responsiveClasses = `
+                fixed inset-y-0 right-0 z-40 transform transition-transform duration-300 ease-in-out
+                md:static md:flex md:transform-none md:z-auto
+                ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+            `;
+
+            return (
+                <div className={`flex-col w-72 bg-gray-100 border-l border-gray-200 p-4 space-y-6 ${isOpen ? 'flex' : 'hidden'} ${responsiveClasses}`}>
+                    <div className="flex items-center justify-between md:hidden pb-3 border-b border-gray-200 mb-3">
+                        <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider">Anggota</h2>
+                        <button onClick={() => setIsOpen(false)} className="p-2 -mr-2 text-gray-500 hover:bg-gray-200 rounded-md"><i className="fas fa-times"></i></button>
+                    </div>
+                    <div className="overflow-y-auto"><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Online ({onlineUsers.length})</h2><div className="space-y-3">{onlineUsers.map(renderUser)}</div></div>
+                    {offlineUsers.length > 0 && (<div className="overflow-y-auto"><h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">Offline ({offlineUsers.length})</h2><div className="space-y-3 opacity-60">{offlineUsers.map(renderUser)}</div></div>)}
+                </div>
+            ); 
+        };
+        const UserProfileModal = ({ userToShow, onClose }) => (<div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4" onClick={onClose}><div className="bg-white rounded-lg shadow-xl w-full max-w-sm text-center p-8 relative animate-fade-in-up" onClick={e => e.stopPropagation()}><button onClick={onClose} className="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl">×</button><img className="w-24 h-24 rounded-full mx-auto mb-4" style={{ring: `4px solid ${THEME_COLOR.primary}`}} src={userToShow?.photoURL || PLACEHOLDER_AVATAR} alt={userToShow?.displayName || 'User'} /><h3 className="text-2xl font-bold text-gray-800">{userToShow?.displayName || 'Pengguna Dihapus'}</h3>{userToShow.isAdmin && <p className="mt-2 text-sm font-bold text-yellow-600">ADMIN</p>}<p className={`mt-2 text-sm font-semibold ${userToShow.isOnline ? 'text-green-500' : 'text-gray-400'}`}>{userToShow.isOnline ? 'Online' : 'Offline'}</p></div></div>);
         
-        // ==========================================================
-        // KODE LENGKAP UNTUK FITUR TANTANGAN HIJAU DIKEMBALIKAN
-        // ==========================================================
-        const ChallengeComponent = ({user}) => { 
+        // === DIUBAH: ChallengeComponent sekarang punya header sendiri agar konsisten ===
+        const ChallengeComponent = ({user, onToggleSidebar, onToggleRightSidebar}) => { 
             const [activeTab, setActiveTab] = useState('challenge'); 
             return (
-                <div className="flex flex-col flex-1 bg-gray-100 overflow-hidden">
+                <div className="flex flex-col flex-1 overflow-hidden">
+                    <div className="flex-shrink-0 flex items-center justify-between h-16 px-4 sm:px-6 bg-white border-b border-gray-200 shadow-sm">
+                        <div className="flex items-center min-w-0">
+                            <button onClick={onToggleSidebar} className="md:hidden p-2 mr-2 text-gray-500 hover:bg-gray-100 rounded-full"><i className="fas fa-bars"></i></button>
+                            <i className="fas fa-leaf fa-lg text-green-500 mr-3 hidden sm:inline-block"></i>
+                            <h2 className="text-xl font-semibold text-gray-700 truncate">Tantangan Hijau</h2>
+                        </div>
+                         <div className="flex items-center">
+                            <button onClick={onToggleRightSidebar} className="md:hidden p-2 ml-2 text-gray-500 hover:bg-gray-100 rounded-full"><i className="fas fa-users"></i></button>
+                        </div>
+                    </div>
                     <div className="flex-shrink-0 bg-white border-b px-6">
-                        <nav className="-mb-px flex space-x-8">
+                        <nav className="-mb-px flex space-x-4 sm:space-x-8 overflow-x-auto">
                             {['challenge', 'leaderboard', 'profile'].map(tab => 
-                                <button key={tab} onClick={() => setActiveTab(tab)} className={`py-4 px-1 border-b-2 font-medium text-sm ${activeTab === tab ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}>
+                                <button key={tab} onClick={() => setActiveTab(tab)} className={`py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap ${activeTab === tab ? 'border-green-500 text-green-600' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}>
                                     {tab.charAt(0).toUpperCase() + tab.slice(1).replace('leaderboard', 'Papan Peringkat').replace('profile', 'Profil Saya').replace('challenge', 'Tantangan')}
                                 </button>
                             )}
                         </nav>
                     </div>
-                    <div className="flex-1 p-4 sm:p-6 lg:p-10 overflow-y-auto bg-dots">
-                        {activeTab === 'challenge' && <ChallengeView user={user}/>}
-                        {activeTab === 'leaderboard' && <LeaderboardView />}
-                        {activeTab === 'profile' && <ProfileView user={user} />}
+                    <div className="flex-1 overflow-y-auto bg-dots">
+                        <div className="p-4 sm:p-6 lg:p-10">
+                            {activeTab === 'challenge' && <ChallengeView user={user}/>}
+                            {activeTab === 'leaderboard' && <LeaderboardView />}
+                            {activeTab === 'profile' && <ProfileView user={user} />}
+                        </div>
                     </div>
                 </div>
             );
@@ -270,7 +395,7 @@
                             const isCompleted = level <= userData.level;
                             const isCurrent = !isCompleted && level === userData.level + 1;
                             const position = levelPositions[level - 1];
-                            let nodeClass = 'w-20 h-20 rounded-full border-4 flex items-center justify-center text-3xl font-bold shadow-lg';
+                            let nodeClass = 'w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 flex items-center justify-center text-2xl sm:text-3xl font-bold shadow-lg';
                             if (isCompleted) { nodeClass += ' bg-green-500 text-white border-green-700';
                             } else if (isCurrent) { nodeClass += canCompleteToday ? ' bg-blue-500 text-white border-blue-700 cursor-pointer animate-pulse-slow' : ' bg-gray-400 text-white border-gray-600';
                             } else { nodeClass += ' bg-gray-200 text-gray-400 border-gray-300'; }
@@ -308,8 +433,8 @@
                             {leaderboard.map((user, index) => 
                                 <div key={user.uid || index} className="flex items-center bg-gray-50 p-4 rounded-lg">
                                     <span className="text-lg font-bold text-gray-500 mr-4 w-8 text-center">{index+1}</span>
-                                    <img src={user.photoURL} alt="Avatar" className="w-10 h-10 rounded-full mr-4"/>
-                                    <span className="font-bold flex-1">{user.displayName}</span>
+                                    <img src={user?.photoURL || PLACEHOLDER_AVATAR} alt={user?.displayName || 'User'} className="w-10 h-10 rounded-full mr-4"/>
+                                    <span className="font-bold flex-1">{user?.displayName || 'Pengguna Dihapus'}</span>
                                     <span className="text-green-600 font-bold">{user.level} Level</span>
                                 </div>
                             )}
@@ -331,12 +456,12 @@
             return (
                 <div className="max-w-2xl mx-auto">
                     <div className="bg-white p-8 rounded-2xl shadow-md text-center">
-                        <img src={user.photoURL} alt="Profile" className="w-24 h-24 rounded-full mx-auto mb-4 ring-4 ring-blue-400"/>
-                        <h2 className="text-3xl font-bold">{user.displayName}</h2>
+                        <img src={user?.photoURL || PLACEHOLDER_AVATAR} alt="Profile" className="w-24 h-24 rounded-full mx-auto mb-4 ring-4 ring-green-400"/>
+                        <h2 className="text-3xl font-bold">{user?.displayName || 'User'}</h2>
                         <p className="text-gray-500">Bergabung: {userData.startDate ? new Date(userData.startDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '-'}</p>
                         <div className="mt-6 border-t pt-6">
                             <h3 className="text-xl font-bold mb-4">Statistik Saya</h3>
-                            <div className="grid grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                 <div className="bg-green-50 p-4 rounded-lg"><p className="text-3xl font-bold text-green-600">{userData.level}</p><p className="text-gray-500">Selesai</p></div>
                                 <div className="bg-red-50 p-4 rounded-lg"><p className="text-3xl font-bold text-red-600">{missedLevels > 0 ? missedLevels : 0}</p><p className="text-gray-500">Terlewat</p></div>
                                 <div className="bg-blue-50 p-4 rounded-lg"><p className="text-3xl font-bold text-blue-600">{Math.floor(userData.level / 5)}</p><p className="text-gray-500">Lencana</p></div>
