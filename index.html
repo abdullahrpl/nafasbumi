@@ -119,7 +119,7 @@
     <div id="preloader" class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50">
         <div id="preloader-content" class="flex flex-col justify-between h-full items-center text-center py-8">
             <div></div>
-            <h1 class="text-6xl font-black uppercase text-white tracking-wider font-['Montserrat'] md:text-7xl">
+            <h1 class="text-5xl font-black uppercase text-white tracking-wider font-['Montserrat'] md:text-7xl">
                 Selamat Datang
             </h1>
             <div class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]">NafasBumi</div>
@@ -132,22 +132,22 @@
                 <img src="/image.png" alt="Keindahan bawah laut Raja Ampat, Indonesia" class="parallax-img gambar-1 absolute top-0 left-0 w-full h-full object-cover scale-110">
                 <div class="absolute inset-0 bg-black/60"></div>
             </div>
-            <div class="parallax-container relative w-full h-full overflow-hidden flex items-center justify-center">
-                <img src="/Group1.png" alt="Terumbu karang di perairan Indonesia" class="parallax-img absolute top-0 left-0 w-full h-full object-cover scale-110">
+            <div class="parallax-container relative w-full h-full overflow-hidden flex items-center justify-center md:my-0">
+                <img src="/Group1.png" alt="Terumb  u karang di perairan Indonesia" class="parallax-img absolute top-0 left-0 w-full h-full object-cover scale-110">
                 <div class="absolute inset-0 bg-black/60"></div>
             </div>
             <div class="parallax-container relative w-full h-full overflow-hidden">
                 <img src="/Group2.png" alt="Pemandangan pulau tropis di Labuan Bajo, Indonesia" class="parallax-img absolute top-0 left-0 w-full h-full object-cover gambar-1 scale-110">
                 <div class="absolute inset-0 bg-black/60"></div>
             </div>
-            <div class="absolute justify-center items-center w-full h-full flex">
+            <div class="absolute justify-center items-center w-full h-full flex flex-col-reverse">
                 <div class="relative z-10 text-center text-white p-8">
-                    <h2 class="text-xl font-light tracking-widest uppercase">
-                        Aksi Kecil Kita, Nafas Baru Untuk Bumi.
-                    </h2>
-                    <h1 class="text-6xl lg:text-8xl font-black uppercase mt-2 font-['Montserrat']">
+                    <h1 class="text-5xl md:text-6xl lg:text-8xl font-black uppercase mt-2 font-['Montserrat']">
                         NafasBumi
                     </h1>
+                    <h2 class="text-sm md:text-xl font-light tracking-widest uppercase">
+                        Aksi Kecil Kita, Nafas Baru Untuk Bumi.
+                    </h2>
                 </div>
             </div>
             <div class="scroll-containner absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2">
@@ -185,8 +185,8 @@
                             <a href="#aksi" class="bg-white text-[#2E5339] font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">Tanda Tangan Petisi</a>
 
                                 <button id="showPopupButton" class="bg-white text-[#2E5339] font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-colors">
-        Forum Komunitas
-    </button>
+                                    Forum Komunitas
+                                 </button>
                         </div>
                     </div>
                 </div>
@@ -348,68 +348,98 @@
         // if (navLinks.length > 0 && sections.length > 0) { const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { navLinks.forEach(link => { link.classList.remove('active'); if (link.getAttribute('href') === `#${entry.target.id}`) { link.classList.add('active'); } }); } }); }, { rootMargin: '-50% 0px -50% 0px' }); sections.forEach(section => { observer.observe(section); }); }
         if (heroHeader && parallaxImages.length > 0) { const cursorStrength = 40; const scrollStrength = 0; const updateAllTransforms = () => { if (window.innerWidth < 768) return; const scrollY = window.pageYOffset; const cursorX = parseFloat(heroHeader.dataset.cursorX || 0); const cursorY = parseFloat(heroHeader.dataset.cursorY || 0); const totalScrollY = -(scrollY * scrollStrength); parallaxImages.forEach(img => { img.style.transform = `translate3d(${cursorX}px, ${totalScrollY + cursorY}px, 0) scale(1.1)`; }); }; heroHeader.addEventListener('mousemove', (e) => { const rect = heroHeader.getBoundingClientRect(); const x = e.clientX - rect.left - rect.width / 2; const y = e.clientY - rect.top - rect.height / 2; heroHeader.dataset.cursorX = -(x / cursorStrength); heroHeader.dataset.cursorY = -(y / cursorStrength); updateAllTransforms(); }); heroHeader.addEventListener('mouseleave', () => { heroHeader.dataset.cursorX = 0; heroHeader.dataset.cursorY = 0; updateAllTransforms(); }); window.addEventListener('scroll', updateAllTransforms); updateAllTransforms(); }
 
-        // ==============================================================
-        // == SCRIPT BERITA DINAMIS (DATA DIAMBIL DARI iNews)          ==
-        // ==============================================================
-        // DIUBAH: Data berita ini disimulasikan seolah-olah diambil dari iNews.id per 16 Juni 2025
+       // ==============================================================
+    // == SCRIPT BERITA DINAMIS (DATA DIAMBIL DARI CNN NASIONAL)   ==
+    // ==============================================================
+    
+    const beritaContainer = document.getElementById('berita-container');
 
-            const beritaContainer = document.getElementById('berita-container');
+    const createBeritaCard = (berita) => {
+        // API ini menyediakan deskripsi di dalam 'content'
+        const description = berita.content ? berita.content.substring(0, 100) : "Klik untuk membaca lebih lanjut.";
+        // Format tanggal agar lebih mudah dibaca
+        const formattedDate = new Date(berita.pubDate).toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        });
+        
+        // Pastikan 'link' dan 'thumbnail' ada
+        const beritaLink = berita.link || '#';
+        const beritaThumbnail = berita.thumbnail || 'https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi';
+        
+        return `
+            <a href="${beritaLink}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
+                <div class="relative h-48 w-full">
+                    <img src="${beritaThumbnail}" alt="Thumbnail ${berita.title}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi'; this.onerror=null;">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 p-4">
+                        <h2 class="text-sm font-bold text-white">${formattedDate}</h2>
+                    </div>
+                </div>
+                <div class="p-6 flex flex-col h-full">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2 leading-tight">${berita.title}</h3>
+                    <p class="text-gray-600 text-sm mb-6 leading-relaxed flex-grow">${description}${berita.content.length > 100 ? '...' : ''}</p>
+                    <span class="font-semibold text-[#2E5339] inline-flex items-center mt-auto">
+                        Baca di Sumber Asli
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </span>
+                </div>
+            </a>
+        `;
+    };
 
-            const createBeritaCard = (berita) => {
-                // API ini menyediakan deskripsi di dalam 'content'
-                const description = berita.content ? berita.content.substring(0, 100) : "Klik untuk membaca lebih lanjut.";
+    const fetchAndDisplayNews = async () => {
+        const API_URL = `https://berita-indo-api-next.vercel.app/api/cnn-news/nasional`;
+        
+        // Tampilkan loading state
+        if (beritaContainer) {
+            beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-gray-500">Memuat berita...</p>`;
+        }
+        
+        try {
+            const response = await fetch(API_URL);
+            
+            if (!response.ok) {
+                // Melempar error jika status HTTP bukan 200-299
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+
+            // Memastikan data yang diterima sukses dan memiliki properti 'posts'
+            if (!data.success || !data.data || !data.data.posts || data.data.posts.length === 0) {
+                throw new Error("Data berita tidak ditemukan atau format tidak sesuai.");
+            }
+            
+            if (beritaContainer) {
+                beritaContainer.innerHTML = ''; // Hapus pesan loading
+
+                // Tampilkan 3 berita teratas (sesuai permintaan kode Anda)
+                const articlesToShow = data.data.posts.slice(0, 3);
                 
-                return `
-                    <a href="${berita.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
-                        <div class="relative h-48 w-full">
-                            <img src="${berita.thumbnail}" alt="Thumbnail ${berita.title}" class="absolute h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" onerror="this.src='https://placehold.co/600x400/2E5339/FFFFFF?text=NafasBumi'; this.onerror=null;">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
-                            <div class="absolute bottom-0 left-0 p-4">
-                                <h2 class="text-sm font-bold text-white">${new Date(berita.pubDate).toLocaleDateString('id-ID')}</h2>
-                            </div>
-                        </div>
-                        <div class="p-6 flex flex-col h-full">
-                            <h3 class="text-lg font-bold text-gray-800 mb-2 leading-tight">${berita.title}</h3>
-                            <p class="text-gray-600 text-sm mb-6 leading-relaxed flex-grow">${description}...</p>
-                            <span class="font-semibold text-[#2E5339] inline-flex items-center mt-auto">
-                                Baca di Sumber Asli
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                            </span>
-                        </div>
-                    </a>
-                `;
-            };
-
-            const fetchAndDisplayNews = async () => {
-                // --- PERUBAHAN API ---
-                // Menggunakan API publik yang ramah untuk Vercel. Tidak perlu API Key.
-                // Kita ambil dari kategori "Lingkungan" di CNN.
-                const API_URL = `https://api-berita-indonesia.vercel.app/antara/terbaru/`;
-                
-                try {
-                    const response = await fetch(API_URL);
-                    const data = await response.json();
-
-                    if (!response.ok || data.success === false) {
-                        throw new Error(data.message || "Gagal mengambil data berita.");
-                    }
-                    
-                    beritaContainer.innerHTML = ''; 
-
-                    // Tampilkan 3 berita teratas
-                    const articlesToShow = data.data.posts.slice(0, 3);
-                    articlesToShow.forEach(berita => {
+                articlesToShow.forEach(berita => {
+                    // Pastikan objek berita memiliki properti yang dibutuhkan sebelum ditampilkan
+                    if (berita.title && berita.link && berita.pubDate) {
                         beritaContainer.innerHTML += createBeritaCard(berita);
-                    });
+                    }
+                });
 
-                } catch (error) {
-                    console.error("Gagal memuat berita:", error);
-                    beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita. Silakan coba muat ulang halaman.</p>`;
+                if (articlesToShow.length === 0) {
+                     beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-gray-500">Tidak ada berita yang tersedia saat ini.</p>`;
                 }
-            };
+            }
+
+        } catch (error) {
+            console.error("Gagal memuat berita:", error);
+            if (beritaContainer) {
+                beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold">Gagal memuat berita. Silakan coba muat ulang halaman. (${error.message})</p>`;
+            }
+        }
+    };
 
             fetchAndDisplayNews();
-        });
+    });
 
     // Get modal elements
         const showPopupButton = document.getElementById('showPopupButton');
