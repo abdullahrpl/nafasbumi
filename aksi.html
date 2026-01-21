@@ -1,111 +1,133 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aksi - NafasBumi</title> 
+    <title>Aksi - NafasBumi</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="icon" type="image/x-icon" href="/eekend (1).svg">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap"
+        rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 
-    
+
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
         }
+
         #preloader {
             transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
         }
+
         .slide-up {
             transform: translateY(-100%);
         }
 
         .loader {
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #4A7859; /* Warna disesuaikan dengan tombol */
+            border-top: 4px solid #4A7859;
+            /* Warna disesuaikan dengan tombol */
             border-radius: 50%;
             width: 40px;
             height: 40px;
             animation: spin 1s linear infinite;
         }
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
-        
-              /* Warna hijau kustom yang mirip dengan contoh */
-      .custom-green {
-        background-color: #6a994e;
-      }
-      .custom-green-text {
-        color: #6a994e;
-      }
-      .custom-green-border {
-        border-color: #6a994e;
-      }
-      .btn-primary {
-        background-color: transparent;
-        border: 1px solid #386641;
-        color: #386641;
-        font-weight: bold;
-        transition: all 0.3s ease;
-      }
-      .btn-primary:hover {
-        background-color: #386641;
-        color: white;
-      }
-      .btn-secondary {
-        background-color: transparent;
-        border: 1px solid #386641;
-        color: #386641;
-        font-weight: bold;
-        transition: all 0.3s ease;
-      }
-      .btn-secondary:hover {
-        background-color: #386641;
-        color: white;
-      }
+
+        /* Warna hijau kustom yang mirip dengan contoh */
+        .custom-green {
+            background-color: #6a994e;
+        }
+
+        .custom-green-text {
+            color: #6a994e;
+        }
+
+        .custom-green-border {
+            border-color: #6a994e;
+        }
+
+        .btn-primary {
+            background-color: transparent;
+            border: 1px solid #386641;
+            color: #386641;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #386641;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #386641;
+            color: #386641;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background-color: #386641;
+            color: white;
+        }
     </style>
 </head>
+
 <body class="bg-gray-100">
 
     <header id="main-header" class="bg-white/80 backdrop-blur-sm fixed w-full top-0 z-40 shadow-sm">
         <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
             <a href="index.html" class="text-2xl font-semibold text-[#2E5339]">NafasBumi</a>
-            
+
             <div class="hidden md:flex items-center space-x-8 text-gray-700">
-                <a href="index.html" 
-                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
-                   Beranda
+                <a href="index.html"
+                    class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+                    Beranda
                 </a>
-                
-                <a href="wawasan.html" 
-                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
-                   Wawasan
+
+                <a href="wawasan.html"
+                    class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+                    Wawasan
                 </a>
-                
-                <a href="aksi.html" 
-                   class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]">
-                   Aksi
+
+                <a href="aksi.html"
+                    class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]">
+                    Aksi
                 </a>
-                
-                <a href="tentang.html" 
-                   class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
-                   Tentang Kami
+
+                <a href="tentang.html"
+                    class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">
+                    Tentang Kami
                 </a>
             </div>
-            
-            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">
+
+            <a href="https://forms.gle/7ihXz8gV9WV83QVW8"
+                class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">
                 Donasi
             </a>
-            
+
             <button id="mobile-menu-button" class="md:hidden text-2xl text-[#2E5339]">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
         </nav>
@@ -114,7 +136,8 @@
             <a href="wawasan.html" class="block py-2 px-4 text-sm">Wawasan</a>
             <a href="aksi.html" class="block py-2 px-4 text-sm font-bold text-[#2E5339]">Aksi</a>
             <a href="tentang.html" class="block py-2 px-4 text-sm">Tentang Kami</a>
-            <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
+            <a href="https://forms.gle/7ihXz8gV9WV83QVW8"
+                class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
         </div>
     </header>
 
@@ -124,7 +147,8 @@
             <h1 class="text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']">
                 Aksi
             </h1>
-            <div class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]">NafasBumi</div>
+            <div class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]">
+                NafasBumi</div>
         </div>
     </div>
 
@@ -133,72 +157,96 @@
             <div class="container mx-auto px-6 lg:px-8 py-8">
                 <section class="flex flex-col md:flex-row items-center gap-8 md:gap-12 mb-20">
                     <div class="w-full md:w-5/12 text-center md:text-left">
-                        <h1 class="font-bold text-5xl md:text-6xl mb-4 leading-tight">Peranmu untuk <span class="text-[#2E5339]">Melindungi Bumi</span></h1>
+                        <h1 class="font-bold text-5xl md:text-6xl mb-4 leading-tight">Peranmu untuk <span
+                                class="text-[#2E5339]">Melindungi Bumi</span></h1>
                         <p class="text-lg text-gray-600 leading-relaxed">
-                            Nafasbumi percaya bahwa pelindungan lingkungan hidup harus disuarakan bersama-sama dengan lebih lantang. Dengan begitu, kami membutuhkan bantuanmu untuk turut menyuarakan, memberikan solusi, dan beraksi bersama untuk membuat perubahan ke arah yang lebih baik.
+                            Nafasbumi percaya bahwa pelindungan lingkungan hidup harus disuarakan bersama-sama dengan
+                            lebih lantang. Dengan begitu, kami membutuhkan bantuanmu untuk turut menyuarakan, memberikan
+                            solusi, dan beraksi bersama untuk membuat perubahan ke arah yang lebih baik.
                         </p>
                     </div>
                     <div class="w-full md:w-7/12">
-                        <img src="https://live-production.wcms.abc-cdn.net.au/f6947a0854aca788a51190a6797ab916?impolicy=wcms_crop_resize&cropH=710&cropW=1064&xPos=83&yPos=0&width=862&height=575" alt="Tim aktivis lingkungan di perahu karet" class="rounded-lg shadow-xl w-full h-auto object-cover" />
+                        <img src="https://live-production.wcms.abc-cdn.net.au/f6947a0854aca788a51190a6797ab916?impolicy=wcms_crop_resize&cropH=710&cropW=1064&xPos=83&yPos=0&width=862&height=575"
+                            alt="Tim aktivis lingkungan di perahu karet"
+                            class="rounded-lg shadow-xl w-full h-auto object-cover" />
                     </div>
                 </section>
-        
+
                 <section id="petisi" class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 mb-20">
                     <div class="w-full md:w-5/12">
                         <h2 class="text-3xl md:text-4xl font-bold mb-4">Bersuara Melalui Petisi</h2>
                         <p class="text-gray-600 mb-6 leading-relaxed">
-                            Dukunganmu menjadi salah satu faktor keberhasilan kampanye perlindungan lingkungan yang kami lakukan. Bersuara melalui petisi dapat menjadi bentuk konkrit dukunganmu dalam misi penyelamatan lingkungan di Indonesia.
+                            Dukunganmu menjadi salah satu faktor keberhasilan kampanye perlindungan lingkungan yang kami
+                            lakukan. Bersuara melalui petisi dapat menjadi bentuk konkrit dukunganmu dalam misi
+                            penyelamatan lingkungan di Indonesia.
                         </p>
                         <button class="w-full md:w-auto px-8 py-3 rounded-lg btn-primary">Lihat Semua Petisi</button>
                     </div>
                     <div class="w-full md:w-7/12">
-                        <img src="https://images.unsplash.com/photo-1609911569412-ac56f0c40202?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Orang memegang papan protes tentang lingkungan" class="rounded-lg shadow-xl w-full h-auto object-cover" />
+                        <img src="https://images.unsplash.com/photo-1609911569412-ac56f0c40202?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            alt="Orang memegang papan protes tentang lingkungan"
+                            class="rounded-lg shadow-xl w-full h-auto object-cover" />
                     </div>
                 </section>
-        
+
                 <section id="relawan" class="flex flex-col md:flex-row items-center gap-8 md:gap-12 mb-20">
                     <div class="w-full md:w-5/12">
                         <h2 class="text-3xl md:text-4xl font-bold mb-4">Menjadi Relawan</h2>
                         <p class="text-gray-600 mb-6 leading-relaxed">
-                            Setiap aksimu bisa membuat perubahan positif dalam upaya menyelamatkan bumi dari krisis iklim. Kamu bisa belajar langsung bersama tim Nafasbumi dan komunitas, berkampanye di media sosial, pendidikan lingkungan ke sekolah-sekolah, dan terlibat langsung dalam aksi kreatif.
+                            Setiap aksimu bisa membuat perubahan positif dalam upaya menyelamatkan bumi dari krisis
+                            iklim. Kamu bisa belajar langsung bersama tim Nafasbumi dan komunitas, berkampanye di media
+                            sosial, pendidikan lingkungan ke sekolah-sekolah, dan terlibat langsung dalam aksi kreatif.
                         </p>
                         <button class="w-full md:w-auto px-8 py-3 rounded-lg btn-secondary">Bergabung Sekarang</button>
                     </div>
                     <div class="w-full md:w-7/12">
-                        <img src="https://www.greenpeace.org/static/planet4-indonesia-stateless/2024/11/fef36a16-gp0sttxh7-768x512.jpg" alt="Sekelompok relawan mendengarkan presentasi" class="rounded-lg shadow-xl w-full h-auto object-cover" />
+                        <img src="https://www.greenpeace.org/static/planet4-indonesia-stateless/2024/11/fef36a16-gp0sttxh7-768x512.jpg"
+                            alt="Sekelompok relawan mendengarkan presentasi"
+                            class="rounded-lg shadow-xl w-full h-auto object-cover" />
                     </div>
                 </section>
-        
+
                 <section id="donasi" class="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-12 mb-20">
                     <div class="w-full md:w-5/12">
                         <h2 class="text-3xl md:text-4xl font-bold mb-4">Donasi untuk Lingkungan</h2>
                         <p class="text-gray-600 mb-6 leading-relaxed">
-                            Sebagai organisasi yang independen secara finansial, kerja kampanye kami dibiayai 100% oleh donatur individual. Independensi ini bertujuan agar suara kampanye Nafasbumi murni untuk kepentingan kelestarian lingkungan dan perdamaian manusia.
+                            Sebagai organisasi yang independen secara finansial, kerja kampanye kami dibiayai 100% oleh
+                            donatur individual. Independensi ini bertujuan agar suara kampanye Nafasbumi murni untuk
+                            kepentingan kelestarian lingkungan dan perdamaian manusia.
                         </p>
-                        <a href="https://forms.gle/7ihXz8gV9WV83QVW8" class="w-full md:w-auto px-8 py-3 rounded-lg btn-primary">Berdonasi</a>
+                        <a href="https://forms.gle/7ihXz8gV9WV83QVW8"
+                            class="w-full md:w-auto px-8 py-3 rounded-lg btn-primary">Berdonasi</a>
                     </div>
-                     <div class="w-full md:w-7/12">
-                        <img src="https://www.greenpeace.org/static/planet4-indonesia-stateless/2024/11/58671d8b-gp0stqzkc-768x509.jpg" alt="Relawan memberikan bantuan kepada masyarakat" class="rounded-lg shadow-xl w-full h-auto object-cover" />
+                    <div class="w-full md:w-7/12">
+                        <img src="https://www.greenpeace.org/static/planet4-indonesia-stateless/2024/11/58671d8b-gp0stqzkc-768x509.jpg"
+                            alt="Relawan memberikan bantuan kepada masyarakat"
+                            class="rounded-lg shadow-xl w-full h-auto object-cover" />
                     </div>
                 </section>
-        
+
             </div>
         </section>
 
         <section id="zona-aksi-ai" class="content-section min-h-auto bg-gray-50 py-16">
-             <div class="container mx-auto px-6">
+            <div class="container mx-auto px-6">
                 <h2 class="text-4xl font-bold text-center mb-4">Zona Aksi</h2>
-                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Perubahan dimulai dari tindakan nyata. Dapatkan rencana aksi personal dari AI, dukung kampanye, dan terapkan gaya hidup hijau.</p>
-                
+                <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">Perubahan dimulai dari tindakan nyata.
+                    Dapatkan rencana aksi personal dari AI, dukung kampanye, dan terapkan gaya hidup hijau.</p>
+
                 <div class="bg-white p-8 rounded-lg shadow-lg mb-16">
                     <h3 class="text-2xl font-bold mb-2 text-center">✨ Perencana Aksi Hijau</h3>
-                    <p class="text-center text-gray-500 mb-8">Bingung mulai dari mana? Tulis topik yang Anda pedulikan, dan biarkan AI menyusun rencana langkah demi langkah untuk Anda.</p>
+                    <p class="text-center text-gray-500 mb-8">Bingung mulai dari mana? Tulis topik yang Anda pedulikan,
+                        dan biarkan AI menyusun rencana langkah demi langkah untuk Anda.</p>
                     <div class="max-w-2xl mx-auto">
-                        <input type="text" id="action-plan-input" class="w-full p-3 border rounded mb-4" placeholder="Contoh: Mengurangi sampah plastik di rumah">
-                        <button id="generate-plan-btn" class="w-full bg-[#4A7859] text-white p-3 rounded-lg font-bold hover:bg-[#2E5339] transition-colors flex items-center justify-center">
-                           Buatkan Rencana Aksi
+                        <input type="text" id="action-plan-input" class="w-full p-3 border rounded mb-4"
+                            placeholder="Contoh: Mengurangi sampah plastik di rumah">
+                        <button id="generate-plan-btn"
+                            class="w-full bg-[#4A7859] text-white p-3 rounded-lg font-bold hover:bg-[#2E5339] transition-colors flex items-center justify-center">
+                            Buatkan Rencana Aksi
                         </button>
-                        <div id="plan-loader" class="hidden justify-center mt-4"><div class="loader"></div></div>
+                        <div id="plan-loader" class="hidden justify-center mt-4">
+                            <div class="loader"></div>
+                        </div>
                         <div id="plan-result" class="mt-6 hidden"></div>
                     </div>
                 </div>
@@ -208,81 +256,85 @@
 
     <footer class="bg-[#1c3323] text-white mt-16">
         <div class="container mx-auto px-6 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-                <h4 class="text-lg font-bold mb-4">NafasBumi</h4>
-                <p class="text-gray-400 text-sm">
-                Aksi Kecil Kita, Nafas Baru Untuk Bumi.
-                </p>
-            </div>
-            <div>
-                <h5 class="font-semibold mb-4">Tautan Cepat</h5>
-                <ul class="space-y-2 text-sm">
-                <li>
-                    <a href="wawasan.html" class="hover:text-gray-300">Wawasan</a>
-                </li>
-                <li><a href="aksi.html" class="hover:text-gray-300">Aksi</a></li>
-                <li>
-                    <a href="tentang.html" class="hover:text-gray-300"
-                    >Tentang Kami</a
-                    >
-                </li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="font-semibold mb-4">Legal</h5>
-                <ul class="space-y-2 text-sm">
-                <li>
-                    <a href="#" class="hover:text-gray-300">Kebijakan Privasi</a>
-                </li>
-                <li>
-                    <a href="#" class="hover:text-gray-300">Syarat & Ketentuan</a>
-                </li>
-                <li><a href="#" class="hover:text-gray-300">FAQ</a></li>
-                </ul>
-            </div>
-            <div>
-                <h5 class="font-semibold mb-4">Ikuti Kami</h5>
-                <div class="flex flex-col sm:flex-row items-center justify-between">
-                    <div class="flex space-x-5 order-1 sm:order-2">
-                        <!-- Ikon Facebook -->
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <span class="sr-only">Facebook</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <!-- Ikon Instagram -->
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <span class="sr-only">Instagram</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.148 2.148c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.148 2.148c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.148-2.148c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427A4.902 4.902 0 015.08 4.623c.636-.247 1.363-.416 2.427-.465C8.53 2.013 8.884 2 12.315 2zm-1.04 1.792c-2.392 0-2.71.01-3.664.053-1.002.046-1.594.208-1.943.362a3.103 3.103 0 00-1.363 1.363c-.154.349-.316.941-.362 1.943-.043.954-.053 1.272-.053 3.664s.01 2.71.053 3.664c.046 1.002.208 1.594.362 1.943a3.103 3.103 0 001.363 1.363c.349.154.941.316 1.943.362.954.043 1.272.053 3.664.053s2.71-.01 3.664-.053c1.002-.046 1.594-.208 1.943-.362a3.103 3.103 0 001.363-1.363c.154-.349.316-.941.362-1.943.043-.954.053-1.272.053-3.664s-.01-2.71-.053-3.664c-.046-1.002-.208-1.594-.362-1.943a3.103 3.103 0 00-1.363-1.363c-.349-.154-.941-.316-1.943-.362-.954-.043-1.272-.053-3.664-.053z" clip-rule="evenodd" />
-                            <path d="M12.315 8.192a4.123 4.123 0 100 8.246 4.123 4.123 0 000-8.246zm0 6.453a2.33 2.33 0 110-4.66 2.33 2.33 0 010 4.66z" />
-                            <path d="M16.936 8.362a.96.96 0 11-1.92 0 .96.96 0 011.92 0z" />
-                            </svg>
-                        </a>
-                        <!-- Ikon Twitter/X -->
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <span class="sr-only">Twitter</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                            </svg>
-                        </a>
-                        <!-- Ikon YouTube -->
-                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
-                            <span class="sr-only">YouTube</span>
-                            <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2.002 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM9.94 15.008V8.992l4.94 3.008-4.94 3.008Z" clip-rule="evenodd"/>
-                            </svg>
-                        </a>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h4 class="text-lg font-bold mb-4">NafasBumi</h4>
+                    <p class="text-gray-400 text-sm">
+                        Aksi Kecil Kita, Nafas Baru Untuk Bumi.
+                    </p>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Tautan Cepat</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="wawasan.html" class="hover:text-gray-300">Wawasan</a>
+                        </li>
+                        <li><a href="aksi.html" class="hover:text-gray-300">Aksi</a></li>
+                        <li>
+                            <a href="tentang.html" class="hover:text-gray-300">Tentang Kami</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Legal</h5>
+                    <ul class="space-y-2 text-sm">
+                        <li>
+                            <a href="#" class="hover:text-gray-300">Kebijakan Privasi</a>
+                        </li>
+                        <li>
+                            <a href="#" class="hover:text-gray-300">Syarat & Ketentuan</a>
+                        </li>
+                        <li><a href="#" class="hover:text-gray-300">FAQ</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="font-semibold mb-4">Ikuti Kami</h5>
+                    <div class="flex flex-col sm:flex-row items-center justify-between">
+                        <div class="flex space-x-5 order-1 sm:order-2">
+                            <!-- Ikon Facebook -->
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <span class="sr-only">Facebook</span>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                            <!-- Ikon Instagram -->
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <span class="sr-only">Instagram</span>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 012.148 2.148c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-2.148 2.148c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-2.148-2.148c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427A4.902 4.902 0 015.08 4.623c.636-.247 1.363-.416 2.427-.465C8.53 2.013 8.884 2 12.315 2zm-1.04 1.792c-2.392 0-2.71.01-3.664.053-1.002.046-1.594.208-1.943.362a3.103 3.103 0 00-1.363 1.363c-.154.349-.316.941-.362 1.943-.043.954-.053 1.272-.053 3.664s.01 2.71.053 3.664c.046 1.002.208 1.594.362 1.943a3.103 3.103 0 001.363 1.363c.349.154.941.316 1.943.362.954.043 1.272.053 3.664.053s2.71-.01 3.664-.053c1.002-.046 1.594-.208 1.943-.362a3.103 3.103 0 001.363-1.363c.154-.349.316-.941.362-1.943.043-.954.053-1.272.053-3.664s-.01-2.71-.053-3.664c-.046-1.002-.208-1.594-.362-1.943a3.103 3.103 0 00-1.363-1.363c-.349-.154-.941-.316-1.943-.362-.954-.043-1.272-.053-3.664-.053z"
+                                        clip-rule="evenodd" />
+                                    <path
+                                        d="M12.315 8.192a4.123 4.123 0 100 8.246 4.123 4.123 0 000-8.246zm0 6.453a2.33 2.33 0 110-4.66 2.33 2.33 0 010 4.66z" />
+                                    <path d="M16.936 8.362a.96.96 0 11-1.92 0 .96.96 0 011.92 0z" />
+                                </svg>
+                            </a>
+                            <!-- Ikon Twitter/X -->
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <span class="sr-only">Twitter</span>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path
+                                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                </svg>
+                            </a>
+                            <!-- Ikon YouTube -->
+                            <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                                <span class="sr-only">YouTube</span>
+                                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                        d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.78 22 12 22 12s0 3.22-.42 4.814a2.506 2.506 0 0 1-1.768 1.768c-1.594.42-7.812.42-7.812.42s-6.218 0-7.812-.42a2.506 2.506 0 0 1-1.768-1.768C2.002 15.22 2 12 2 12s0-3.22.42-4.814a2.506 2.506 0 0 1 1.768-1.768C5.782 5 12 5 12 5s6.218 0 7.812.418ZM9.94 15.008V8.992l4.94 3.008-4.94 3.008Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-            </div>
-            <div
-            class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500"
-            >
-            © 2024 NafasBumi. Dibuat dengan cinta untuk Planet Bumi.
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-sm text-gray-500">
+                © 2024 NafasBumi. Dibuat dengan cinta untuk Planet Bumi.
             </div>
         </div>
     </footer>
@@ -291,41 +343,43 @@
     <div id="error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
         <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full text-center">
             <h3 class="text-xl font-bold text-red-600 mb-4">Oops, Terjadi Kesalahan!</h3>
-            <p id="error-message" class="text-gray-700 mb-6">Maaf, kami tidak dapat memproses permintaan Anda saat ini.</p>
-            <button id="close-modal-btn" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">Tutup</button>
+            <p id="error-message" class="text-gray-700 mb-6">Maaf, kami tidak dapat memproses permintaan Anda saat ini.
+            </p>
+            <button id="close-modal-btn"
+                class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">Tutup</button>
         </div>
     </div>
 
     <script>
         // Menggabungkan semua script ke dalam satu event listener
         document.addEventListener('DOMContentLoaded', () => {
-            
+
             // --- Bagian Preloader & Mobile Menu (Sudah Benar) ---
             const preloader = document.getElementById('preloader');
             const mainContent = document.getElementById('main-content');
             const mobileMenuButton = document.getElementById('mobile-menu-button');
             const mobileMenu = document.getElementById('mobile-menu');
             const enableScroll = () => { document.body.style.overflow = 'auto'; };
-            
-            if (preloader && mainContent) { 
-                document.body.style.overflow = 'hidden'; 
-                setTimeout(() => { 
-                    preloader.classList.add('slide-up'); 
-                    mainContent.style.transition = 'opacity 0.5s ease-in'; 
-                    mainContent.style.opacity = '1'; 
-                    setTimeout(() => { 
-                        preloader.style.display = 'none'; 
-                        enableScroll(); 
-                    }, 1000); 
-                }, 2000); 
-            } else { 
-                enableScroll(); 
+
+            if (preloader && mainContent) {
+                document.body.style.overflow = 'hidden';
+                setTimeout(() => {
+                    preloader.classList.add('slide-up');
+                    mainContent.style.transition = 'opacity 0.5s ease-in';
+                    mainContent.style.opacity = '1';
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                        enableScroll();
+                    }, 1000);
+                }, 2000);
+            } else {
+                enableScroll();
             }
-    
-            if (mobileMenuButton && mobileMenu) { 
-                mobileMenuButton.addEventListener('click', () => { 
-                    mobileMenu.classList.toggle('hidden'); 
-                }); 
+
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
             }
 
             // --- Bagian Logika Zona Aksi (Diperbaiki) ---
@@ -333,7 +387,7 @@
             const actionPlanInput = document.getElementById('action-plan-input');
             const planLoader = document.getElementById('plan-loader');
             const planResult = document.getElementById('plan-result');
-            
+
             const errorModal = document.getElementById('error-modal');
             const errorMessage = document.getElementById('error-message');
             const closeModalBtn = document.getElementById('close-modal-btn');
@@ -343,45 +397,52 @@
                 errorMessage.textContent = message;
                 errorModal.classList.remove('hidden');
             }
-            
+
             // Event listener untuk tombol tutup modal
-            if(closeModalBtn) {
+            if (closeModalBtn) {
                 closeModalBtn.addEventListener('click', () => {
                     errorModal.classList.add('hidden');
                 });
             }
 
+            // KONFIGURASI API KEY GEMINI
+            const GENERATIVE_AI_API_KEY = "AIzaSyBfYiI-UGHmltQFqo_uo40qRlCuLZcApJc";
+
             // Fungsi untuk memanggil API Gemini (Diperbaiki)
             async function callGeminiAPI(prompt, isJson = false) {
-                const apiKey = "AIzaSyDyIlvgZMqeou1D_w9a_iAsOIQaFdd4NQw"; // API Key Anda
-                const model = 'gemini-1.5-flash'; // DIPERBAIKI: Menggunakan model yang valid dan terdefinisi
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                if (!GENERATIVE_AI_API_KEY || GENERATIVE_AI_API_KEY.includes("ISI_API_KEY_GEMINI")) {
+                    showErrorModal("API Key Gemini belum dipasang! Silakan edit file 'aksi.html' dan masukkan API Key Anda.");
+                    return null;
+                }
+
+                const model = 'gemini-2.5-flash';
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GENERATIVE_AI_API_KEY}`;
 
                 const payload = {
                     contents: [{ role: "user", parts: [{ text: prompt }] }]
                 };
-                
+
                 // Konfigurasi untuk meminta output JSON jika diperlukan
                 if (isJson) {
                     payload.generationConfig = {
                         responseMimeType: "application/json",
                         responseSchema: {
-                          type: "OBJECT",
-                          properties: {
-                            planTitle: { type: "STRING" },
-                            steps: {
-                              type: "ARRAY",
-                              items: {
-                                type: "OBJECT",
-                                properties: {
-                                  title: { type: "STRING" },
-                                  description: { type: "STRING" }
-                                },
-                                required: ["title", "description"]
-                              }
-                            }
-                          },
-                          required: ["planTitle", "steps"]
+                            type: "OBJECT",
+                            properties: {
+                                planTitle: { type: "STRING" },
+                                steps: {
+                                    type: "ARRAY",
+                                    items: {
+                                        type: "OBJECT",
+                                        properties: {
+                                            title: { type: "STRING" },
+                                            description: { type: "STRING" }
+                                        },
+                                        required: ["title", "description"]
+                                    }
+                                }
+                            },
+                            required: ["planTitle", "steps"]
                         }
                     };
                 }
@@ -392,15 +453,15 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-                    
+
                     if (!response.ok) {
-                       const errorData = await response.json();
-                       console.error("API Error Response:", errorData);
-                       throw new Error(`API request failed: ${errorData.error.message}`);
+                        const errorData = await response.json();
+                        console.error("API Error Response:", errorData);
+                        throw new Error(`API request failed: ${errorData.error.message}`);
                     }
 
                     const result = await response.json();
-                    
+
                     if (result.candidates && result.candidates[0]?.content?.parts[0]) {
                         return result.candidates[0].content.parts[0].text;
                     } else {
@@ -413,7 +474,7 @@
                     return null;
                 }
             }
-            
+
             // Event listener untuk tombol "Buatkan Rencana Aksi"
             if (generatePlanBtn) {
                 generatePlanBtn.addEventListener('click', async () => {
@@ -422,15 +483,15 @@
                         showErrorModal('Silakan masukkan topik untuk rencana aksi Anda.');
                         return;
                     }
-                    
+
                     planLoader.style.display = 'flex';
                     planResult.classList.add('hidden');
                     generatePlanBtn.disabled = true;
 
                     const prompt = `Buatkan saya rencana aksi ramah lingkungan yang praktis dan dapat ditindaklanjuti untuk topik ini: "${topic}". Fokus pada langkah-langkah yang dapat dilakukan oleh individu di Indonesia. Berikan jawaban dalam format JSON yang valid sesuai skema yang diberikan.`;
-                    
+
                     const resultText = await callGeminiAPI(prompt, true);
-                    
+
                     if (resultText) {
                         try {
                             const planData = JSON.parse(resultText);
@@ -439,7 +500,7 @@
                             titleEl.className = 'text-xl font-bold mb-4 text-[#2E5339]';
                             titleEl.textContent = planData.planTitle;
                             planResult.appendChild(titleEl);
-                            
+
                             const listEl = document.createElement('ol');
                             listEl.className = 'space-y-4 list-decimal list-inside text-left'; // Ditambahkan text-left
                             planData.steps.forEach(step => {
@@ -458,11 +519,11 @@
                             planResult.appendChild(listEl);
                             planResult.classList.remove('hidden');
                         } catch (e) {
-                             console.error("JSON Parsing Error:", e);
-                             showErrorModal('Gagal memproses respons dari AI. Silakan coba lagi.');
+                            console.error("JSON Parsing Error:", e);
+                            showErrorModal('Gagal memproses respons dari AI. Silakan coba lagi.');
                         }
                     }
-                    
+
                     planLoader.style.display = 'none';
                     generatePlanBtn.disabled = false;
                 });
@@ -471,4 +532,5 @@
     </script>
 
 </body>
+
 </html>

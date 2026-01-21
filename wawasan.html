@@ -1,331 +1,290 @@
 <!DOCTYPE html>
 <html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wawasan - NafasBumi</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="icon" type="image/x-icon" href="/eekend (1).svg" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.tailwindcss.com"></script>
 
-    <style>
-      body {
-        font-family: "Poppins", sans-serif;
-        background-color: #f8f9fa;
-      }
-      .nav-link-active {
-        font-weight: 600;
-        color: #2e5339;
-      }
-      #preloader {
-        transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
-      }
-      .slide-up {
-        transform: translateY(-100%);
-      }
-      .loader {
-        border: 4px solid #f3f3f3;
-        border-top: 4px solid #2e5339;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-      }
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-      .chart-container {
-        position: relative;
-        margin: auto;
-        height: 60vh;
-        max-height: 450px;
-        width: 100%;
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wawasan - NafasBumi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="icon" type="image/x-icon" href="/eekend (1).svg" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .nav-link-active {
+      font-weight: 600;
+      color: #2e5339;
+    }
+
+    #preloader {
+      transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+
+    .slide-up {
+      transform: translateY(-100%);
+    }
+
+    .loader {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #2e5339;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
       }
 
-      #topic-result h2 {
-        @apply text-2xl font-bold text-gray-900 mb-4 pb-2 border-b;
+      100% {
+        transform: rotate(360deg);
       }
-      #topic-result h3 {
-        @apply text-xl font-bold text-[#2E5339] mb-3 mt-5;
-      }
-      #topic-result ul {
-        @apply list-disc list-inside space-y-2 pl-4;
-      }
-      #topic-result li {
-        @apply mb-2;
-      }
-      #topic-result p {
-        @apply mb-4 leading-relaxed;
-      }
-      #topic-result strong,
-      #topic-result b {
-        @apply font-semibold text-gray-800;
-      }
-      #topic-result blockquote {
-        @apply border-l-4 border-[#4A7859] pl-4 py-2 my-4 bg-green-50 text-green-800 italic;
-      }
-    </style>
-  </head>
-  <body class="bg-gray-100">
-    <header
-      id="main-header"
-      class="bg-white/80 backdrop-blur-sm sticky w-full top-0 z-40 shadow-sm"
-    >
-      <nav
-        class="container mx-auto px-6 py-4 flex justify-between items-center"
-      >
-        <a href="index.html" class="text-2xl font-semibold text-[#2E5339]"
-          >NafasBumi</a
-        >
-        <div class="hidden md:flex items-center space-x-8 text-gray-700">
-          <a
-            href="index.html"
-            class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full"
-            >Beranda</a
-          >
-          <a
-            href="wawasan.html"
-            class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]"
-            >Wawasan</a
-          >
-          <a
-            href="aksi.html"
-            class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full"
-            >Aksi</a
-          >
-          <a
-            href="tentang.html"
-            class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full"
-            >Tentang Kami</a
-          >
-        </div>
-        <a
-          href="https://forms.gle/7ihXz8gV9WV83QVW8"
-          class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors"
-          >Donasi</a
-        >
-        <button
-          id="mobile-menu-button"
-          class="md:hidden text-2xl text-[#2E5339]"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
-        </button>
-      </nav>
-      <div
-        id="mobile-menu"
-        class="hidden md:hidden bg-white p-4 border-t border-gray-200"
-      >
-        <a href="index.html" class="block py-2 px-4 text-sm">Beranda</a>
-        <a href="wawasan.html" class="block py-2 px-4 text-sm nav-link-active"
-          >Wawasan</a
-        >
-        <a href="aksi.html" class="block py-2 px-4 text-sm">Aksi</a>
-        <a href="tentang.html" class="block py-2 px-4 text-sm">Tentang Kami</a>
-        <a
-          href="https://forms.gle/7ihXz8gV9WV83QVW8"
-          class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full"
-          >Donasi</a
-        >
+    }
+
+    .chart-container {
+      position: relative;
+      margin: auto;
+      height: 60vh;
+      max-height: 450px;
+      width: 100%;
+    }
+
+    #topic-result h2 {
+      @apply text-2xl font-bold text-gray-900 mb-4 pb-2 border-b;
+    }
+
+    #topic-result h3 {
+      @apply text-xl font-bold text-[#2E5339] mb-3 mt-5;
+    }
+
+    #topic-result ul {
+      @apply list-disc list-inside space-y-2 pl-4;
+    }
+
+    #topic-result li {
+      @apply mb-2;
+    }
+
+    #topic-result p {
+      @apply mb-4 leading-relaxed;
+    }
+
+    #topic-result strong,
+    #topic-result b {
+      @apply font-semibold text-gray-800;
+    }
+
+    #topic-result blockquote {
+      @apply border-l-4 border-[#4A7859] pl-4 py-2 my-4 bg-green-50 text-green-800 italic;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100">
+  <header id="main-header" class="bg-white/80 backdrop-blur-sm sticky w-full top-0 z-40 shadow-sm">
+    <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-semibold text-[#2E5339]">NafasBumi</a>
+      <div class="hidden md:flex items-center space-x-8 text-gray-700">
+        <a href="index.html"
+          class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">Beranda</a>
+        <a href="wawasan.html"
+          class="relative text-[#2E5339] font-semibold after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#2E5339]">Wawasan</a>
+        <a href="aksi.html"
+          class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">Aksi</a>
+        <a href="tentang.html"
+          class="relative hover:text-[#2E5339] transition-colors after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-[#2E5339] after:transition-all after:duration-300 hover:after:w-full">Tentang
+          Kami</a>
       </div>
-    </header>
+      <a href="https://forms.gle/7ihXz8gV9WV83QVW8"
+        class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
+      <button id="mobile-menu-button" class="md:hidden text-2xl text-[#2E5339]">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </nav>
+    <div id="mobile-menu" class="hidden md:hidden bg-white p-4 border-t border-gray-200">
+      <a href="index.html" class="block py-2 px-4 text-sm">Beranda</a>
+      <a href="wawasan.html" class="block py-2 px-4 text-sm nav-link-active">Wawasan</a>
+      <a href="aksi.html" class="block py-2 px-4 text-sm">Aksi</a>
+      <a href="tentang.html" class="block py-2 px-4 text-sm">Tentang Kami</a>
+      <a href="https://forms.gle/7ihXz8gV9WV83QVW8"
+        class="block mt-2 w-full text-center bg-[#2E5339] text-white px-5 py-2 rounded-full">Donasi</a>
+    </div>
+  </header>
 
-    <div
-      id="preloader"
-      class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50"
-    >
-      <div
-        id="preloader-content"
-        class="flex flex-col justify-between h-full items-center text-center py-8"
-      >
-        <div></div>
-        <!-- ============================================= -->
-        <!-- === PERBAIKAN RESPONSIVE ADA DI BARIS INI === -->
-        <!-- ============================================= -->
-        <h1
-          class="text-5xl md:text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']"
-        >
-          Wawasan
-        </h1>
-        <div
-          class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]"
-        >
-          NafasBumi
-        </div>
+  <div id="preloader" class="fixed inset-0 bg-[#2E5339] flex items-center justify-center z-50">
+    <div id="preloader-content" class="flex flex-col justify-between h-full items-center text-center py-8">
+      <div></div>
+      <!-- ============================================= -->
+      <!-- === PERBAIKAN RESPONSIVE ADA DI BARIS INI === -->
+      <!-- ============================================= -->
+      <h1 class="text-5xl md:text-7xl font-black uppercase text-white tracking-wider font-['Montserrat']">
+        Wawasan
+      </h1>
+      <div class="font-semibold font-['Poppins'] mt-2 text-xl bg-white py-2 px-4 rounded-xl text-[#2E5339]">
+        NafasBumi
       </div>
     </div>
+  </div>
 
-    <main id="main-content" class="opacity-0">
-      <section class="bg-white pt-10 pb-10">
-        <div class="container mx-auto px-6 text-center">
-          <h1
-            class="text-5xl font-extrabold text-[#2E5339] font-['Montserrat']"
-          >
-            Galeri Wawasan
-          </h1>
-          <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
-            Jelajahi kumpulan artikel, analisis mendalam, dan berita terkini
-            seputar isu lingkungan di Indonesia dan dunia.
-          </p>
+  <main id="main-content" class="opacity-0">
+    <section class="bg-white pt-10 pb-10">
+      <div class="container mx-auto px-6 text-center">
+        <h1 class="text-5xl font-extrabold text-[#2E5339] font-['Montserrat']">
+          Galeri Wawasan
+        </h1>
+        <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+          Jelajahi kumpulan artikel, analisis mendalam, dan berita terkini
+          seputar isu lingkungan di Indonesia dan dunia.
+        </p>
+      </div>
+    </section>
+
+    <section class="py-16">
+      <div class="container mx-auto px-6">
+        <div id="berita-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Berita dari API Berita Indonesia akan dimuat di sini -->
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="py-16">
-        <div class="container mx-auto px-6">
-          <div
-            id="berita-container"
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            <!-- Berita dari API Berita Indonesia akan dimuat di sini -->
+    <section id="pojok-wawasan" class="min-h-screen py-16">
+      <div class="container mx-auto px-6">
+        <div class="bg-white p-8 rounded-lg shadow-lg mb-16">
+          <h2 class="text-5xl font-extrabold text-[#2E5339] text-center font-['Montserrat'] mb-4">
+            Pojok Wawasan
+          </h2>
+          <p class="text-center text-gray-600 mb-20 max-w-3xl mx-auto">
+            Informasi adalah langkah pertama menuju perubahan. Dapatkan data, pemahaman mendalam, dan jelajahi topik
+            lingkungan dengan bantuan AI.
+          </p>
+          <h3 class="text-2xl font-bold mb-2 text-center">
+            ✨ Jelajahi Topik Lingkungan
+          </h3>
+          <p class="text-center text-gray-500 mb-8">
+            Punya pertanyaan tentang isu lingkungan? Tanyakan di sini dan dapatkan penjelasan sederhana dari AI.
+          </p>
+          <div class="max-w-2xl mx-auto">
+            <textarea id="topic-input"
+              class="w-full p-3 border rounded mb-4 focus:ring-2 focus:ring-[#4A7859] focus:border-transparent outline-none transition"
+              rows="3" placeholder="Contoh: Apa itu jejak karbon dan bagaimana cara menguranginya?"></textarea>
+            <button id="explore-topic-btn"
+              class="w-full bg-[#2E5339] text-white p-3 rounded-lg font-bold hover:bg-[#4A7859] transition-colors flex items-center justify-center disabled:bg-gray-400">
+              Jelajahi Sekarang
+            </button>
+            <div id="topic-loader" class="hidden flex justify-center mt-4">
+              <div class="loader"></div>
+            </div>
+            <div id="topic-result" class="mt-6 bg-stone-50 p-6 rounded-lg hidden text-gray-700 leading-relaxed"></div>
           </div>
         </div>
-      </section>
+        <div class="bg-white p-8 rounded-lg shadow-lg">
+          <h3 class="text-2xl font-bold text-[#304529] mb-2 text-center">
+            Visualisasi Data: Tren Komposisi Sampah Tahunan
+          </h3>
+          <p class="text-center text-gray-500 mb-8 max-w-3xl mx-auto">
+            Data simulasi ini membandingkan perkiraan volume berbagai jenis sampah yang masuk ke lingkungan dari tahun
+            ke tahun. Terlihat bahwa sampah plastik terus menjadi perhatian utama.
+          </p>
+          <div class="chart-container">
+            <canvas id="wasteChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-        <section id="pojok-wawasan" class="min-h-screen py-16">
-            <div class="container mx-auto px-6">
-                <div class="bg-white p-8 rounded-lg shadow-lg mb-16">
-                    <h2 class="text-5xl font-extrabold text-[#2E5339] text-center font-['Montserrat'] mb-4">
-                        Pojok Wawasan
-                    </h2>
-                    <p class="text-center text-gray-600 mb-20 max-w-3xl mx-auto">
-                        Informasi adalah langkah pertama menuju perubahan. Dapatkan data, pemahaman mendalam, dan jelajahi topik lingkungan dengan bantuan AI.
-                    </p>
-                    <h3 class="text-2xl font-bold mb-2 text-center">
-                        ✨ Jelajahi Topik Lingkungan
-                    </h3>
-                    <p class="text-center text-gray-500 mb-8">
-                        Punya pertanyaan tentang isu lingkungan? Tanyakan di sini dan dapatkan penjelasan sederhana dari AI.
-                    </p>
-                    <div class="max-w-2xl mx-auto">
-                        <textarea
-                            id="topic-input"
-                            class="w-full p-3 border rounded mb-4 focus:ring-2 focus:ring-[#4A7859] focus:border-transparent outline-none transition"
-                            rows="3"
-                            placeholder="Contoh: Apa itu jejak karbon dan bagaimana cara menguranginya?"
-                        ></textarea>
-                        <button
-                            id="explore-topic-btn"
-                            class="w-full bg-[#2E5339] text-white p-3 rounded-lg font-bold hover:bg-[#4A7859] transition-colors flex items-center justify-center disabled:bg-gray-400"
-                        >
-                            Jelajahi Sekarang
-                        </button>
-                        <div id="topic-loader" class="hidden flex justify-center mt-4">
-                            <div class="loader"></div>
-                        </div>
-                        <div
-                            id="topic-result"
-                            class="mt-6 bg-stone-50 p-6 rounded-lg hidden text-gray-700 leading-relaxed"
-                        ></div>
-                    </div>
-                </div>
-                <div class="bg-white p-8 rounded-lg shadow-lg">
-                    <h3 class="text-2xl font-bold text-[#304529] mb-2 text-center">
-                        Visualisasi Data: Tren Komposisi Sampah Tahunan
-                    </h3>
-                    <p class="text-center text-gray-500 mb-8 max-w-3xl mx-auto">
-                        Data simulasi ini membandingkan perkiraan volume berbagai jenis sampah yang masuk ke lingkungan dari tahun ke tahun. Terlihat bahwa sampah plastik terus menjadi perhatian utama.
-                    </p>
-                    <div class="chart-container">
-                        <canvas id="wasteChart"></canvas>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+  <footer class="bg-[#1c3323] text-white mt-16">
+    <!-- ... Isi footer Anda tetap sama ... -->
+  </footer>
 
-    <footer class="bg-[#1c3323] text-white mt-16">
-      <!-- ... Isi footer Anda tetap sama ... -->
-    </footer>
+  <div id="error-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-8 rounded-lg shadow-xl max-w-sm w-full text-center">
+      <h3 class="text-xl font-bold text-red-600 mb-4">Oops, Terjadi Kesalahan!</h3>
+      <p id="error-message" class="text-gray-700 mb-6">Maaf, kami tidak dapat memproses permintaan Anda saat ini.</p>
+      <button id="close-modal-btn" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700">Tutup</button>
+    </div>
+  </div>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        // --- Logika UI (Preloader, Menu Mobile) ---
-        const preloader = document.getElementById("preloader");
-        const mainContent = document.getElementById("main-content");
-        const mobileMenuButton = document.getElementById("mobile-menu-button");
-        const mobileMenu = document.getElementById("mobile-menu");
-        
-        setTimeout(() => {
-          if (preloader) {
-            preloader.classList.add("slide-up");
-            setTimeout(() => (preloader.style.display = "none"), 1000);
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // --- Logika UI (Preloader, Menu Mobile) ---
+      const preloader = document.getElementById("preloader");
+      const mainContent = document.getElementById("main-content");
+      const mobileMenuButton = document.getElementById("mobile-menu-button");
+      const mobileMenu = document.getElementById("mobile-menu");
+
+      setTimeout(() => {
+        if (preloader) {
+          preloader.classList.add("slide-up");
+          setTimeout(() => (preloader.style.display = "none"), 1000);
+        }
+        if (mainContent) mainContent.style.opacity = "1";
+      }, 1500);
+
+      if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener("click", () =>
+          mobileMenu.classList.toggle("hidden")
+        );
+      }
+
+      const beritaContainer = document.getElementById("berita-container");
+      if (beritaContainer) {
+        fetchAndFilterNews();
+      }
+
+      async function fetchAndFilterNews() {
+        const sources = ["cnn", "antara", "sindonews"];
+        const urls = sources.map(source => `https://api-berita-indonesia.vercel.app/${source}/terbaru/`);
+        beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-gray-500">Mengambil & menyaring berita dari berbagai sumber...</p>`;
+        try {
+          const responses = await Promise.all(urls.map(url => fetch(url)));
+          let allArticles = [];
+          for (const response of responses) {
+            if (response.ok) {
+              const data = await response.json();
+              if (data.success && data.data.posts) {
+                allArticles.push(...data.data.posts);
+              }
+            } else {
+              console.warn(`Gagal mengambil data dari salah satu sumber: ${response.url}`);
+            }
           }
-          if (mainContent) mainContent.style.opacity = "1";
-        }, 1500);
 
-        if (mobileMenuButton && mobileMenu) {
-          mobileMenuButton.addEventListener("click", () =>
-            mobileMenu.classList.toggle("hidden")
-          );
-        }
+          if (allArticles.length === 0) {
+            throw new Error("Gagal mengambil berita dari semua sumber.");
+          }
 
-        const beritaContainer = document.getElementById("berita-container");
-        if (beritaContainer) {
-          fetchAndFilterNews();
-        }
+          const keywords = ["lingkungan", "alam", "hutan", "laut", "iklim", "cuaca", "polusi", "sampah", "konservasi", "energi terbarukan", "satwa", "bumi", "ekosistem", "lestari", "banjir", "longsor", "emisi", "deforestasi"];
 
-        async function fetchAndFilterNews() {
-          const sources = ["cnn", "antara", "sindonews"];
-          const urls = sources.map(source => `https://api-berita-indonesia.vercel.app/${source}/terbaru/`);
-          beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-gray-500">Mengambil & menyaring berita dari berbagai sumber...</p>`;
-          try {
-            const responses = await Promise.all(urls.map(url => fetch(url)));
-            let allArticles = [];
-            for (const response of responses) {
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data.success && data.data.posts) {
-                        allArticles.push(...data.data.posts);
-                    }
-                } else {
-                    console.warn(`Gagal mengambil data dari salah satu sumber: ${response.url}`);
-                }
-            }
+          const filteredArticles = allArticles.filter(artikel => {
+            const titleLower = artikel.title.toLowerCase();
+            return keywords.some(keyword => titleLower.includes(keyword));
+          });
 
-            if (allArticles.length === 0) {
-                throw new Error("Gagal mengambil berita dari semua sumber.");
-            }
-            
-            const keywords = ["lingkungan", "alam", "hutan", "laut", "iklim", "cuaca", "polusi", "sampah", "konservasi", "energi terbarukan", "satwa", "bumi", "ekosistem", "lestari", "banjir", "longsor", "emisi", "deforestasi"];
-            
-            const filteredArticles = allArticles.filter(artikel => {
-                const titleLower = artikel.title.toLowerCase();
-                return keywords.some(keyword => titleLower.includes(keyword));
-            });
+          beritaContainer.innerHTML = "";
 
-            beritaContainer.innerHTML = "";
+          if (filteredArticles.length > 0) {
+            const uniqueArticles = Array.from(new Map(filteredArticles.map(item => [item.link, item])).values());
+            const articlesToShow = uniqueArticles.slice(0, 6);
 
-            if (filteredArticles.length > 0) {
-              const uniqueArticles = Array.from(new Map(filteredArticles.map(item => [item.link, item])).values());
-              const articlesToShow = uniqueArticles.slice(0, 6);
-
-              articlesToShow.forEach(artikel => {
-                  const deskripsi = artikel.description || artikel.content || 'Klik untuk membaca lebih lanjut.';
-                  const cardHTML = `
+            articlesToShow.forEach(artikel => {
+              const deskripsi = artikel.description || artikel.content || 'Klik untuk membaca lebih lanjut.';
+              const cardHTML = `
                       <a href="${artikel.link}" target="_blank" rel="noopener noreferrer" class="block bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl group">
                           <div class="relative h-48 w-full">
                               <img src="${artikel.thumbnail}" 
@@ -345,82 +304,118 @@
                           </div>
                       </a>
                   `;
-                  beritaContainer.insertAdjacentHTML('beforeend', cardHTML);
-                });
-            } else {
-              beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-gray-500">Tidak ada berita relevan dengan topik alam yang ditemukan saat ini dari berbagai sumber.</p>`;
-            }
-
-          } catch (error) {
-            console.error("Terjadi kesalahan:", error);
-            beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold p-4 bg-red-100 rounded-lg">${error.message}</p>`;
+              beritaContainer.insertAdjacentHTML('beforeend', cardHTML);
+            });
+          } else {
+            beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-gray-500">Tidak ada berita relevan dengan topik alam yang ditemukan saat ini dari berbagai sumber.</p>`;
           }
+
+        } catch (error) {
+          console.error("Terjadi kesalahan:", error);
+          beritaContainer.innerHTML = `<p class="text-center md:col-span-3 text-red-500 font-semibold p-4 bg-red-100 rounded-lg">${error.message}</p>`;
+        }
+      }
+
+
+      const topicInput = document.getElementById("topic-input");
+      const exploreBtn = document.getElementById("explore-topic-btn");
+      const topicLoader = document.getElementById("topic-loader");
+      const topicResult = document.getElementById("topic-result");
+
+      // --- SETUP MODAL ERROR ---
+      const errorModal = document.getElementById('error-modal');
+      const errorMessage = document.getElementById('error-message');
+      const closeModalBtn = document.getElementById('close-modal-btn');
+
+      function showErrorModal(message = 'Maaf, terjadi kesalahan tak terduga.') {
+        errorMessage.textContent = message;
+        errorModal.classList.remove('hidden');
+      }
+
+      if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => {
+          errorModal.classList.add('hidden');
+        });
+      }
+      // -------------------------
+
+      // KONFIGURASI API KEY GEMINI
+      const GENERATIVE_AI_API_KEY = "AIzaSyBfYiI-UGHmltQFqo_uo40qRlCuLZcApJc";
+
+      const callGeminiAPI = async (prompt) => {
+        if (!GENERATIVE_AI_API_KEY || GENERATIVE_AI_API_KEY.includes("ISI_API_KEY_GEMINI")) {
+          showErrorModal("API Key Gemini belum dipasang! Silakan edit file 'wawasan.html' dan masukkan API Key Anda.");
+          // return "Maaf, API Key belum dikonfigurasi. Hubungi administrator."; // Tidak perlu return text error ke UI, cukup modal.
+          return null;
         }
 
+        // Gunakan model gemini-2.5-flash
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GENERATIVE_AI_API_KEY}`;
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+          });
 
-        const topicInput = document.getElementById("topic-input");
-        const exploreBtn = document.getElementById("explore-topic-btn");
-        const topicLoader = document.getElementById("topic-loader");
-        const topicResult = document.getElementById("topic-result");
+          if (!response.ok) {
+            const errorBody = await response.json();
+            throw new Error(`API Error: ${errorBody.error.message}`);
+          }
 
-        const callGeminiAPI = async (prompt) => {
-            const apiKey = "AIzaSyDyIlvgZMqeou1D_w9a_iAsOIQaFdd4NQw";
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-            try {
-                const response = await fetch(apiUrl, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
-                });
-                if (!response.ok) throw new Error(`API Error: ${response.statusText}`);
-                const data = await response.json();
-                if (data.candidates && data.candidates.length > 0) {
-                    return data.candidates[0].content.parts[0].text;
-                } else {
-                    return "Maaf, AI tidak memberikan respons. Coba lagi.";
-                }
-            } catch (error) {
-                console.error("Gemini API Error:", error);
-                return "Maaf, terjadi kesalahan saat menghubungi AI. Coba lagi nanti.";
-            }
+          const data = await response.json();
+          if (data.candidates && data.candidates.length > 0) {
+            return data.candidates[0].content.parts[0].text;
+          } else {
+            return "Maaf, AI tidak memberikan respons yang valid. Coba topik lain.";
+          }
+        } catch (error) {
+          console.error("Gemini API Error:", error);
+          showErrorModal(`Terjadi kesalahan AI: ${error.message}`);
+          return null; // Return null agar UI tahu ada error
+        }
+      };
+
+      if (exploreBtn) {
+        exploreBtn.addEventListener("click", async () => {
+          const topic = topicInput.value.trim();
+          if (!topic) {
+            showErrorModal("Silakan masukkan topik terlebih dahulu.");
+            return;
+          }
+          exploreBtn.disabled = true;
+          topicLoader.classList.remove("hidden");
+          topicResult.classList.add("hidden");
+
+          const prompt = `Jelaskan topik lingkungan ini: "${topic}". Berikan penjelasan yang ringkas dan padat (cukup 2-3 paragraf singkat). Gunakan bahasa yang mudah dipahami untuk audiens umum di Indonesia. Format jawaban dalam Markdown yang terstruktur dengan baik, gunakan heading, sub-heading, bold, dan bullet points untuk kejelasan. Langsung ke penjelasan inti.`;
+          const resultText = await callGeminiAPI(prompt);
+
+          if (resultText) {
+            topicResult.innerHTML = marked.parse(resultText);
+            topicResult.classList.remove("hidden");
+          }
+
+          topicLoader.classList.add("hidden");
+          exploreBtn.disabled = false;
+        });
+      }
+
+      const ctx = document.getElementById("wasteChart");
+      if (ctx) {
+        const multiLineChartData = {
+          labels: ["2020", "2021", "2022", "2023", "2024", "2025 (Estimasi)"],
+          datasets: [
+            { label: "Sampah Plastik", data: [480, 510, 550, 540, 580, 620], borderColor: "#3B82F6", backgroundColor: "rgba(59, 130, 246, 0.2)", fill: true, tension: 0.3 },
+            { label: "Sampah Organik", data: [350, 360, 340, 370, 350, 380], borderColor: "#10B981", backgroundColor: "rgba(16, 185, 129, 0.2)", fill: true, tension: 0.3 },
+            { label: "Lainnya (Logam, Kaca, dll.)", data: [210, 200, 220, 240, 230, 250], borderColor: "#6B7280", backgroundColor: "rgba(107, 114, 128, 0.2)", fill: true, tension: 0.3 },
+          ],
         };
-
-        if (exploreBtn) {
-            exploreBtn.addEventListener("click", async () => {
-                const topic = topicInput.value.trim();
-                if (!topic) {
-                    alert("Silakan masukkan topik terlebih dahulu.");
-                    return;
-                }
-                exploreBtn.disabled = true;
-                topicLoader.classList.remove("hidden");
-                topicResult.classList.add("hidden");
-
-                const prompt = `Jelaskan topik lingkungan ini: "${topic}". Berikan penjelasan yang ringkas dan padat (cukup 2-3 paragraf singkat). Gunakan bahasa yang mudah dipahami untuk audiens umum di Indonesia. Format jawaban dalam Markdown yang terstruktur dengan baik, gunakan heading, sub-heading, bold, dan bullet points untuk kejelasan. Langsung ke penjelasan inti.`;
-                const resultText = await callGeminiAPI(prompt);
-
-                topicResult.innerHTML = marked.parse(resultText); 
-                topicResult.classList.remove("hidden");
-                topicLoader.classList.add("hidden");
-                exploreBtn.disabled = false;
-            });
-        }
-
-        const ctx = document.getElementById("wasteChart");
-        if (ctx) {
-            const multiLineChartData = {
-                labels: ["2020", "2021", "2022", "2023", "2024", "2025 (Estimasi)"],
-                datasets: [
-                    { label: "Sampah Plastik", data: [480, 510, 550, 540, 580, 620], borderColor: "#3B82F6", backgroundColor: "rgba(59, 130, 246, 0.2)", fill: true, tension: 0.3 },
-                    { label: "Sampah Organik", data: [350, 360, 340, 370, 350, 380], borderColor: "#10B981", backgroundColor: "rgba(16, 185, 129, 0.2)", fill: true, tension: 0.3 },
-                    { label: "Lainnya (Logam, Kaca, dll.)", data: [210, 200, 220, 240, 230, 250], borderColor: "#6B7280", backgroundColor: "rgba(107, 114, 128, 0.2)", fill: true, tension: 0.3 },
-                ],
-            };
-            new Chart(ctx, {
-                type: "line", data: multiLineChartData, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: false, title: { display: true, text: "Volume (dalam ribu ton)", font: { family: "'Poppins', sans-serif" } } }, x: { title: { display: true, text: "Tahun", font: { family: "'Poppins', sans-serif" } } } }, plugins: { legend: { display: true, position: "top", labels: { font: { family: "'Poppins', sans-serif" } } }, tooltip: { padding: 10, titleFont: { family: "'Poppins', sans-serif", weight: "bold" }, bodyFont: { family: "'Poppins', sans-serif" }, callbacks: { label: function (context) { let label = context.dataset.label || ""; if (label) { label += ": "; } if (context.parsed.y !== null) { label += `${context.parsed.y} ribu ton`; } return label; } } } }, interaction: { intersect: false, mode: "index" } },
-            });
-        }
+        new Chart(ctx, {
+          type: "line", data: multiLineChartData, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: false, title: { display: true, text: "Volume (dalam ribu ton)", font: { family: "'Poppins', sans-serif" } } }, x: { title: { display: true, text: "Tahun", font: { family: "'Poppins', sans-serif" } } } }, plugins: { legend: { display: true, position: "top", labels: { font: { family: "'Poppins', sans-serif" } } }, tooltip: { padding: 10, titleFont: { family: "'Poppins', sans-serif", weight: "bold" }, bodyFont: { family: "'Poppins', sans-serif" }, callbacks: { label: function (context) { let label = context.dataset.label || ""; if (label) { label += ": "; } if (context.parsed.y !== null) { label += `${context.parsed.y} ribu ton`; } return label; } } } }, interaction: { intersect: false, mode: "index" } },
+        });
+      }
     });
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
