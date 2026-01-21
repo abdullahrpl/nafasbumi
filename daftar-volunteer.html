@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Volunteer - NafasBumi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" type="image/x-icon" href="/eekend (1).svg">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Montserrat:wght@300;900&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .nav-link {
+            position: relative;
+            color: #4a5568;
+            padding-bottom: 6px;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #2E5339;
+        }
+
+        .nav-link.active {
+            font-weight: 600;
+            color: #2E5339;
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #2E5339;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-white/90 backdrop-blur-sm fixed w-full top-0 z-40 shadow-sm transition-all duration-500">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-semibold text-[#2E5339]">NafasBumi</a>
+            <div class="hidden md:flex items-center space-x-8 text-gray-700">
+                <a href="index.html" class="nav-link">Beranda</a>
+                <a href="wawasan.html" class="nav-link">Wawasan</a>
+                <a href="aksi.html" class="nav-link">Aksi</a>
+                <a href="tentang.html" class="nav-link">Tentang Kami</a>
+            </div>
+            <a href="https://forms.gle/7ihXz8gV9WV83QVW8"
+                class="hidden md:block bg-[#2E5339] text-white px-5 py-2 rounded-full hover:bg-[#4A7859] transition-colors">Donasi</a>
+            <button id="mobile-menu-button" class="md:hidden text-2xl text-[#2E5339]">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden bg-white p-4 border-t border-gray-200">
+            <a href="index.html" class="block py-2 px-4 text-sm nav-link">Beranda</a>
+            <a href="wawasan.html" class="block py-2 px-4 text-sm nav-link">Wawasan</a>
+            <a href="aksi.html" class="block py-2 px-4 text-sm nav-link">Aksi</a>
+            <a href="tentang.html" class="block py-2 px-4 text-sm nav-link">Tentang Kami</a>
+        </div>
+    </header>
+
+    <main class="flex-grow pt-24 pb-12 px-6">
+        <section class="container mx-auto max-w-4xl">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-[#2E5339] mb-4 font-['Montserrat']">Daftar Volunteer</h1>
+                <p class="text-gray-600 text-lg">Bergabunglah dalam aksi nyata untuk lingkungan.</p>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden md:flex">
+                <div class="hidden md:block md:w-1/2 bg-[#1c3323] relative">
+                     <img src="https://images.unsplash.com/photo-1511497584788-876760111969?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="Nature" class="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-overlay">
+                    <div class="absolute inset-0 flex flex-col justify-center items-center text-white p-12 text-center">
+                        <h3 class="text-3xl font-bold mb-4">Aksi Nyata</h3>
+                        <p class="mb-6">Satu langkah kecil Anda berarti besar bagi bumi.</p>
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/2 p-8 md:p-12">
+                    <form id="volunteerForm" class="space-y-4">
+                        <input type="hidden" name="type" value="Volunteer">
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Lengkap</label>
+                                <input type="text" name ="fullName" required
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                    placeholder="Nama Anda">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Umur</label>
+                                <input type="number" name="age" required min="5" max="100"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                    placeholder="21">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Email</label>
+                            <input type="email" name="email" required
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                placeholder="nama@email.com">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">WhatsApp</label>
+                                <input type="tel" name="whatsapp" required
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                    placeholder="0812xxxx">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Domisili</label>
+                                <input type="text" name="domicile" required
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                    placeholder="Kota Anda">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Asal Instansi /
+                                Sekolah</label>
+                            <input type="text" name="institution" required
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                placeholder="Univ. Indonesia / SMA 1...">
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Pilih Event Kegiatan</label>
+                            <select name="event" required
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none bg-white">
+                                <option value="" disabled selected>Pilih event...</option>
+                                <option value="Aksi Bersih Pantai">Aksi Bersih Pantai (Bali)</option>
+                                <option value="Penanaman 1000 Pohon">Penanaman 1000 Pohon (Bogor)</option>
+                                <option value="Edukasi Lingkungan">Edukasi Lingkungan ke Sekolah (Jakarta)</option>
+                                <option value="Relawan Digital">Relawan Digital (Remote)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Alasan Bergabung</label>
+                            <textarea name="reason" rows="2" required
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                placeholder="Motivasi Anda?"></textarea>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-[#2E5339] text-white font-bold py-3 px-4 rounded-lg hover:bg-[#4A7859] transition-colors shadow-md text-sm mt-4">
+                            Daftar Volunteer
+                        </button>
+
+                        <p class="text-center text-xs text-gray-500 mt-4">
+                            Ingin menjadi anggota saja? <a href="daftar-anggota.html"
+                                class="text-[#2E5339] font-bold hover:underline">Klik di sini</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-[#1c3323] text-white mt-auto">
+        <div class="container mx-auto px-6 py-8 text-center text-sm text-gray-400">&copy; 2024 NafasBumi.</div>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyAmLz0qVf4GN0TdDO-G7XdOM7PJI_KaNwo", authDomain: "nafasbumi-7104f.firebaseapp.com", projectId: "nafasbumi-7104f", storageBucket: "nafasbumi-7104f.appspot.com", messagingSenderId: "640077220735", appId: "1:640077220735:web:d58d2ac6183651a090284a" };
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const form = document.getElementById('volunteerForm');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = form.querySelector('button');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Mengirim...";
+
+            try {
+                await addDoc(collection(db, "registrations"), {
+                    type: 'Volunteer',
+                    fullName: form.fullName.value,
+                    age: form.age.value,
+                    email: form.email.value,
+                    whatsapp: form.whatsapp.value,
+                    domicile: form.domicile.value,
+                    institution: form.institution.value,
+                    event: form.event.value,
+                    reason: form.reason.value,
+                    createdAt: serverTimestamp()
+                });
+                alert("Pendaftaran Volunteer Berhasil! Terima kasih.");
+                window.location.href = 'index.html';
+            } catch (err) {
+                alert("Error: " + err.message);
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuButton && mobileMenu) { mobileMenuButton.addEventListener('click', () => { mobileMenu.classList.toggle('hidden'); }); }
+    </script>
+</body>
+
+</html>
