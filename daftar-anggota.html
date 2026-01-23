@@ -102,32 +102,62 @@
 
                         <input type="hidden" name="type" value="Anggota">
 
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Lengkap</label>
-                            <input type="text" name="fullName" required
-                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
-                                placeholder="Nama Anda">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Lengkap</label>
+                                <input type="text" name="fullName" required
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                    placeholder="Nama Anda">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Umur (15-30)</label>
+                                <input type="number" name="age" id="ageInput" required min="15" max="30"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                    placeholder="20">
+                                <p id="error-age" class="text-red-500 text-[10px] mt-1 hidden">Umur harus antara 15-30
+                                    tahun.</p>
+                            </div>
                         </div>
 
                         <div>
                             <label class="block text-xs font-semibold text-gray-600 mb-1">Email</label>
-                            <input type="email" name="email" required
+                            <input type="email" name="email" id="emailInput" required
                                 class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
                                 placeholder="nama@email.com">
+                            <p id="error-email" class="text-red-500 text-[10px] mt-1 hidden">Email tidak valid (harus
+                                mengandung @ dan domain).</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">WhatsApp</label>
+                                <input type="tel" name="whatsapp" id="waInput" required
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                    placeholder="+62812xxxx">
+                                <p id="error-wa" class="text-red-500 text-[10px] mt-1 hidden">Gunakan kode negara (cth:
+                                    +62) & hanya angka.</p>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Domisili</label>
+                                <input type="text" name="domicile" required
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
+                                    placeholder="Kota Anda">
+                            </div>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">WhatsApp</label>
-                            <input type="tel" name="whatsapp" required
-                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
-                                placeholder="0812xxxx">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Pilih Divisi</label>
+                            <select name="role" required
+                                class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none bg-white">
+                                <option value="" disabled selected>Pilih divisi...</option>
+                            </select>
                         </div>
 
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Harapan Bergabung</label>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Alasan Bergabung</label>
                             <textarea name="reason" rows="3" required
                                 class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] focus:border-[#2E5339] outline-none"
-                                placeholder="Apa yang Anda harapkan?"></textarea>
+                                placeholder="Apa alasan anda bergabung meenjadi anggota?"></textarea>
                         </div>
 
                         <button type="submit"
@@ -149,17 +179,186 @@
         <div class="container mx-auto px-6 py-8 text-center text-sm text-gray-400">&copy; 2024 NafasBumi.</div>
     </footer>
 
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         const firebaseConfig = { apiKey: "AIzaSyAmLz0qVf4GN0TdDO-G7XdOM7PJI_KaNwo", authDomain: "nafasbumi-7104f.firebaseapp.com", projectId: "nafasbumi-7104f", storageBucket: "nafasbumi-7104f.appspot.com", messagingSenderId: "640077220735", appId: "1:640077220735:web:d58d2ac6183651a090284a" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const form = document.getElementById('memberForm');
+        const roleSelect = form.querySelector('select[name="role"]');
+
+        // Elements for validation
+        const emailInput = document.getElementById('emailInput');
+        const waInput = document.getElementById('waInput');
+        const ageInput = document.getElementById('ageInput');
+        const errorEmail = document.getElementById('error-email');
+        const errorWa = document.getElementById('error-wa');
+        const errorAge = document.getElementById('error-age');
+
+        // Toast Implementation
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colorClass = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            const icon = type === 'success'
+                ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>'
+                : '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+
+            toast.className = `${colorClass} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 transform transition-all duration-300 translate-x-full opacity-0`;
+            toast.innerHTML = `${icon} <span class="font-medium text-sm">${message}</span>`;
+
+            container.appendChild(toast);
+
+            // Animation In
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            });
+
+            // Auto Dismiss
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Success Popup Implementation
+        function showSuccessPopup(message) {
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity duration-300 opacity-0';
+
+            const popup = document.createElement('div');
+            popup.className = 'bg-white p-8 rounded-2xl shadow-2xl text-center max-w-md mx-4 transform transition-all duration-300 scale-90 opacity-0';
+            popup.innerHTML = `
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-[#2E5339]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-2xl font-bold text-[#2E5339] mb-2 font-['Montserrat']">Pendaftaran Berhasil!</h3>
+                <p class="text-gray-600 mb-6 font-medium">${message}</p>
+                
+                <a href="https://chat.whatsapp.com/CJjjsaXJgsC2kB1Zlutnbg" target="_blank" 
+                   class="block w-full bg-[#25D366] text-white font-bold py-3 px-4 rounded-lg hover:bg-[#128C7E] transition-colors shadow-md text-sm mb-3 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    Gabung Grup
+                </a>
+                
+                <button onclick="window.location.reload()" class="text-xs text-gray-400 hover:text-gray-600 underline">Tutup</button>
+            `;
+
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+
+            requestAnimationFrame(() => {
+                overlay.classList.remove('opacity-0');
+                popup.classList.remove('scale-90', 'opacity-0');
+                popup.classList.add('scale-100', 'opacity-100');
+            });
+        }
+
+        // Real-time Validation
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePhone(phone) {
+            // Must start with + followed by country code + digits, min length 10 total
+            const re = /^\+\d{10,15}$/;
+            return re.test(phone);
+        }
+
+        emailInput.addEventListener('input', () => {
+            if (emailInput.value && !validateEmail(emailInput.value)) {
+                errorEmail.classList.remove('hidden');
+                emailInput.classList.add('border-red-500', 'focus:ring-red-500');
+                emailInput.classList.remove('border-gray-300', 'focus:ring-[#2E5339]');
+            } else {
+                errorEmail.classList.add('hidden');
+                emailInput.classList.remove('border-red-500', 'focus:ring-red-500');
+                emailInput.classList.add('border-gray-300', 'focus:ring-[#2E5339]');
+            }
+        });
+
+        waInput.addEventListener('input', () => {
+            // Allow user to type +, but validate stricter
+            if (waInput.value && !validatePhone(waInput.value)) {
+                errorWa.classList.remove('hidden');
+                waInput.classList.add('border-red-500', 'focus:ring-red-500');
+                waInput.classList.remove('border-gray-300', 'focus:ring-[#2E5339]');
+            } else {
+                errorWa.classList.add('hidden');
+                waInput.classList.remove('border-red-500', 'focus:ring-red-500');
+                waInput.classList.add('border-gray-300', 'focus:ring-[#2E5339]');
+            }
+        });
+
+        ageInput.addEventListener('input', () => {
+            const age = parseInt(ageInput.value);
+            if (age < 15 || age > 30) {
+                errorAge.classList.remove('hidden');
+                ageInput.classList.add('border-red-500', 'focus:ring-red-500');
+                ageInput.classList.remove('border-gray-300', 'focus:ring-[#2E5339]');
+            } else {
+                errorAge.classList.add('hidden');
+                ageInput.classList.remove('border-red-500', 'focus:ring-red-500');
+                ageInput.classList.add('border-gray-300', 'focus:ring-[#2E5339]');
+            }
+        });
+
+        // Fetch Divisions Dynamically
+        async function loadDivisions() {
+            try {
+                const q = query(collection(db, "divisions"), orderBy("createdAt", "desc"));
+                const querySnapshot = await getDocs(q);
+                roleSelect.innerHTML = '<option value="" disabled selected>Pilih divisi...</option>';
+                if (querySnapshot.empty) {
+                    const fallbackOptions = [{ val: "Humas", txt: "Humas (Default)" }, { val: "Lapangan", txt: "Lapangan (Default)" }];
+                    fallbackOptions.forEach(opt => {
+                        const option = document.createElement('option');
+                        option.value = opt.val;
+                        option.text = opt.txt;
+                        roleSelect.appendChild(option);
+                    });
+                    return;
+                }
+                querySnapshot.forEach((doc) => {
+                    const div = doc.data();
+                    const option = document.createElement('option');
+                    option.value = div.name;
+                    option.text = div.name;
+                    roleSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error("Error loading divisions:", error);
+                roleSelect.innerHTML += '<option value="Humas">Humas (Manual)</option>';
+            }
+        }
+
+        loadDivisions();
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+
+            // Final Validation Check
+            const isEmailValid = validateEmail(emailInput.value);
+            const isPhoneValid = validatePhone(waInput.value);
+            const age = parseInt(ageInput.value);
+            const isAgeValid = age >= 15 && age <= 30;
+
+            if (!isEmailValid || !isPhoneValid || !isAgeValid) {
+                showToast("Mohon perbaiki data yang salah (bertanda merah).", 'error');
+                // Trigger visual errors
+                if (!isEmailValid) emailInput.dispatchEvent(new Event('input'));
+                if (!isPhoneValid) waInput.dispatchEvent(new Event('input'));
+                if (!isAgeValid) ageInput.dispatchEvent(new Event('input'));
+                return;
+            }
+
             const btn = form.querySelector('button');
             const originalText = btn.textContent;
             btn.disabled = true;
@@ -169,15 +368,18 @@
                 await addDoc(collection(db, "registrations"), {
                     type: 'Anggota',
                     fullName: form.fullName.value,
+                    age: form.age.value,
                     email: form.email.value,
                     whatsapp: form.whatsapp.value,
+                    domicile: form.domicile.value,
+                    role: form.role.value,
                     reason: form.reason.value,
                     createdAt: serverTimestamp()
                 });
-                alert("Selamat datang di Komunitas NafasBumi!");
-                window.location.href = 'index.html';
+                showSuccessPopup("Selamat kamu telah daftar sebagai anggota, silahkan tunggu info selanjutnya.");
+
             } catch (err) {
-                alert("Error: " + err.message);
+                showToast("Error: " + err.message, 'error');
                 btn.disabled = false;
                 btn.textContent = originalText;
             }

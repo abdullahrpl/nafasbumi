@@ -52,66 +52,163 @@
         </nav>
 
         <main class="container mx-auto px-6 py-8">
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800">Data Pendaftaran</h2>
-                    <p class="text-gray-500 text-sm mt-1">Daftar volunteer dan anggota baru.</p>
-                </div>
-                <!-- Controls -->
-                <div class="flex flex-col md:flex-row gap-4 items-center">
-                    <div class="inline-flex rounded-md shadow-sm" role="group">
-                        <button type="button" onclick="setFilter('all')" id="btn-all"
-                            class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-[#2E5339] focus:z-10 focus:ring-2 focus:ring-[#2E5339] focus:text-[#2E5339] bg-gray-100 text-[#2E5339]">
-                            Semua
-                        </button>
-                        <button type="button" onclick="setFilter('Volunteer')" id="btn-volunteer"
-                            class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-[#2E5339] focus:z-10 focus:ring-2 focus:ring-[#2E5339] focus:text-[#2E5339]">
-                            Volunteer
-                        </button>
-                        <button type="button" onclick="setFilter('Anggota')" id="btn-member"
-                            class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-lg hover:bg-gray-100 hover:text-[#2E5339] focus:z-10 focus:ring-2 focus:ring-[#2E5339] focus:text-[#2E5339]">
-                            Anggota
-                        </button>
+            <!-- Navigation Tabs -->
+            <div class="flex border-b border-gray-200 mb-8 overflow-x-auto">
+                <button onclick="switchView('registrations')" data-view="registrations"
+                    class="admin-nav-link text-[#2E5339] border-b-2 border-[#2E5339] px-6 py-3 font-semibold text-sm transition-colors focus:outline-none whitespace-nowrap">
+                    Data Pendaftaran
+                </button>
+                <button onclick="switchView('events')" data-view="events"
+                    class="admin-nav-link text-gray-500 px-6 py-3 font-semibold text-sm hover:text-[#2E5339] transition-colors focus:outline-none whitespace-nowrap">
+                    Manajemen Event
+                </button>
+                <button onclick="switchView('divisions')" data-view="divisions"
+                    class="admin-nav-link text-gray-500 px-6 py-3 font-semibold text-sm hover:text-[#2E5339] transition-colors focus:outline-none whitespace-nowrap">
+                    Manajemen Divisi
+                </button>
+            </div>
+
+            <!-- VIEW: Data Pendaftaran -->
+            <div id="view-registrations">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Daftar Registrasi</h2>
+                        <p class="text-gray-500 text-sm mt-1">Daftar volunteer dan anggota baru.</p>
                     </div>
-                    <span
-                        class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-green-400">Total:
-                        <span id="total-count">0</span></span>
+                    <!-- Controls -->
+                    <div class="flex flex-col md:flex-row gap-4 items-center">
+                        <div class="inline-flex rounded-md shadow-sm" role="group">
+                            <button type="button" onclick="setFilter('all')" id="btn-all"
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-l-lg hover:bg-gray-100 hover:text-[#2E5339] focus:z-10 focus:ring-2 focus:ring-[#2E5339] focus:text-[#2E5339] bg-gray-100 text-[#2E5339]">
+                                Semua
+                            </button>
+                            <button type="button" onclick="setFilter('Volunteer')" id="btn-volunteer"
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-[#2E5339] focus:z-10 focus:ring-2 focus:ring-[#2E5339] focus:text-[#2E5339]">
+                                Volunteer
+                            </button>
+                            <button type="button" onclick="setFilter('Anggota')" id="btn-member"
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-lg hover:bg-gray-100 hover:text-[#2E5339] focus:z-10 focus:ring-2 focus:ring-[#2E5339] focus:text-[#2E5339]">
+                                Anggota
+                            </button>
+                        </div>
+                        <span
+                            class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded border border-green-400">Total:
+                            <span id="total-count">0</span></span>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm text-gray-600">
+                            <thead class="bg-gray-50 text-gray-700 uppercase whitespace-nowrap text-xs tracking-wider">
+                                <tr>
+                                    <th class="px-10 py-5 font-semibold">Waktu</th>
+                                    <th class="px-10 py-5 font-semibold">Nama</th>
+                                    <th class="px-10 py-5 font-semibold">Umur</th>
+                                    <th class="px-10 py-5 font-semibold">Tipe</th>
+                                    <th class="px-10 py-5 font-semibold">Email</th>
+                                    <th class="px-10 py-5 font-semibold">WhatsApp</th>
+                                    <th class="px-10 py-5 font-semibold">Domisili</th>
+                                    <th class="px-10 py-5 font-semibold">Instansi/Divisi</th>
+                                    <th class="px-10 py-5 font-semibold">Event</th>
+                                    <th class="px-10 py-5 font-semibold">Alasan</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body" class="divide-y divide-gray-100">
+                                <tr>
+                                    <td colspan="10" class="px-6 py-8 text-center text-gray-500">Memuat data...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-600">
-                        <thead class="bg-gray-50 text-gray-700 uppercase whitespace-nowrap text-xs tracking-wider">
-                            <tr>
-                                <th class="px-10 py-5 font-semibold">Waktu</th>
-                                <th class="px-10 py-5 font-semibold">Nama</th>
-                                <th class="px-10 py-5 font-semibold">Umur</th>
-                                <th class="px-10 py-5 font-semibold">Tipe</th>
-                                <th class="px-10 py-5 font-semibold">Email</th>
-                                <th class="px-10 py-5 font-semibold">WhatsApp</th>
-                                <th class="px-10 py-5 font-semibold">Domisili</th>
-                                <th class="px-10 py-5 font-semibold">Instansi</th>
-                                <th class="px-10 py-5 font-semibold">Event</th>
-                                <th class="px-10 py-5 font-semibold">Alasan</th>
-                            </tr>
-                        </thead>
-                        <tbody id="table-body" class="divide-y divide-gray-100">
-                            <tr>
-                                <td colspan="10" class="px-6 py-8 text-center text-gray-500">Memuat data...</td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- VIEW: Manajemen Event -->
+            <div id="view-events" class="hidden">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Daftar Event</h2>
+                        <p class="text-gray-500 text-sm mt-1">Kelola event yang tersedia untuk form volunteer.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Create Event -->
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 md:col-span-1 h-fit">
+                        <h3 class="font-bold text-lg mb-4 text-[#2E5339]">Tambah Event Baru</h3>
+                        <form id="event-form" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Event</label>
+                                <input type="text" id="event-name" required
+                                    class="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] outline-none"
+                                    placeholder="Contoh: Aksi Bersih Pantai Bali">
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-[#2E5339] text-white font-bold py-2.5 px-4 rounded-lg hover:bg-[#1a3321] transition-colors shadow-sm">
+                                Simpan Event
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- List Events -->
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 md:col-span-2">
+                        <div id="events-list" class="space-y-3">
+                            <div class="flex justify-center py-8">
+                                <span class="text-gray-400 text-sm">Memuat daftar event...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: Manajemen Divisi -->
+            <div id="view-divisions" class="hidden">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Daftar Divisi</h2>
+                        <p class="text-gray-500 text-sm mt-1">Kelola divisi yang tersedia untuk form anggota.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Create Division -->
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 md:col-span-1 h-fit">
+                        <h3 class="font-bold text-lg mb-4 text-[#2E5339]">Tambah Divisi Baru</h3>
+                        <form id="division-form" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Divisi</label>
+                                <input type="text" id="division-name" required
+                                    class="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] outline-none"
+                                    placeholder="Contoh: Tim Humas">
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-[#2E5339] text-white font-bold py-2.5 px-4 rounded-lg hover:bg-[#1a3321] transition-colors shadow-sm">
+                                Simpan Divisi
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- List Divisions -->
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 md:col-span-2">
+                        <div id="divisions-list" class="space-y-3">
+                            <div class="flex justify-center py-8">
+                                <span class="text-gray-400 text-sm">Memuat daftar divisi...</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div>
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Firebase Config (Simpan config yang ada)
+        // Firebase Config
         const firebaseConfig = { apiKey: "AIzaSyAmLz0qVf4GN0TdDO-G7XdOM7PJI_KaNwo", authDomain: "nafasbumi-7104f.firebaseapp.com", projectId: "nafasbumi-7104f", storageBucket: "nafasbumi-7104f.appspot.com", messagingSenderId: "640077220735", appId: "1:640077220735:web:d58d2ac6183651a090284a" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
@@ -123,6 +220,17 @@
         const logoutBtn = document.getElementById('logout-btn');
         const tableBody = document.getElementById('table-body');
         const totalCount = document.getElementById('total-count');
+        const navLinks = document.querySelectorAll('.admin-nav-link');
+        const views = {
+            registrations: document.getElementById('view-registrations'),
+            events: document.getElementById('view-events'),
+            divisions: document.getElementById('view-divisions')
+        };
+        const eventForm = document.getElementById('event-form');
+        const eventsList = document.getElementById('events-list');
+        const divisionForm = document.getElementById('division-form');
+        const divisionsList = document.getElementById('divisions-list');
+
 
         // Filter Buttons
         const btns = {
@@ -142,19 +250,48 @@
                 dashboardSection.classList.remove('hidden');
                 setTimeout(() => dashboardSection.classList.remove('opacity-0'), 100);
                 startDataListener();
+                startEventListener();
+                startDivisionListener();
             } else {
                 loginSection.classList.remove('hidden');
                 dashboardSection.classList.add('hidden');
             }
         };
 
+        // Toast Implementation
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const colorClass = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+            const icon = type === 'success'
+                ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>'
+                : '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+
+            toast.className = `${colorClass} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 transform transition-all duration-300 translate-x-full opacity-0`;
+            toast.innerHTML = `${icon} <span class="font-medium text-sm">${message}</span>`;
+
+            container.appendChild(toast);
+
+            // Animation In
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            });
+
+            // Auto Dismiss
+            setTimeout(() => {
+                toast.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
             if (document.getElementById('username').value === 'bdol' && document.getElementById('password').value === 'adalahpokoknya') {
                 localStorage.setItem('isAdminAuth', 'true');
                 checkLogin();
+                showToast('Login berhasil! Selamat datang.', 'success');
             } else {
-                alert('Salah bos!');
+                showToast('Salah bos! Coba ingat-ingat lagi.', 'error');
             }
         });
 
@@ -163,6 +300,30 @@
             window.location.reload();
         });
 
+        // Navigation Logic
+        window.switchView = (viewName) => {
+            // Update UI Links
+            navLinks.forEach(link => {
+                if (link.dataset.view === viewName) {
+                    link.classList.add('text-[#2E5339]', 'border-b-2', 'border-[#2E5339]');
+                    link.classList.remove('text-gray-500');
+                } else {
+                    link.classList.remove('text-[#2E5339]', 'border-b-2', 'border-[#2E5339]');
+                    link.classList.add('text-gray-500');
+                }
+            });
+
+            // Update Views
+            Object.keys(views).forEach(key => {
+                const el = views[key];
+                if (el) {
+                    if (key === viewName) el.classList.remove('hidden');
+                    else el.classList.add('hidden');
+                }
+            });
+        };
+
+        // --- REGISTRATIONS LOGIC ---
         window.setFilter = (filter) => {
             currentFilter = filter;
             Object.values(btns).forEach(btn => {
@@ -215,14 +376,149 @@
                         <td class="px-10 py-6 text-gray-700">${data.email || '-'}</td>
                         <td class="px-10 py-6 text-gray-700">${data.whatsapp || '-'}</td>
                         <td class="px-10 py-6 text-gray-700">${data.domicile || '-'}</td>
-                        <td class="px-10 py-6 text-gray-700">${data.institution || '-'}</td>
+                        <td class="px-10 py-6 text-gray-700">${data.institution || data.role || '-'}</td>
                         <td class="px-10 py-6 text-[#2E5339] font-medium">${data.event || '-'}</td>
-                        <td class="px-10 py-6 text-gray-600 italic whitespace-normal max-w-xs leading-relaxed">"${data.reason || '-'}"</td>
+                        <td class="px-10 py-6 text-gray-600 italic whitespace-normal min-w-[350px] leading-relaxed">"${data.reason || '-'}"</td>
                     </tr>
                 `;
                 tableBody.innerHTML += row;
             });
         }
+
+        // --- EVENTS LOGIC ---
+        function startEventListener() {
+            const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
+            onSnapshot(q, (snapshot) => {
+                eventsList.innerHTML = '';
+                if (snapshot.empty) {
+                    eventsList.innerHTML = '<p class="text-center text-gray-500 py-4">Belum ada event aktif.</p>';
+                    return;
+                }
+                snapshot.forEach((doc) => {
+                    const event = doc.data();
+                    const el = document.createElement('div');
+                    el.className = 'bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center hover:shadow-sm transition-shadow';
+                    el.innerHTML = `
+                        <div>
+                            <h4 class="font-bold text-[#2E5339]">${event.name}</h4>
+                            <p class="text-xs text-gray-500 mt-1">Ditambahkan: ${event.createdAt ? event.createdAt.toDate().toLocaleDateString() : '-'}</p>
+                        </div>
+                        <button onclick="deleteEvent('${doc.id}')" class="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    `;
+                    eventsList.appendChild(el);
+                });
+            });
+        }
+
+        eventForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const input = document.getElementById('event-name');
+            const name = input.value.trim();
+            if (!name) return;
+            const btn = eventForm.querySelector('button');
+            const originalText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Menyimpan...";
+            try {
+                await addDoc(collection(db, "events"), {
+                    name: name,
+                    createdAt: serverTimestamp()
+                });
+                input.value = '';
+                showToast('Event berhasil ditambahkan!');
+            } catch (error) {
+                console.error("Error adding event:", error);
+                showToast("Gagal menambah event: " + error.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = originalText;
+            }
+        });
+
+        window.deleteEvent = async (id) => {
+            if (confirm('Yakin ingin menghapus event ini?')) {
+                try {
+                    await deleteDoc(doc(db, "events", id));
+                    showToast('Event berhasil dihapus!', 'success');
+                } catch (error) {
+                    console.error("Error deleting event:", error);
+                    showToast("Gagal menghapus event: " + error.message, 'error');
+                }
+            }
+        }
+
+        // --- DIVISIONS LOGIC ---
+        function startDivisionListener() {
+            const q = query(collection(db, "divisions"), orderBy("createdAt", "desc"));
+            onSnapshot(q, (snapshot) => {
+                divisionsList.innerHTML = '';
+                if (snapshot.empty) {
+                    divisionsList.innerHTML = '<p class="text-center text-gray-500 py-4">Belum ada divisi aktif.</p>';
+                    return;
+                }
+                snapshot.forEach((doc) => {
+                    const division = doc.data();
+                    const el = document.createElement('div');
+                    el.className = 'bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center hover:shadow-sm transition-shadow';
+                    el.innerHTML = `
+                        <div>
+                            <h4 class="font-bold text-[#2E5339]">${division.name}</h4>
+                            <p class="text-xs text-gray-500 mt-1">Ditambahkan: ${division.createdAt ? division.createdAt.toDate().toLocaleDateString() : '-'}</p>
+                        </div>
+                        <button onclick="deleteDivision('${doc.id}')" class="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    `;
+                    divisionsList.appendChild(el);
+                });
+            });
+        }
+
+        if (divisionForm) {
+            divisionForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const input = document.getElementById('division-name');
+                const name = input.value.trim();
+                if (!name) return;
+                const btn = divisionForm.querySelector('button');
+                const originalText = btn.textContent;
+                btn.disabled = true;
+                btn.textContent = "Menyimpan...";
+                try {
+                    await addDoc(collection(db, "divisions"), {
+                        name: name,
+                        createdAt: serverTimestamp()
+                    });
+                    input.value = '';
+                    showToast('Divisi berhasil ditambahkan!');
+                } catch (error) {
+                    console.error("Error adding division:", error);
+                    showToast("Gagal menambah divisi: " + error.message, 'error');
+                } finally {
+                    btn.disabled = false;
+                    btn.textContent = originalText;
+                }
+            });
+        }
+
+        window.deleteDivision = async (id) => {
+            if (confirm('Yakin ingin menghapus divisi ini?')) {
+                try {
+                    await deleteDoc(doc(db, "divisions", id));
+                    showToast('Divisi berhasil dihapus!', 'success');
+                } catch (error) {
+                    console.error("Error deleting division:", error);
+                    showToast("Gagal menghapus divisi: " + error.message, 'error');
+                }
+            }
+        }
+
         checkLogin();
     </script>
 </body>
