@@ -244,10 +244,18 @@
         let allData = [];
 
         // Auth Logic
+        // Auth Logic
         const checkLogin = () => {
-            if (localStorage.getItem('isAdminAuth') === 'true') {
+            if (sessionStorage.getItem('isAdminAuth') === 'true') {
                 loginSection.classList.add('hidden');
                 dashboardSection.classList.remove('hidden');
+
+                // Update Admin Name Display if available
+                const adminName = sessionStorage.getItem('adminName');
+                if (adminName) {
+                    document.getElementById('user-name').textContent = "Admin: " + adminName;
+                }
+
                 setTimeout(() => dashboardSection.classList.remove('opacity-0'), 100);
                 startDataListener();
                 startEventListener();
@@ -284,19 +292,41 @@
             }, 3000);
         }
 
+
+        //ADMIN AREA !!!
+        class User {
+            constructor(name, password) {
+                this.name = name;
+                this.password = password;
+            }
+        }
+
+        const user1 = new User("bdol", "orangjagoijin");
+        const user2 = new User("awan", "awansiapaya");
+        const user3 = new User("tokek", "akusukanempel");
+
+        const users = [user1, user2, user3];
+
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            if (document.getElementById('username').value === 'bdol' && document.getElementById('password').value === 'adalahpokoknya') {
-                localStorage.setItem('isAdminAuth', 'true');
+            const usernameInput = document.getElementById('username').value;
+            const passwordInput = document.getElementById('password').value;
+
+            const foundUser = users.find(u => u.name === usernameInput && u.password === passwordInput);
+
+            if (foundUser) {
+                sessionStorage.setItem('isAdminAuth', 'true');
+                sessionStorage.setItem('adminName', foundUser.name); // Optional: Store name for display
                 checkLogin();
-                showToast('Login berhasil! Selamat datang.', 'success');
+                showToast(`Login berhasil! Selamat datang, ${foundUser.name}.`, 'success');
             } else {
-                showToast('Salah bos! Coba ingat-ingat lagi.', 'error');
+                showToast('Username atau Password salah!', 'error');
             }
         });
 
         logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('isAdminAuth');
+            sessionStorage.removeItem('isAdminAuth');
+            sessionStorage.removeItem('adminName');
             window.location.reload();
         });
 
@@ -520,6 +550,7 @@
         }
 
         checkLogin();
+        //ADMIN AREA !!!
     </script>
 </body>
 
