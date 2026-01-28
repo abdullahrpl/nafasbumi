@@ -126,10 +126,20 @@
                                 class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-gray-200 hover:bg-gray-100 hover:text-[#2E5339] focus:z-10 focus:ring-2 focus:ring-[#2E5339]">
                                 Accepted
                             </button>
-                            <button type="button" onclick="setStatusFilter('rejected')" id="btn-status-rejected"
+                            <button type="button" id="btn-status-rejected" onclick="setStatusFilter('rejected')"
                                 class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-r-lg hover:bg-gray-100 hover:text-[#2E5339] focus:z-10 focus:ring-2 focus:ring-[#2E5339]">
                                 Rejected
                             </button>
+                        </div>
+
+                        <!-- Division Filter -->
+                        <div class="inline-flex rounded-md shadow-sm">
+                            <select id="division-filter" onchange="filterDivision(this.value)"
+                                class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 hover:text-[#2E5339] focus:z-10 focus:ring-2 focus:ring-[#2E5339] outline-none cursor-pointer">
+                                <option value="all">Semua Divisi</option>
+                                <option value="Humas">Humas</option>
+                                <option value="Lapangan">Lapangan</option>
+                            </select>
                         </div>
 
                         <span
@@ -185,7 +195,7 @@
                                 <label class="block text-xs font-semibold text-gray-600 mb-1">Nama Event</label>
                                 <input type="text" id="event-name" required
                                     class="w-full px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-1 focus:ring-[#2E5339] outline-none"
-                                    placeholder="Contoh: Aksi Bersih Pantai Bali">
+                                    placeholder="Contoh: Bersih Pantai Ancol">
                             </div>
                             <button type="submit"
                                 class="w-full bg-[#2E5339] text-white font-bold py-2.5 px-4 rounded-lg hover:bg-[#1a3321] transition-colors shadow-sm">
@@ -271,6 +281,7 @@
         const eventsList = document.getElementById('events-list');
         const divisionForm = document.getElementById('division-form');
         const divisionsList = document.getElementById('divisions-list');
+        const divisionFilter = document.getElementById('division-filter');
 
         // Reason Modal Elements
         const reasonModal = document.getElementById('reason-modal');
@@ -294,6 +305,7 @@
         // State
         let currentTypeFilter = 'all';
         let currentStatusFilter = 'all';
+        let currentDivisionFilter = 'all';
         let allData = [];
 
         // Auth Logic
@@ -309,7 +321,6 @@
 
                 setTimeout(() => dashboardSection.classList.remove('opacity-0'), 100);
 
-                // Clean up old rejected items first!
                 deleteOldRejected();
 
                 startDataListener();
@@ -323,36 +334,35 @@
 
         // Cleanup Logic (Delete rejected items older than 7 days)
         async function deleteOldRejected() {
-            const sevenDaysAgo = new Date();
-            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-            // Note: Without a composite index, we do this on the client side for simplicity.
-            // Querying ALL items and filtering is fine for small scale. 
-            // Ideally we'd query .where('status', '==', 'rejected').where('rejectedAt', '<', sevenDaysAgo)
-            // But that requires an index index. 
-            // We'll just check `allData` when it loads, OR run a dedicated query here.
-            // Given the structure, we will do it inside the data listener for reactive cleanup.
-            // However, to be safe and explicit, let's just do nothing here and let the user manually manage or 
-            // implement a proper backend function. BUT, user requested "tambahkan fungsi".
-            // So, I will add the check inside `startDataListener` callback.
+            // This is arguably redundant if startDataListener() handles it effectively,
+            // but good for an initial sweep.
+            // ... Logic is embedded in listener for real-time hygiene.
         }
 
         // Toast Implementation
         function showToast(message, type = 'success') {
-            const container = document.getElementById('toast-container');
+            const toastContainer = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            const colorClass = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+
+            const bgColor = type === 'success' ? 'bg-[#2E5339]' : 'bg-red-500';
             const icon = type === 'success'
-                ? '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>'
-                : '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                ? '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>'
+                : '<svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
 
-            toast.className = `${colorClass} text-white px-6 py-4 rounded-lg shadow-lg flex items-center gap-3 transform transition-all duration-300 translate-x-full opacity-0`;
-            toast.innerHTML = `${icon} <span class="font-medium text-sm">${message}</span>`;
+            toast.className = `${bgColor} text-white px-6 py-4 rounded-lg shadow-xl flex items-center transform transition-all duration-300 translate-x-full opacity-0 min-w-[300px]`;
+            toast.innerHTML = `
+                ${icon}
+                <span class="font-medium">${message}</span>
+            `;
 
-            container.appendChild(toast);
+            toastContainer.appendChild(toast);
+
+            // Animate in
             requestAnimationFrame(() => {
                 toast.classList.remove('translate-x-full', 'opacity-0');
             });
+
+            // Remove
             setTimeout(() => {
                 toast.classList.add('translate-x-full', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
@@ -360,17 +370,12 @@
         }
 
         //ADMIN AREA !!!
-        class User {
-            constructor(name, password) {
-                this.name = name;
-                this.password = password;
-            }
-        }
-        const user1 = new User("bdol", "orangjagoijin");
-        const user2 = new User("awan", "awansiapaya");
-        const user3 = new User("rijik", "lupapw");
-        const user4 = new User("memet", "anakepuji");
-        const users = [user1, user2, user3, user4];
+        const users = [
+            { name: "bdol", password: "123" },
+            { name: "awan", password: "123" },
+            { name: "rijik", password: "123" },
+            { name: "memet", password: "123" }
+        ];
 
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -391,6 +396,7 @@
 
         logoutBtn.addEventListener('click', () => {
             sessionStorage.removeItem('isAdminAuth');
+            sessionStorage.removeItem('adminName');
             window.location.reload();
         });
 
@@ -413,17 +419,57 @@
             });
         };
 
-        // --- REGISTRATIONS LOGIC ---
+        // Truncate function
+        const truncate = (str, n) => {
+            return (str && str.length > n) ? str.substr(0, n - 1) + '...' : str;
+        }
+
+        // Modal Logic
+        window.openReasonModal = (fullText) => {
+            reasonFullText.textContent = fullText;
+            reasonModal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                reasonModal.classList.remove('opacity-0');
+                reasonModalContent.classList.remove('scale-90', 'opacity-0');
+                reasonModalContent.classList.add('scale-100', 'opacity-100');
+            });
+        };
+
+        window.closeReasonModal = () => {
+            reasonModal.classList.add('opacity-0');
+            reasonModalContent.classList.remove('scale-100', 'opacity-100');
+            reasonModalContent.classList.add('scale-90', 'opacity-0');
+            setTimeout(() => {
+                reasonModal.classList.add('hidden');
+            }, 300);
+        };
+
+        reasonModal.addEventListener('click', (e) => {
+            if (e.target === reasonModal) closeReasonModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && !reasonModal.classList.contains('hidden')) {
+                closeReasonModal();
+            }
+        });
+
+        // Filter Handlers
         window.setTypeFilter = (filter) => {
             currentTypeFilter = filter;
             renderFilters();
-            renderTable();
+            renderTable(allData);
         };
 
         window.setStatusFilter = (filter) => {
             currentStatusFilter = filter;
             renderFilters();
-            renderTable();
+            renderTable(allData);
+        };
+
+        window.filterDivision = (division) => {
+            currentDivisionFilter = division;
+            renderTable(allData);
         };
 
         function renderFilters() {
@@ -452,12 +498,12 @@
         }
 
         function startDataListener() {
+            const sevenDaysAgo = new Date();
+            sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
             const q = query(collection(db, "registrations"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
                 allData = [];
-                const sevenDaysAgo = new Date();
-                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
                 snapshot.forEach((doc) => {
                     const data = doc.data();
                     // AUTO-DELETE Logic Check
@@ -467,100 +513,63 @@
                             if (rejectedDate < sevenDaysAgo) {
                                 console.log("Deleting expired rejected item:", doc.id);
                                 deleteDoc(doc.ref).catch(err => console.error(err));
-                                return; // Skip adding to list
+                                // Don't return here if we want to reflect it immediately in UI?
+                                // Actually better to *not* add it to allData if we are deleting it.
+                                return;
                             }
                         } catch (e) { console.error("Date parse error", e); }
                     }
                     allData.push({ id: doc.id, ...data });
                 });
-                renderTable();
+                renderTable(allData);
+                renderFilters(); // To update styling if needed
             });
         }
 
-        const truncateText = (text, maxLength = 80) => {
-            if (!text) return '-';
-            if (text.length <= maxLength) return text;
-            return text.substring(0, maxLength).trim() + '...';
-        };
-
-        window.openReasonModal = (id) => {
-            const data = allData.find(d => d.id === id);
-            if (data && data.reason) {
-                reasonFullText.textContent = data.reason;
-                reasonModal.classList.remove('hidden');
-                requestAnimationFrame(() => {
-                    reasonModal.classList.remove('opacity-0');
-                    reasonModalContent.classList.remove('scale-90', 'opacity-0');
-                    reasonModalContent.classList.add('scale-100', 'opacity-100');
-                });
-            }
-        };
-
-        window.closeReasonModal = () => {
-            reasonModal.classList.add('opacity-0');
-            reasonModalContent.classList.remove('scale-100', 'opacity-100');
-            reasonModalContent.classList.add('scale-90', 'opacity-0');
-            setTimeout(() => {
-                reasonModal.classList.add('hidden');
-            }, 300);
-        };
-
-        reasonModal.addEventListener('click', (e) => {
-            if (e.target === reasonModal) closeReasonModal();
-        });
-
-        // Status Update Logic
-        window.updateStatus = async (id, newStatus) => {
-            const docRef = doc(db, "registrations", id);
-            try {
-                const updateData = { status: newStatus };
-                if (newStatus === 'rejected') {
-                    updateData.rejectedAt = serverTimestamp();
-                } else {
-                    updateData.rejectedAt = null; // Clear if status changed back
-                }
-
-                await updateDoc(docRef, updateData);
-                showToast(`Status berhasil diubah ke ${newStatus}!`);
-            } catch (error) {
-                console.error("Error updating status:", error);
-                showToast("Gagal mengubah status: " + error.message, 'error');
-            }
-        };
-
-
-        function renderTable() {
-            let filteredData = allData;
-
-            // Apply Type Filter
-            if (currentTypeFilter !== 'all') {
-                filteredData = filteredData.filter(d => d.type === currentTypeFilter);
-            }
-
-            // Apply Status Filter
-            if (currentStatusFilter !== 'all') {
-                filteredData = filteredData.filter(d => {
-                    const status = d.status || 'progress';
-                    return status === currentStatusFilter;
-                });
-            }
-
-            totalCount.textContent = filteredData.length;
+        function renderTable(data) {
             tableBody.innerHTML = '';
 
+            // FILTERING LOGIC
+            const filteredData = data.filter(item => {
+                const matchType = (currentTypeFilter === 'all')
+                    ? true
+                    : (item.type === currentTypeFilter);
+
+                const dbStatus = item.status || 'progress'; // Default behavior
+                const matchStatus = (currentStatusFilter === 'all')
+                    ? true
+                    : (dbStatus === currentStatusFilter);
+
+                const dbDivision = item.role || ''; // Usually 'Humas', 'Lapangan' or empty
+                const matchDivision = (currentDivisionFilter === 'all')
+                    ? true
+                    : (dbDivision === currentDivisionFilter);
+
+                return matchType && matchStatus && matchDivision;
+            });
+
+            totalCount.textContent = filteredData.length;
+
             if (filteredData.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="11" class="px-6 py-8 text-center text-gray-500">Tidak ada data ditemukan.</td></tr>`;
+                tableBody.innerHTML = '<tr><td colspan="11" class="px-6 py-8 text-center text-gray-500">Tidak ada data ditemukan.</td></tr>';
                 return;
             }
 
             filteredData.forEach(data => {
                 const date = data.createdAt ? data.createdAt.toDate().toLocaleString('id-ID', { day: 'numeric', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '-';
 
-                const reasonText = data.reason || '-';
-                const isLongReason = reasonText.length > 80;
-                const displayReason = isLongReason
-                    ? `<span>${truncateText(reasonText, 80)}</span> <button onclick="openReasonModal('${data.id}')" class="text-[#2E5339] font-bold text-xs hover:underline ml-1 cursor-pointer">Selengkapnya</button>`
-                    : reasonText;
+                // Reason Truncation
+                const maxLen = 80;
+                let displayReason = data.reason || '-';
+                if (displayReason.length > maxLen) {
+                    displayReason = `
+                        <span>${truncate(displayReason, maxLen)}</span>
+                        <button onclick="openReasonModal('${displayReason.replace(/'/g, "\\'")}')"
+                            class="ml-1 text-[#2E5339] font-bold text-xs hover:underline focus:outline-none">
+                            Selengkapnya
+                        </button>
+                    `;
+                }
 
                 // Status Logic
                 const status = data.status || 'progress';
@@ -571,7 +580,7 @@
                 const row = `
                     <tr class="hover:bg-gray-50 transition-colors align-top border-b border-gray-50 whitespace-nowrap">
                         <td class="px-6 py-6">
-                            <select onchange="updateStatus('${data.id}', this.value)" 
+                            <select onchange="updateStatus('${data.id}', this.value)"
                                 class="px-3 py-1.5 text-xs font-semibold rounded-full border focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-opacity-50 cursor-pointer ${selectColor}">
                                 <option value="progress" ${status === 'progress' ? 'selected' : ''}>Progress</option>
                                 <option value="accepted" ${status === 'accepted' ? 'selected' : ''}>Accepted</option>
@@ -600,7 +609,26 @@
             });
         }
 
-        // --- EVENTS & DIVISIONS LOGIC (RETAINED) ---
+        window.updateStatus = async (id, newStatus) => {
+            const docRef = doc(db, "registrations", id);
+            try {
+                const updateData = { status: newStatus };
+                if (newStatus === 'rejected') {
+                    updateData.rejectedAt = serverTimestamp();
+                } else {
+                    updateData.rejectedAt = null; // Clear if status changed back
+                }
+
+                await updateDoc(docRef, updateData);
+                showToast(`Status berhasil diubah ke ${newStatus}!`);
+                // Listener will auto-update UI
+            } catch (error) {
+                console.error("Error updating status:", error);
+                showToast("Gagal mengubah status: " + error.message, 'error');
+            }
+        };
+
+        // --- EVENTS & DIVISIONS LOGIC (RETAINED & UPDATED) ---
         function startEventListener() {
             const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
@@ -670,12 +698,20 @@
             const q = query(collection(db, "divisions"), orderBy("createdAt", "desc"));
             onSnapshot(q, (snapshot) => {
                 divisionsList.innerHTML = '';
+
+                // Clear and rebuild filter - keeping "All" option
+                divisionFilter.innerHTML = '<option value="all">Semua Divisi</option>';
+
                 if (snapshot.empty) {
                     divisionsList.innerHTML = '<p class="text-center text-gray-500 py-4">Belum ada divisi aktif.</p>';
+                    // Optionally add default hardcoded divisions if you want
                     return;
                 }
+
                 snapshot.forEach((doc) => {
                     const division = doc.data();
+
+                    // Add to Management List
                     const el = document.createElement('div');
                     el.className = 'bg-white border border-gray-200 rounded-lg p-4 flex justify-between items-center hover:shadow-sm transition-shadow';
                     el.innerHTML = `
@@ -690,6 +726,13 @@
                          </button>
                      `;
                     divisionsList.appendChild(el);
+
+                    // Add to Filter Dropdown
+                    const option = document.createElement('option');
+                    option.value = division.name;
+                    option.textContent = division.name;
+                    if (currentDivisionFilter === division.name) option.selected = true; // Keep selection
+                    divisionFilter.appendChild(option);
                 });
             });
         }
