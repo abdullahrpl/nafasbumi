@@ -84,6 +84,10 @@
                     class="admin-nav-link text-gray-500 px-6 py-3 font-semibold text-sm hover:text-[#2E5339] transition-colors focus:outline-none whitespace-nowrap">
                     Manajemen Divisi
                 </button>
+                <button onclick="switchView('settings')" data-view="settings"
+                    class="admin-nav-link text-gray-500 px-6 py-3 font-semibold text-sm hover:text-[#2E5339] transition-colors focus:outline-none whitespace-nowrap">
+                    Pengaturan
+                </button>
             </div>
 
             <!-- VIEW: Data Pendaftaran -->
@@ -250,6 +254,59 @@
                     </div>
                 </div>
             </div>
+
+            <!-- VIEW: Pengaturan -->
+            <div id="view-settings" class="hidden">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Pengaturan Pendaftaran</h2>
+                        <p class="text-gray-500 text-sm mt-1">Kontrol status pendaftaran untuk anggota dan volunteer.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-xl shadow-md border border-gray-100 max-w-2xl">
+                    <div class="space-y-8">
+                        <!-- Toggle Anggota -->
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-bold text-[#2E5339]">Pendaftaran Anggota</h3>
+                                <p class="text-xs text-gray-500 mt-1">Jika dimatikan, form anggota tidak dapat disubmit.
+                                </p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="toggle-anggota" class="sr-only peer"
+                                    onchange="updateSetting('anggota_open', this.checked)">
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2E5339]">
+                                </div>
+                                <span class="ml-3 text-sm font-medium text-gray-900"
+                                    id="status-anggota">Loading...</span>
+                            </label>
+                        </div>
+
+                        <hr class="border-gray-100">
+
+                        <!-- Toggle Volunteer -->
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-bold text-[#2E5339]">Pendaftaran Volunteer</h3>
+                                <p class="text-xs text-gray-500 mt-1">Jika dimatikan, form volunteer tidak dapat
+                                    disubmit.</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="toggle-volunteer" class="sr-only peer"
+                                    onchange="updateSetting('volunteer_open', this.checked)">
+                                <div
+                                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#2E5339]">
+                                </div>
+                                <span class="ml-3 text-sm font-medium text-gray-900"
+                                    id="status-volunteer">Loading...</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -257,7 +314,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, deleteDoc, updateDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, deleteDoc, updateDoc, doc, serverTimestamp, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Firebase Config
         const firebaseConfig = { apiKey: "AIzaSyAmLz0qVf4GN0TdDO-G7XdOM7PJI_KaNwo", authDomain: "nafasbumi-7104f.firebaseapp.com", projectId: "nafasbumi-7104f", storageBucket: "nafasbumi-7104f.appspot.com", messagingSenderId: "640077220735", appId: "1:640077220735:web:d58d2ac6183651a090284a" };
@@ -275,7 +332,8 @@
         const views = {
             registrations: document.getElementById('view-registrations'),
             events: document.getElementById('view-events'),
-            divisions: document.getElementById('view-divisions')
+            divisions: document.getElementById('view-divisions'),
+            settings: document.getElementById('view-settings')
         };
         const eventForm = document.getElementById('event-form');
         const eventsList = document.getElementById('events-list');
@@ -326,6 +384,7 @@
                 startDataListener();
                 startEventListener();
                 startDivisionListener();
+                initSettings();
             } else {
                 loginSection.classList.remove('hidden');
                 dashboardSection.classList.add('hidden');
@@ -371,10 +430,10 @@
 
         //ADMIN AREA !!!
         const users = [
-            { name: "bdol", password: "123" },
-            { name: "awan", password: "123" },
-            { name: "rijik", password: "123" },
-            { name: "memet", password: "123" }
+            { name: "bdol", password: "orangjagoijin" },
+            { name: "awan", password: "awansiapaya" },
+            { name: "rijik", password: "lupapw" },
+            { name: "memet", password: "pmamat" }
         ];
 
         loginForm.addEventListener('submit', (e) => {
@@ -775,6 +834,47 @@
                 }
             }
         }
+
+        // --- SETTINGS LOGIC ---
+        async function initSettings() {
+            const toggleAnggota = document.getElementById('toggle-anggota');
+            const toggleVolunteer = document.getElementById('toggle-volunteer');
+            const statusAnggota = document.getElementById('status-anggota');
+            const statusVolunteer = document.getElementById('status-volunteer');
+
+            const settingsRef = doc(db, 'settings', 'registration_config');
+
+            // Listen for realtime updates
+            onSnapshot(settingsRef, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+
+                    toggleAnggota.checked = !!data.anggota_open;
+                    statusAnggota.textContent = data.anggota_open ? 'Aktif' : 'Non-aktif';
+
+                    toggleVolunteer.checked = !!data.volunteer_open;
+                    statusVolunteer.textContent = data.volunteer_open ? 'Aktif' : 'Non-aktif';
+                } else {
+                    // Initialize if not exists
+                    setDoc(settingsRef, { anggota_open: true, volunteer_open: true });
+                }
+            }, (error) => {
+                console.error("Error listening to settings:", error);
+                showToast("Gagal memuat pengaturan", "error");
+            });
+        }
+
+        window.updateSetting = async (key, value) => {
+            const settingsRef = doc(db, 'settings', 'registration_config');
+            try {
+                await setDoc(settingsRef, { [key]: value }, { merge: true });
+                showToast("Pengaturan berhasil disimpan");
+            } catch (error) {
+                console.error("Error updating setting:", error);
+                showToast("Gagal menyimpan pengaturan: " + error.message, 'error');
+                // Revert UI if needed (simple reload or re-fetch will handle it via snapshot listener)
+            }
+        };
 
         checkLogin();
         //ADMIN AREA !!!
