@@ -1,0 +1,54 @@
+{
+    "last_updated": "2024-12-31",
+    "source": "Sistem Informasi Pengelolaan Sampah Nasional (SIPSN) & Estimasi",
+    "unit": "Juta Ton",
+    "years": [
+        "2020",
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025 (Estimasi)"
+    ],
+    "datasets": [
+        {
+            "label": "Sampah Plastik",
+            "data": [
+                5.2,
+                5.7,
+                6.3,
+                5.8,
+                7.4,
+                7.8
+            ],
+            "borderColor": "#3B82F6",
+            "backgroundColor": "rgba(59, 130, 246, 0.2)"
+        },
+        {
+            "label": "Sampah Organik",
+            "data": [
+                18.0,
+                18.4,
+                19.3,
+                17.5,
+                21.2,
+                22.5
+            ],
+            "borderColor": "#10B981",
+            "backgroundColor": "rgba(16, 185, 129, 0.2)"
+        },
+        {
+            "label": "Lainnya (Logam, Kaca, dll.)",
+            "data": [
+                9.6,
+                9.4,
+                9.5,
+                8.6,
+                10.0,
+                9.9
+            ],
+            "borderColor": "#6B7280",
+            "backgroundColor": "rgba(107, 114, 128, 0.2)"
+        }
+    ]
+}

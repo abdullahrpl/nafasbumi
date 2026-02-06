@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wawasan - NafasBumi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="icon" type="image/x-icon" href="/eekend (1).svg" />
+  <link rel="icon" type="image/x-icon" href="/logo-nb-fix.svg">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -197,8 +197,8 @@
             Visualisasi Data: Tren Komposisi Sampah Tahunan
           </h3>
           <p class="text-center text-gray-500 mb-8 max-w-3xl mx-auto">
-            Data simulasi ini membandingkan perkiraan volume berbagai jenis sampah yang masuk ke lingkungan dari tahun
-            ke tahun. Terlihat bahwa sampah plastik terus menjadi perhatian utama.
+            Data ini menampilkan estimasi volume sampah nasional berdasarkan laporan SIPSN dan proyeksi tren tahunan.
+            Terlihat bahwa volume sampah terus meningkat seiring pertumbuhan populasi dan aktivitas ekonomi.
           </p>
           <div class="chart-container">
             <canvas id="wasteChart"></canvas>
@@ -401,19 +401,96 @@
       }
 
       const ctx = document.getElementById("wasteChart");
-      if (ctx) {
-        const multiLineChartData = {
-          labels: ["2020", "2021", "2022", "2023", "2024", "2025 (Estimasi)"],
-          datasets: [
-            { label: "Sampah Plastik", data: [480, 510, 550, 540, 580, 620], borderColor: "#3B82F6", backgroundColor: "rgba(59, 130, 246, 0.2)", fill: true, tension: 0.3 },
-            { label: "Sampah Organik", data: [350, 360, 340, 370, 350, 380], borderColor: "#10B981", backgroundColor: "rgba(16, 185, 129, 0.2)", fill: true, tension: 0.3 },
-            { label: "Lainnya (Logam, Kaca, dll.)", data: [210, 200, 220, 240, 230, 250], borderColor: "#6B7280", backgroundColor: "rgba(107, 114, 128, 0.2)", fill: true, tension: 0.3 },
-          ],
-        };
-        new Chart(ctx, {
-          type: "line", data: multiLineChartData, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: false, title: { display: true, text: "Volume (dalam ribu ton)", font: { family: "'Poppins', sans-serif" } } }, x: { title: { display: true, text: "Tahun", font: { family: "'Poppins', sans-serif" } } } }, plugins: { legend: { display: true, position: "top", labels: { font: { family: "'Poppins', sans-serif" } } }, tooltip: { padding: 10, titleFont: { family: "'Poppins', sans-serif", weight: "bold" }, bodyFont: { family: "'Poppins', sans-serif" }, callbacks: { label: function (context) { let label = context.dataset.label || ""; if (label) { label += ": "; } if (context.parsed.y !== null) { label += `${context.parsed.y} ribu ton`; } return label; } } } }, interaction: { intersect: false, mode: "index" } },
-        });
+
+      async function initWasteChart() {
+        if (!ctx) return;
+
+        try {
+          const response = await fetch('data/waste-stats.json');
+          if (!response.ok) throw new Error('Gagal mengambil data sampah');
+
+          const wasteData = await response.json();
+
+          const multiLineChartData = {
+            labels: wasteData.years,
+            datasets: wasteData.datasets.map(ds => ({
+              ...ds,
+              fill: true,
+              tension: 0.3
+            }))
+          };
+
+          // Tambahkan keterangan sumber
+          const chartCaption = document.createElement('p');
+          chartCaption.className = 'text-center text-xs text-gray-400 mt-2 italic';
+          chartCaption.textContent = `Sumber Data: ${wasteData.source} (Diperbarui: ${wasteData.last_updated})`;
+          ctx.parentElement.insertAdjacentElement('afterend', chartCaption);
+
+          new Chart(ctx, {
+            type: "line",
+            data: multiLineChartData,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: false,
+                  title: {
+                    display: true,
+                    text: `Volume (${wasteData.unit})`,
+                    font: { family: "'Poppins', sans-serif" }
+                  }
+                },
+                x: {
+                  title: {
+                    display: true,
+                    text: "Tahun",
+                    font: { family: "'Poppins', sans-serif" }
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  display: true,
+                  position: "top",
+                  labels: { font: { family: "'Poppins', sans-serif" } }
+                },
+                tooltip: {
+                  padding: 10,
+                  titleFont: { family: "'Poppins', sans-serif", weight: "bold" },
+                  bodyFont: { family: "'Poppins', sans-serif" },
+                  callbacks: {
+                    label: function (context) {
+                      let label = context.dataset.label || "";
+                      if (label) { label += ": "; }
+                      if (context.parsed.y !== null) { label += `${context.parsed.y} ${wasteData.unit}`; }
+                      return label;
+                    }
+                  }
+                }
+              },
+              interaction: { intersect: false, mode: "index" }
+            }
+          });
+
+        } catch (error) {
+          console.error("Error initializing chart:", error);
+          // Fallback jika fetch gagal (Data Dummy Lama)
+          const fallbackData = {
+            labels: ["2020", "2021", "2022", "2023", "2024", "2025 (Estimasi)"],
+            datasets: [
+              { label: "Sampah Plastik", data: [480, 510, 550, 540, 580, 620], borderColor: "#3B82F6", backgroundColor: "rgba(59, 130, 246, 0.2)", fill: true, tension: 0.3 },
+              { label: "Sampah Organik", data: [350, 360, 340, 370, 350, 380], borderColor: "#10B981", backgroundColor: "rgba(16, 185, 129, 0.2)", fill: true, tension: 0.3 },
+              { label: "Lainnya (Logam, Kaca, dll.)", data: [210, 200, 220, 240, 230, 250], borderColor: "#6B7280", backgroundColor: "rgba(107, 114, 128, 0.2)", fill: true, tension: 0.3 },
+            ],
+          };
+          new Chart(ctx, {
+            type: "line", data: fallbackData, options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: "Volume (dalam ribu ton)" } } } }
+          });
+        }
       }
+
+      initWasteChart();
     });
   </script>
 </body>
