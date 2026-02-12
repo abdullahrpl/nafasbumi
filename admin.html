@@ -27,9 +27,9 @@
         <div class="bg-white p-8 rounded-2xl shadow-2xl text-center max-w-sm w-full mx-4">
             <h1 class="text-2xl font-bold mb-6 text-gray-800">Admin Login</h1>
             <form id="login-form" class="space-y-4">
-                <input type="text" id="username"
+                <input type="text" id="email"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5339] outline-none"
-                    placeholder="Username" required>
+                    placeholder="Email" required>
                 <input type="password" id="password"
                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#2E5339] outline-none"
                     placeholder="Password" required>
@@ -314,12 +314,14 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, deleteDoc, updateDoc, doc, serverTimestamp, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, query, orderBy, onSnapshot, addDoc, deleteDoc, updateDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 
         // Firebase Config
         const firebaseConfig = { apiKey: "AIzaSyAmLz0qVf4GN0TdDO-G7XdOM7PJI_KaNwo", authDomain: "nafasbumi-7104f.firebaseapp.com", projectId: "nafasbumi-7104f", storageBucket: "nafasbumi-7104f.appspot.com", messagingSenderId: "640077220735", appId: "1:640077220735:web:d58d2ac6183651a090284a" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
+        const auth = getAuth(app);
 
         // Elements
         const loginSection = document.getElementById('login-section');
@@ -367,28 +369,32 @@
         let allData = [];
 
         // Auth Logic
+        // Email NB (awas salah pas input email baru)
+        const adminEmails = ['bdol@nb.id', 'rijik@nb.id', 'awan@nb.id', 'memet@nb.id'];
+
         const checkLogin = () => {
-            if (sessionStorage.getItem('isAdminAuth') === 'true') {
-                loginSection.classList.add('hidden');
-                dashboardSection.classList.remove('hidden');
+            onAuthStateChanged(auth, (user) => {
+                if (user && adminEmails.includes(user.email)) {
+                    // Jika login sukses DAN email ada di daftar admin
+                    loginSection.classList.add('hidden');
+                    dashboardSection.classList.remove('hidden');
+                    document.getElementById('user-name').textContent = "Admin: " + user.email;
 
-                const adminName = sessionStorage.getItem('adminName');
-                if (adminName) {
-                    document.getElementById('user-name').textContent = "Admin: " + adminName;
+                    setTimeout(() => dashboardSection.classList.remove('opacity-0'), 100);
+
+                    startDataListener();
+                    startEventListener();
+                    startDivisionListener();
+                } else {
+                    // Jika tidak login atau bukan admin
+                    if (user) {
+                        showToast('Email ini tidak memiliki akses admin!', 'error');
+                        signOut(auth);
+                    }
+                    loginSection.classList.remove('hidden');
+                    dashboardSection.classList.add('hidden');
                 }
-
-                setTimeout(() => dashboardSection.classList.remove('opacity-0'), 100);
-
-                deleteOldRejected();
-
-                startDataListener();
-                startEventListener();
-                startDivisionListener();
-                initSettings();
-            } else {
-                loginSection.classList.remove('hidden');
-                dashboardSection.classList.add('hidden');
-            }
+            });
         };
 
         // Cleanup Logic (Delete rejected items older than 7 days)
@@ -428,35 +434,35 @@
             }, 3000);
         }
 
-        //ADMIN AREA !!!
-        const users = [
-            { name: "bdol", password: "orangjagoijin" },
-            { name: "awan", password: "awansiapaya" },
-            { name: "rijik", password: "lupapw" },
-            { name: "memet", password: "pmamat" }
-        ];
-
-        loginForm.addEventListener('submit', (e) => {
+        //ADMIN AUTH SYSTEM AREA !!!
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const usernameInput = document.getElementById('username').value;
+            const emailInput = document.getElementById('email').value;
             const passwordInput = document.getElementById('password').value;
 
-            const foundUser = users.find(u => u.name === usernameInput && u.password === passwordInput);
+            const btn = loginForm.querySelector('button');
+            btn.disabled = true;
+            btn.textContent = "Checking...";
 
-            if (foundUser) {
-                sessionStorage.setItem('isAdminAuth', 'true');
-                sessionStorage.setItem('adminName', foundUser.name);
-                checkLogin();
-                showToast(`Login berhasil! Selamat datang, ${foundUser.name}.`, 'success');
-            } else {
-                showToast('Username atau Password salah!', 'error');
+            try {
+                await signInWithEmailAndPassword(auth, emailInput, passwordInput);
+                showToast(`Login berhasil!`, 'success');
+            } catch (error) {
+                console.error(error);
+                showToast('Email atau Password salah!', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Masuk";
             }
         });
 
-        logoutBtn.addEventListener('click', () => {
-            sessionStorage.removeItem('isAdminAuth');
-            sessionStorage.removeItem('adminName');
-            window.location.reload();
+        logoutBtn.addEventListener('click', async () => {
+            try {
+                await signOut(auth);
+                window.location.reload();
+            } catch (error) {
+                showToast('Gagal logout!', 'error');
+            }
         });
 
         window.switchView = (viewName) => {
