@@ -869,8 +869,7 @@
                 console.error("Error listening to settings:", error);
                 showToast("Gagal memuat pengaturan", "error");
             });
-        }
-
+        }   
         window.updateSetting = async (key, value) => {
             const settingsRef = doc(db, 'settings', 'registration_config');
             try {
