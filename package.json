@@ -1,13 +1,27 @@
 {
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.7.2",
-    "@google/generative-ai": "^0.24.1",
-    "@tailwindcss/cli": "^4.1.16",
-    "browser-image-compression": "^2.0.2",
-    "firebase": "^11.9.1",
-    "homepage": "."
-  },
-  "devDependencies": {
-    "tailwindcss": "^4.1.16"
-  }
+    "name": "nafasbumi",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "chart.js": "^4.4.2",
+        "firebase": "^11.6.1",
+        "marked": "^17.0.3",
+        "react": "^18.2.0",
+        "react-chartjs-2": "^5.2.0",
+        "react-dom": "^18.2.0",
+        "react-icons": "^5.0.1",
+        "react-router-dom": "^6.22.3"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.0.0",
+        "@vitejs/plugin-react": "^4.2.1",
+        "tailwindcss": "^4.0.0",
+        "vite": "^5.2.0"
+    }
 }
