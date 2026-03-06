@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Poppins', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  
+  --color-nb-green: #2E5339;
+  --color-nb-green-light: #4A7859;
+  --color-nb-cream: #F9F7F2;
+  --color-nb-orange: #FF8A5B;
+  --color-nb-dark: #101820;
+  --color-nb-gray: #F5F5F7;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-nb-cream);
+    color: var(--color-nb-dark);
+  }
+}
+
+/* Custom Utilities based on old styles */
+@layer utilities {
+  .bg-dots {
+    background-color: #f9fafb;
+    background-image: radial-gradient(#d1d5db 1px, transparent 1px);
+    background-size: 16px 16px;
+  }
+}
